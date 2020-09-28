@@ -3,11 +3,9 @@ package com.dkthanh.demo.domain;
 import com.sun.javafx.beans.IDProperty;
 import lombok.Data;
 import lombok.ToString;
+import org.apache.ibatis.annotations.Many;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -15,9 +13,16 @@ import java.io.Serializable;
 @Data
 @ToString
 public class UserRole implements Serializable {
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private String id;
 
-    @EmbeddedId
-    private UserRoleId userRoleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleId")
+    private Role role;
 }
