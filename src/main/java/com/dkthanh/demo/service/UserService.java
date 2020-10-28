@@ -1,5 +1,6 @@
 package com.dkthanh.demo.service;
 
+import com.dkthanh.demo.dao.RoleRepository;
 import com.dkthanh.demo.dao.UserRepository;
 import com.dkthanh.demo.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     public List<User> getAllUser(){
         return userRepository.findAll();
@@ -29,6 +33,9 @@ public class UserService {
     }
 
     public User saveUser(User user){
+        User newUser = userRepository.save(user);
+
+        Role role = roleRepository.save();
         return null;
     }
 }
