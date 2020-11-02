@@ -7,6 +7,7 @@ import com.dkthanh.demo.domain.NewUserDTO;
 import com.dkthanh.demo.domain.Role;
 import com.dkthanh.demo.domain.User;
 import com.dkthanh.demo.domain.UserRole;
+import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,12 +47,14 @@ public class UserService {
     public User saveUser(NewUserDTO userDTO){
         String uid = userDTO.getUserName();
         String encryptPass = this.passwordEncoder.encode(userDTO.getPassword());
+        User user =  new User();
+        try{
+            user = userRepository.save(new User(uid, encryptPass));
 
-        User user = new User(uid, encryptPass);
-        UserRole userRole = new UserRole()
-//        User newUser = userRepository.save(user);
-
-//        Role role = roleRepository.save();
-        return null;
+            UserRole  userRole = userRoleRepository.save(new UserRole(user.getUserId(), Constant.Roles.getById(2).getId()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return user;
     }
 }

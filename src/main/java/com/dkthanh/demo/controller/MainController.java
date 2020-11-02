@@ -38,16 +38,12 @@ public class MainController {
             return "/404";
         }
 
-        Role role = new Role();
-        role.setRoleName(Constant.ROLES.INVESTOR);
-
         User newUser = new User();
         try{
-//            newUser =
+            newUser = userService.saveUser(newUserDTO);
         }catch (Exception e){
             return "/register";
         }
-
-        return null;
+        return "registerPage";
     }
 }
