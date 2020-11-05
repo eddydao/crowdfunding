@@ -1,10 +1,8 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.domain.NewUserDTO;
-import com.dkthanh.demo.domain.Role;
 import com.dkthanh.demo.domain.User;
 import com.dkthanh.demo.service.UserService;
-import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.util.Validate;
-
-import javax.jws.WebParam;
-import javax.jws.soap.SOAPBinding;
 
 @Controller
 public class MainController {
@@ -28,9 +22,9 @@ public class MainController {
     public String openRegisterForm(Model model){
         NewUserDTO newUserDTO = new NewUserDTO();
         model.addAttribute("newUserForm", newUserDTO);
-        return "registerPage";
+        return "register-page";
     }
-
+//    Save new user
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerNewAccount(Model model, @ModelAttribute("newUserForm") @Validated NewUserDTO newUserDTO, BindingResult result, final RedirectAttributes redirectAttributes){
         // Validate result
@@ -44,6 +38,8 @@ public class MainController {
         }catch (Exception e){
             return "/register";
         }
-        return "registerPage";
+        return "register-page";
     }
+
+
 }
