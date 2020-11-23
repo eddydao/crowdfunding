@@ -1,9 +1,6 @@
 package com.dkthanh.demo.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -18,8 +15,9 @@ public class ProjectInvestorEntity {
     private BigDecimal pledged;
     private Timestamp timestamp;
 
+    @Id
     @Basic
-    @Column(name = "proj_investor_id", nullable = true)
+    @Column(name = "proj_investor_id", nullable = false)
     public Integer getProjInvestorId() {
         return projInvestorId;
     }
