@@ -1,33 +1,26 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "role", schema = "demo", catalog = "")
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleEntity {
-    private Integer roleId;
-    private String roleName;
-
     @Id
     @Column(name = "role_id", nullable = false)
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
+    private Integer roleId;
     @Basic
     @Column(name = "role_name", nullable = true, length = 255)
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
+    private String roleName;
 
     @Override
     public boolean equals(Object o) {

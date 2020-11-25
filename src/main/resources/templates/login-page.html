@@ -11,14 +11,14 @@
 
 </head>
 <body>
-<form th:action="@{/register}" th:object="${newUserForm}" method="POST">
+<form th:action="@{/j_spring_security_check}", method  = "post">
     <div>
         <label >User name</label>
-        <input type="text" th:field="*{userName}">
+        <input type="text" id="uid">
     </div>
     <div>
         <label >Password:</label>
-        <input type="password" hint="your password" th:field="*{password}">
+        <input type="password" hint="your password" id="password">
     </div>
     <div>
         <button type="submit" value="Submit" class="btn btn-primary">Submit</button>

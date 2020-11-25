@@ -1,11 +1,18 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_role", schema = "demo", catalog = "")
 @IdClass(UserRoleEntityPK.class)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRoleEntity {
     private Integer userId;
     private Integer roleId;

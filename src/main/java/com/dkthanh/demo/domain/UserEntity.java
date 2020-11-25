@@ -1,42 +1,34 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user", schema = "demo", catalog = "")
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
-    private Integer id;
-    private String username;
-    private String password;
-
     @Id
     @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
     @Basic
-    @Column(name = "username", nullable = false, length = 255)
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Column(name = "username", nullable = false, length = 255, unique = true)
+    private String username;
     @Basic
     @Column(name = "password", nullable = false, length = 255)
-    public String getPassword() {
-        return password;
-    }
+    private String password;
 
-    public void setPassword(String password) {
+    public UserEntity(String username, String password){
+        this.username = username;
         this.password = password;
     }
 
