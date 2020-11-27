@@ -18,6 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MainController {
     @Autowired
     private UserService userService;
+
+    // return temp result for testing
+    @GetMapping(value = "/temp-result")
+    public String tempResult(){
+        return "temp-result";
+    }
 //    Open register page
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String openRegisterForm(Model model){
