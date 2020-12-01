@@ -36,14 +36,14 @@ public class MainController {
     public String registerNewAccount(Model model, @ModelAttribute("newUserForm") @Validated NewUserDTO newUserDTO, BindingResult result, final RedirectAttributes redirectAttributes){
         // Validate result
         if (result.hasErrors()) {
-            return "/404";
+            return "404";
         }
 
         UserEntity newUser = new UserEntity();
         try{
             newUser = userService.saveUser(newUserDTO);
         }catch (Exception e){
-            return "/register";
+            return "register";
         }
         return "temp-result";
     }
@@ -51,7 +51,7 @@ public class MainController {
     // open login form
     @GetMapping(value = "/login-page")
     public String login() {
-        return "/login-page";
+        return "login-page";
     }
 
     /*
@@ -61,12 +61,12 @@ public class MainController {
 //    index page
     @GetMapping(value = "/index")
     public String index(){
-        return "/index";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/")
     public String getHomePage(){
-        return "redirect:/index";
+        return "index";
     }
 
 
