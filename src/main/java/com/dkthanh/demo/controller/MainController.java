@@ -54,5 +54,20 @@ public class MainController {
         return "/login-page";
     }
 
+    /*
+    * ===========================================
+    * */
+
+//    index page
+    @GetMapping(value = "/index")
+    public String index(){
+        return "/index";
+    }
+
+    @GetMapping(value = "/")
+    public String getHomePage(){
+        return "redirect:/index";
+    }
+
 
 }
