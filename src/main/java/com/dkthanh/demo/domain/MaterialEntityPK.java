@@ -1,20 +1,17 @@
 package com.dkthanh.demo.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "material", schema = "demo", catalog = "")
-@IdClass(MaterialEntityPK.class)
-public class MaterialEntity {
+public class MaterialEntityPK implements Serializable {
     private Integer materialId;
     private Integer projectId;
     private Integer materialTypeId;
-    private String description;
-    private String path;
 
-    @Id
     @Column(name = "material_id", nullable = false)
+    @Id
     public Integer getMaterialId() {
         return materialId;
     }
@@ -23,8 +20,8 @@ public class MaterialEntity {
         this.materialId = materialId;
     }
 
-    @Id
     @Column(name = "project_id", nullable = false)
+    @Id
     public Integer getProjectId() {
         return projectId;
     }
@@ -33,8 +30,8 @@ public class MaterialEntity {
         this.projectId = projectId;
     }
 
-    @Id
     @Column(name = "material_type_id", nullable = false)
+    @Id
     public Integer getMaterialTypeId() {
         return materialTypeId;
     }
@@ -43,40 +40,18 @@ public class MaterialEntity {
         this.materialTypeId = materialTypeId;
     }
 
-    @Basic
-    @Column(name = "description", nullable = true, length = 255)
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Basic
-    @Column(name = "path", nullable = true, length = 255)
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MaterialEntity that = (MaterialEntity) o;
+        MaterialEntityPK that = (MaterialEntityPK) o;
         return Objects.equals(materialId, that.materialId) &&
                 Objects.equals(projectId, that.projectId) &&
-                Objects.equals(materialTypeId, that.materialTypeId) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(path, that.path);
+                Objects.equals(materialTypeId, that.materialTypeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(materialId, projectId, materialTypeId, description, path);
+        return Objects.hash(materialId, projectId, materialTypeId);
     }
 }
