@@ -1,0 +1,57 @@
+// SELECT recommended project detail
+SELECT
+  A.project_id,
+  A.project_name,
+  A.project_team_id,
+  A.user_id,
+  A.project_short_des,
+  A.start_date,
+  A.end_date,
+  A.goal,
+  A.pledged,
+  A.investor_count,
+  A.project_status_id,
+  A.recommended,
+  B.material_id,
+  B.description,
+  B.path,
+  C.category_id,
+  C.category_name
+FROM
+  project A,
+  material B,
+  category C
+WHERE
+  A.project_id = B.project_id
+  AND A.category_id = C.category_id
+  AND A.recommended = 1;
+// ------------------------------------
+// select popular project
+SELECT
+  TOP(1)
+  A.project_id,
+  A.project_name,
+  A.project_team_id,
+  A.user_id,
+  A.project_short_des,
+  A.start_date,
+  A.end_date,
+  A.goal,
+  A.pledged,
+  A.investor_count,
+  A.project_status_id,
+  A.recommended,
+  B.material_id,
+  B.description,
+  B.path,
+  C.category_id,
+  C.category_name
+FROM
+  project A,
+  material B,
+  category C
+WHERE
+  A.project_id = B.project_id
+  AND A.category_id = C.category_id
+GROUP BY A.investor_count
+ORDER BY A.investor_count;

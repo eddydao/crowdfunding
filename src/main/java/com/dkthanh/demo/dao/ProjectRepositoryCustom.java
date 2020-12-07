@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectRepositoryCustom {
-    Optional<List<ProjectFullInfoEntity>> getRecommendedProject();
+    Optional<List<ProjectFullInfoEntity>> getPopularProject();
 
     Optional<ProjectFullInfoEntity> getProjectDetail(Integer id);
+
+    Optional<ProjectFullInfoEntity> getRecommendedProject();
 }

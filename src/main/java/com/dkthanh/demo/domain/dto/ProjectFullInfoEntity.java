@@ -82,4 +82,34 @@ public class ProjectFullInfoEntity implements Serializable {
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
     }
+
+    public ProjectFullInfoEntity(
+            Integer projectId
+            , String projectName
+            , Integer projectTeamId
+            , Integer userId
+            , String projectShortDes
+            , Timestamp startDate
+            , Timestamp endDate
+            , Double goal
+            , Double pledged
+            , String investorCount
+            , Integer projectStatusId
+            , Integer recommended
+            , Integer categoryId
+    ) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.projectTeamId = projectTeamId;
+        this.userId = userId;
+        this.projectShortDes = projectShortDes;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.goal = goal;
+        this.pledged = pledged;
+        this.investorCount = investorCount;
+        this.projectStatusId = projectStatusId;
+        this.recommended = recommended;
+        this.categoryId = categoryId;
+    }
 }

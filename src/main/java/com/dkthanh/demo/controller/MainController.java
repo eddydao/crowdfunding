@@ -11,6 +11,7 @@ import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -80,14 +81,23 @@ public class MainController {
     }
 
     // open login form
-    @GetMapping(value = "/login-page")
+    @GetMapping(value = "/login")
     public String login() {
         return "login-page";
     }
 
     // search function - not complete
-    public String search(){
-        return null;
+    @PostMapping(value = "/search", produces = { "application/json" })
+    public String search(@RequestParam("search_box") String keyword, Model model){
+        if (StringUtils.isEmpty(keyword)) {
+            model.addAttribute("result", 0);
+            model.addAttribute("infor", new String("We can't find any result with your keyword"));
+            return "client/search_result";
+        }
+        model.addAttribute("result", 1);
+        model.addAttribute("search_results", projectService.searchProjectByNameContaining(keyword));
+        model.addAttribute("tags", categoryService.getAllCategory());
+        return "/search_result";
     }
     /*
      *  index page function
@@ -98,15 +108,23 @@ public class MainController {
     @GetMapping(value = "/index")
     public String index(Model model){
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
-        List<ProjectFullInfoEntity> recommendedProjects = projectService.getRecommendedProject();
+        List<ProjectFullInfoEntity> popularProjects = projectService.getPopularProjects();
+        ProjectFullInfoEntity recommendedProject = projectService.getRecommendedProject();
         model.addAttribute("category_list", categoryEntityList);
-        model.addAttribute("recommended_projects", recommendedProjects);
+        model.addAttribute("recommended_projects", popularProjects);
+        model.addAttribute("recommended_project", recommendedProject);
         return "redirect:/";
     }
 
     @GetMapping(value = "/")
     public String getHomePage(){
         return "index";
+    }
+
+    //  load project detail page
+    @GetMapping(value = "/project/{id}")
+    public String getProjectDetailPage(Model model){
+        return null;
     }
 
 

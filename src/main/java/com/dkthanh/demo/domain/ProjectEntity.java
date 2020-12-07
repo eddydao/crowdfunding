@@ -19,6 +19,7 @@ public class ProjectEntity {
     private String investorCount;
     private Integer projectStatusId;
     private Integer recommended;
+    private Integer categoryId;
 
     @Id
     @Column(name = "project_id", nullable = false)
@@ -162,5 +163,15 @@ public class ProjectEntity {
     @Override
     public int hashCode() {
         return Objects.hash(projectId, projectName, projectTeamId, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended);
+    }
+
+    @Basic
+    @Column(name = "category_id", nullable = true)
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }

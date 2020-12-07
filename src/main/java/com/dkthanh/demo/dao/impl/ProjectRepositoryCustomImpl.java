@@ -9,36 +9,22 @@ import java.util.Optional;
 public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
     @Override
-    public Optional<List<ProjectFullInfoEntity>> getRecommendedProject() {
+    public Optional<List<ProjectFullInfoEntity>> getPopularProject() {
         StringBuilder sql = new StringBuilder();
         sql.append(
                 "SELECT "
-                    + "p."
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
-                    + ""
+
         );
         return null;
     }
 
     @Override
     public Optional<ProjectFullInfoEntity> getProjectDetail(Integer id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ProjectFullInfoEntity> getRecommendedProject() {
         return Optional.empty();
     }
 }
