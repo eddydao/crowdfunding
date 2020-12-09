@@ -77,8 +77,13 @@ public class ProjectService {
                 }
 
                 MaterialEntity materialEntity = materialService.getMaterialByProjectId(entity.getProjectId());
+                fullEntity.setMaterialThumbnailId(materialEntity.getMaterialId());
+                fullEntity.setMaterialThumbnailName(materialEntity.getDescription());
+                fullEntity.setMaterialThumbnailPath(materialEntity.getPath());
 
+                listFullInfo.add(fullEntity);
             }
+            return listFullInfo;
         }
         return null;
     }
