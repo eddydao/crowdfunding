@@ -1,18 +1,13 @@
 package com.dkthanh.demo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "category", schema = "demo", catalog = "")
-@NoArgsConstructor
-@AllArgsConstructor
 public class CategoryEntity {
     private Integer categoryId;
-    private String caregoryName;
+    private String categoryName;
 
     @Id
     @Column(name = "category_id", nullable = false)
@@ -25,13 +20,13 @@ public class CategoryEntity {
     }
 
     @Basic
-    @Column(name = "caregory_name", nullable = true, length = 255)
-    public String getCaregoryName() {
-        return caregoryName;
+    @Column(name = "category_name", nullable = true, length = 255)
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCaregoryName(String caregoryName) {
-        this.caregoryName = caregoryName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Override
@@ -40,11 +35,11 @@ public class CategoryEntity {
         if (o == null || getClass() != o.getClass()) return false;
         CategoryEntity that = (CategoryEntity) o;
         return Objects.equals(categoryId, that.categoryId) &&
-                Objects.equals(caregoryName, that.caregoryName);
+                Objects.equals(categoryName, that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, caregoryName);
+        return Objects.hash(categoryId, categoryName);
     }
 }

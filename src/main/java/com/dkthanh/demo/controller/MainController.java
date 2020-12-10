@@ -110,15 +110,15 @@ public class MainController {
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
         List<ProjectFullInfoEntity> popularProjects = projectService.getPopularProjects();
         ProjectFullInfoEntity recommendedProject = projectService.getRecommendedProject();
-        model.addAttribute("category_list", categoryEntityList);
-        model.addAttribute("recommended_projects", popularProjects);
+        model.addAttribute("categories", categoryEntityList);
+        model.addAttribute("popular_projects", popularProjects);
         model.addAttribute("recommended_project", recommendedProject);
-        return "redirect:/";
+        return "index";
     }
 
     @GetMapping(value = "/")
     public String getHomePage(){
-        return "index";
+        return "redirect:/index";
     }
 
     //  load project detail page

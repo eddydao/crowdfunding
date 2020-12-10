@@ -1,5 +1,6 @@
 // SELECT recommended project detail
 SELECT
+TOP(8)
   A.project_id,
   A.project_name,
   A.project_team_id,
@@ -20,11 +21,16 @@ SELECT
 FROM
   project A,
   material B,
-  category C
+  category C,
+  status D
 WHERE
   A.project_id = B.project_id
   AND A.category_id = C.category_id
-  AND A.recommended = 1;
+  AND A.project_status_id = D.project_status_id
+  AND A.recommended = 1
+  AND D.project_status_id = 3
+  GROUP BY project_investor_count
+  ORDER BY project_investor_count ASC;
 // ------------------------------------
 // select popular project
 SELECT

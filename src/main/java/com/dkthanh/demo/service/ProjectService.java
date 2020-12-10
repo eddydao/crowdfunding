@@ -32,9 +32,9 @@ public class ProjectService {
     }
 
     public ProjectFullInfoEntity getRecommendedProject(){
-        Optional<ProjectFullInfoEntity> project = projectRepository.getRecommendedProject();
-        if(project.isPresent()){
-            return project.get();
+        List<ProjectFullInfoEntity> project = projectRepository.getRecommendedProject();
+        if(project instanceof ProjectFullInfoEntity && project.size() == 1){
+            return project.get(0);
         }
         return null;
     }
@@ -73,7 +73,7 @@ public class ProjectService {
                 );
                 CategoryEntity categoryEntity = categoryService.getCategoryById(entity.getCategoryId());
                 if(!categoryEntity.equals(null)){
-                    fullEntity.setCategoryName(categoryEntity.getCaregoryName());
+                    fullEntity.setCategoryName(categoryEntity.getCategoryName());
                 }
 
                 MaterialEntity materialEntity = materialService.getMaterialByProjectId(entity.getProjectId());

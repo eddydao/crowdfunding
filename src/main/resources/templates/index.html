@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Welcome to Kickstars</title>
     <meta charset="utf-8">
@@ -67,11 +68,11 @@
                         <a th:href="@{/login}" class="btn btn-black sys_show_popup_login">Login</a>
                     </div>
                     <div class="form-search">
-                        <form action="#">
+                        <form action="#" th:action="@{/search}" th:object="${project}" method="post">
                             <label for="sys_txt_keyword">
-                                <input id="sys_txt_keyword" class="txt-keyword" type="text" placeholder="Search projects"/>
+                                <input id="sys_txt_keyword" name="search_box" class="txt-keyword" type="text" placeholder="Search projects"/>
                             </label>
-                            <button class="btn-search" type="reset"><i class="icon iMagnifier"></i></button>
+                            <button class="btn-search" type="submit"><i class="icon iMagnifier"></i></button>
                             <button class="btn-reset-keyword" type="reset"><i class="icon iXHover"></i></button>
                         </form>
                     </div>
@@ -82,12 +83,12 @@
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
-                            <a href="@{/project/all}" class="nav-title">Discover</a>
+                            <a th:href="@{/project/all}" class="nav-title">Discover</a>
                             <p class="rs nav-description">Great Projects</p>
                         </div>
                         <span class="sep"></span>
                         <div class="nav-item">
-                            <a href="#" class="nav-title">Start</a>
+                            <a href="#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
                             <p class="rs nav-description">Your Project</p>
                         </div>
                     </div>
@@ -145,53 +146,10 @@
                     <h3 class="title-welcome rs">Welcome to Kickstars!</h3>
                     <p class="description rs">Pellentesque laoreet sapien id lacus luctus non fringilla elit lobortis. Fusce augue diam, tempor posuere pharetra sed, feugiat non sapien.</p>
                     <nav class="lst-category">
-                        <ul class="rs nav nav-category">
+                        <ul class="rs nav nav-category" th:each="category : ${categories}">
                             <li>
-                                <a href="#">
-                                    Art
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="#">
-                                    Comics
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Design
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Fashion
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Film
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Games
-                                    <span class="count-val">(12)</span>
-                                    <i class="icon iPlugGray"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Music
-                                    <span class="count-val">(12)</span>
+                                <a th:href="@{/category/} + ${category.categoryId}">
+                                    <span th:text="${category.categoryName}"></span>
                                     <i class="icon iPlugGray"></i>
                                 </a>
                             </li>
@@ -204,7 +162,7 @@
             </div><!--end: .left-lst-category -->
             <div class="grid_8 marked-category">
                 <div class="wrap-title clearfix">
-                    <h2 class="title-mark rs">Staff Picks: <span class="fc-orange">Comics</span></h2>
+                    <h2 class="title-mark rs">Staff Picks: <span class="fc-orange" >Category</span></h2>
                     <a href="category.html" class="count-project be-fc-orange">See all <span class="fw-b">24</span> Comics projects</a>
                 </div>
                 <div class="box-marked-project project-short">

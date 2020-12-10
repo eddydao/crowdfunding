@@ -10,5 +10,5 @@ public interface ProjectRepositoryCustom {
 
     Optional<ProjectFullInfoEntity> getProjectDetail(Integer id);
 
-    Optional<ProjectFullInfoEntity> getRecommendedProject();
+    List<ProjectFullInfoEntity> getRecommendedProject();
 }
