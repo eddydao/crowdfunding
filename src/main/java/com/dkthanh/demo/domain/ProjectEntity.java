@@ -14,10 +14,12 @@ public class ProjectEntity {
     private String projectShortDes;
     private Timestamp startDate;
     private Timestamp endDate;
-    private String goal;
-    private String pledged;
+    private Double goal;
+    private Double pledged;
     private String investorCount;
     private Integer projectStatusId;
+    private Integer recommended;
+    private Integer categoryId;
 
     @Id
     @Column(name = "project_id", nullable = false)
@@ -90,22 +92,22 @@ public class ProjectEntity {
     }
 
     @Basic
-    @Column(name = "goal", nullable = true, length = 255)
-    public String getGoal() {
+    @Column(name = "goal", nullable = true, precision = 0)
+    public Double getGoal() {
         return goal;
     }
 
-    public void setGoal(String goal) {
+    public void setGoal(Double goal) {
         this.goal = goal;
     }
 
     @Basic
-    @Column(name = "pledged", nullable = true, length = 255)
-    public String getPledged() {
+    @Column(name = "pledged", nullable = true, precision = 0)
+    public Double getPledged() {
         return pledged;
     }
 
-    public void setPledged(String pledged) {
+    public void setPledged(Double pledged) {
         this.pledged = pledged;
     }
 
@@ -129,6 +131,16 @@ public class ProjectEntity {
         this.projectStatusId = projectStatusId;
     }
 
+    @Basic
+    @Column(name = "recommended", nullable = true)
+    public Integer getRecommended() {
+        return recommended;
+    }
+
+    public void setRecommended(Integer recommended) {
+        this.recommended = recommended;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -144,11 +156,22 @@ public class ProjectEntity {
                 Objects.equals(goal, that.goal) &&
                 Objects.equals(pledged, that.pledged) &&
                 Objects.equals(investorCount, that.investorCount) &&
-                Objects.equals(projectStatusId, that.projectStatusId);
+                Objects.equals(projectStatusId, that.projectStatusId) &&
+                Objects.equals(recommended, that.recommended);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, projectName, projectTeamId, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId);
+        return Objects.hash(projectId, projectName, projectTeamId, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended);
+    }
+
+    @Basic
+    @Column(name = "category_id", nullable = true)
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }

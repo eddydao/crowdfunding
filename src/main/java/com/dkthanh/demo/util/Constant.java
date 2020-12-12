@@ -40,4 +40,40 @@ public final class Constant {
         }
     }
 
+    public enum ProjectStatus{
+        WAITING(1, "WAITING"),
+        APPROVED(2, "APPROVED"),
+        RUNNING(3, "RUNNING"),
+        PAUSE(4, "PAUSE"),
+        COMPLETE(5, "COMPLETE"),
+        REJECT(6, "REJECT"),
+
+        ;
+
+        private Integer id;
+        private String name;
+
+        ProjectStatus(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static ProjectStatus getStatusById(Integer id){
+            for (ProjectStatus e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
 }

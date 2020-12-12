@@ -30,11 +30,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/*").permitAll();
+        http.authorizeRequests().antMatchers("/*")
+                .permitAll();
         http.authorizeRequests().and().formLogin()//
                 // Submit URL của trang login
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login-page")//
+                .loginPage("/login")//
                 .defaultSuccessUrl("/temp-result")//
                 .failureUrl("/register")//
                 .usernameParameter("username")//

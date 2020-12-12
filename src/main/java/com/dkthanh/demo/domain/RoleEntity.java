@@ -22,6 +22,26 @@ public class RoleEntity {
     @Column(name = "role_name", nullable = true, length = 255)
     private String roleName;
 
+    @Id
+    @Column(name = "role_id", nullable = false)
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    @Basic
+    @Column(name = "role_name", nullable = true, length = 255)
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
