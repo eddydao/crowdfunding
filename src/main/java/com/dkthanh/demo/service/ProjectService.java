@@ -40,7 +40,10 @@ public class ProjectService {
     }
 
     public ProjectFullInfoEntity getProjectDetail(Integer id){
-        Optional<ProjectFullInfoEntity> projectDetail = projectRepository.getProjectDetail(id);
+        List<ProjectFullInfoEntity> listProject = projectRepository.getProjectDetail(id);
+        if(listProject != null && !listProject.isEmpty()){
+            return listProject.get(0);
+        }
         return null;
     }
 

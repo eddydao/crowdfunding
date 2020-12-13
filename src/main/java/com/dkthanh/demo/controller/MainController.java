@@ -123,10 +123,18 @@ public class MainController {
 
     //  load project detail page
     @GetMapping(value = "/project/{id}")
-    public String getProjectDetailPage(Model model){
+    public String getProjectDetailPage(Model model, @PathVariable("id") Integer id){
+        ProjectFullInfoEntity p = projectService.getProjectDetail(id);
+//        List<USer>
+        model.addAttribute("project", p);
+
         return null;
     }
 
+    /*
+     *  Project detail page function
+     * ===========================================
+     */
 
     /*
      *  All project page function

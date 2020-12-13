@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ProjectRepositoryCustom {
     Optional<List<ProjectFullInfoEntity>> getPopularProject();
 
-    Optional<ProjectFullInfoEntity> getProjectDetail(Integer id);
+    List<ProjectFullInfoEntity> getProjectDetail(Integer id);
 
     List<ProjectFullInfoEntity> getRecommendedProject();
 }

@@ -56,8 +56,43 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
     }
 
     @Override
-    public Optional<ProjectFullInfoEntity> getProjectDetail(Integer id) {
-        return Optional.empty();
+    public List<ProjectFullInfoEntity> getProjectDetail(Integer id) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(
+                "SELECT\n" +
+                        "  A.project_id,\n" +
+                        "  A.project_name,\n" +
+                        "  A.project_team_id,\n" +
+                        "  A.user_id,\n" +
+                        "  A.project_short_des,\n" +
+                        "  A.start_date,\n" +
+                        "  A.end_date,\n" +
+                        "  A.goal,\n" +
+                        "  A.pledged,\n" +
+                        "  A.investor_count,\n" +
+                        "  A.project_status_id,\n" +
+                        "  A.recommended,\n" +
+                        "  B.material_id,\n" +
+                        "  B.description,\n" +
+                        "  B.path,\n" +
+                        "  C.category_id,\n" +
+                        "  C.category_name\n" +
+                        "FROM\n" +
+                        "  project A,\n" +
+                        "  material B,\n" +
+                        "  category C,\n" +
+                        "  status D\n" +
+                        "WHERE\n" +
+                        "  A.project_id = B.project_id\n" +
+                        "  AND A.category_id = C.category_id\n" +
+                        "  AND A.project_status_id = D.project_status_id\n" +
+                        "  AND D.project_status_id = 3\n" +
+                        "GROUP BY A.investor_count\n" +
+                        "ORDER BY A.investor_count;"
+        );
+        Query sqlQuery = em.createNativeQuery(sql.toString(), ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP);
+
+        return sqlQuery.getResultList();
     }
 
     @Override
