@@ -2,15 +2,15 @@ package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.ProjectRepository;
 import com.dkthanh.demo.domain.CategoryEntity;
+import com.dkthanh.demo.domain.InvesmentOptionEntity;
 import com.dkthanh.demo.domain.MaterialEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
+import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -23,16 +23,24 @@ public class ProjectService {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private InvesmentOptionService optionService;
+
     public List<ProjectFullInfoEntity> getPopularProjects(){
-        Optional<List<ProjectFullInfoEntity>> list = projectRepository.getPopularProject();
-        if(list.isPresent()){
-            return list.get();
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+        List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
         }
         return null;
     }
 
     public ProjectFullInfoEntity getRecommendedProject(){
-        List<ProjectFullInfoEntity> project = projectRepository.getRecommendedProject();
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.IS_RECOMMENDED, 1);
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+        List<ProjectFullInfoEntity> project = projectRepository.getProjectListWithDetail(map);
         if(project instanceof ProjectFullInfoEntity && project.size() == 1){
             return project.get(0);
         }
@@ -40,8 +48,20 @@ public class ProjectService {
     }
 
     public ProjectFullInfoEntity getProjectDetail(Integer id){
-        Optional<ProjectFullInfoEntity> projectDetail = projectRepository.getProjectDetail(id);
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        ProjectFullInfoEntity project = new ProjectFullInfoEntity();
+
+        map.put(Constant.PROJECT_KEY.PROJECT_ID, id);
+        List<ProjectFullInfoEntity> listProject = projectRepository.getProjectListWithDetail(map);
+        if(listProject != null && !listProject.isEmpty()){
+            project = listProject.get(0);
+            Integer projectId = project.getProjectId();
+
+            List<InvesmentOptionEntity> listOption = optionService.getListOptionOfProject(projectId);
+            project.setListOption(listOption);
+        }
+
+        return project;
     }
 
     public String getProjectThumbnailPath(int projectId){
@@ -59,8 +79,7 @@ public class ProjectService {
                 ProjectFullInfoEntity fullEntity = new ProjectFullInfoEntity(
                         entity.getProjectId()
                         , entity.getProjectName()
-                        , entity.getProjectTeamId()
-                        , entity.getUserId()
+                        , entity.getTeamId()
                         , entity.getProjectShortDes()
                         , entity.getStartDate()
                         , entity.getEndDate()

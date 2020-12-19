@@ -14,6 +14,7 @@ public class UserDetailEntity {
     private String totalAmount;
     private String address;
     private Integer countryId;
+    private Integer teamId;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -113,5 +114,15 @@ public class UserDetailEntity {
     @Override
     public int hashCode() {
         return Objects.hash(userId, firstName, lastName, email, projectSupported, totalAmount, address, countryId);
+    }
+
+    @Basic
+    @Column(name = "team_id", nullable = true)
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 }
