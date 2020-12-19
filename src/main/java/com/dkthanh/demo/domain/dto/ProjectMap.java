@@ -1,31 +1,30 @@
 package com.dkthanh.demo.domain.dto;
 
-import com.dkthanh.demo.domain.ProjectEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@SqlResultSetMappings({
+//@SqlResultSetMappings({
     @SqlResultSetMapping(
         name = ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP,
         classes = {
             @ConstructorResult(
-                targetClass = ProjectEntity.class,
+                targetClass = ProjectFullInfoEntity.class,
                 columns = {
                         @ColumnResult(name = "project_id", type = Integer.class),
                         @ColumnResult(name = "project_name", type = String.class),
-                        @ColumnResult(name = "project_team_id", type = Integer.class),
-                        @ColumnResult(name = "user_id", type = Integer.class),
+                        @ColumnResult(name = "team_id", type = Integer.class),
+                        @ColumnResult(name = "team_name", type = String.class),
                         @ColumnResult(name = "project_short_des", type = String.class),
-                        @ColumnResult(name = "start_date", type = Timestamp.class),
-                        @ColumnResult(name = "end_date", type = Timestamp.class),
+                        @ColumnResult(name = "start_date", type = OffsetDateTime.class),
+                        @ColumnResult(name = "end_date", type = OffsetDateTime.class),
                         @ColumnResult(name = "goal", type = Double.class),
                         @ColumnResult(name = "pledged", type = Double.class),
-                        @ColumnResult(name = "investor_count", type = String.class),
+                        @ColumnResult(name = "investor_count", type = Integer.class),
                         @ColumnResult(name = "project_status_id", type = Integer.class),
                         @ColumnResult(name = "recommended", type = Integer.class),
                         @ColumnResult(name = "day_left", type = Integer.class),
@@ -38,7 +37,7 @@ import java.sql.Timestamp;
             })
         }
     )
-})
+//})
 
 @Entity
 public class ProjectMap {

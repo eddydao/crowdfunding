@@ -76,4 +76,14 @@ public final class Constant {
         }
     }
 
+    public static final class PROJECT_KEY{
+        public static final String PROJECT_ID = "projectId";
+        public static final String IS_RECOMMENDED = "isRecommended";
+        public static final String PROJECT_STATUS = "projectStatus";
+        public static final String TEAM_ID = "teamId";
+
+        private PROJECT_KEY(){}
+    }
+
+
 }

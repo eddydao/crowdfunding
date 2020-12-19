@@ -38,11 +38,7 @@
                 <div class="grid_12">
                     <nav class="top-menu">
                         <ul id="main-menu" class="nav nav-horizontal clearfix">
-                            <li class="active"><a href="index.html">Home</a></li>
-                            <li class="sep"></li>
-                            <li><a href="all-pages.html">All Pages</a></li>
-                            <li class="sep"></li>
-                            <li><a href="how-it-work.html">Help</a></li>
+                            <li class="active"><a href="#" th:href="@{/}">Home</a></li>
                             <li class="sep"></li>
                             <li><a href="contact.html">Contact</a></li>
                         </ul>
@@ -53,13 +49,12 @@
                         </a>
                         <div id="right-menu">
                             <ul class="alternate-menu">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="all-pages.html">All Pages</a></li>
-                                <li><a href="how-it-work.html">Help</a></li>
+                                <li><a href="" th:href="@{/}">Home</a></li>
                                 <li><a href="contact.html">Contact us</a></li>
                             </ul>
                         </div>
                     </nav>
+                    <i id="sys_btn_toggle_search" class="icon iBtnRed make-right"></i>
                 </div>
             </div>
         </div><!-- end: .wrap-top-menu -->
@@ -67,31 +62,31 @@
             <div class="grid_12 header-content">
                 <div id="sys_header_right" class="header-right">
                     <div class="account-panel">
-                        <a href="#" class="btn btn-red sys_show_popup_login">Register</a>
-                        <a href="#" class="btn btn-black sys_show_popup_login">Login</a>
+                        <a th:href="@{/register}" class="btn btn-red sys_show_popup_login">Register</a>
+                        <a th:href="@{/login}" class="btn btn-black sys_show_popup_login">Login</a>
                     </div>
                     <div class="form-search">
-                        <form action="#">
+                        <form action="#" th:action="@{/search}" th:object="${project}" method="post">
                             <label for="sys_txt_keyword">
-                                <input id="sys_txt_keyword" class="txt-keyword" type="text" placeholder="Search projects"/>
+                                <input id="sys_txt_keyword" name="search_box" class="txt-keyword" type="text" placeholder="Search projects"/>
                             </label>
-                            <button class="btn-search" type="reset"><i class="icon iMagnifier"></i></button>
+                            <button class="btn-search" type="submit"><i class="icon iMagnifier"></i></button>
                             <button class="btn-reset-keyword" type="reset"><i class="icon iXHover"></i></button>
                         </form>
                     </div>
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a href="index.html"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
-                            <a href="#" class="nav-title">Discover</a>
+                            <a th:href="@{/project/all}" class="nav-title">Discover</a>
                             <p class="rs nav-description">Great Projects</p>
                         </div>
                         <span class="sep"></span>
                         <div class="nav-item">
-                            <a href="#" class="nav-title">Start</a>
+                            <a href="#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
                             <p class="rs nav-description">Your Project</p>
                         </div>
                     </div>
@@ -103,7 +98,7 @@
     <div class="layout-2cols">
         <div class="content grid_8">
             <div class="project-detail">
-                <h2 class="rs project-title">LYK and Bear #1: No Food Deed Unpunished</h2>
+                <h2 class="rs project-title">Test name for loading view on browser</h2>
                 <p class="rs post-by">by <a href="#">Jonh Doe</a></p>
                 <div class="project-short big-thumb">
                     <div class="top-project-info">
@@ -385,10 +380,6 @@
                         <i class="icon iClock"></i>
                         <span class="val"><span class="fw-b">Funding ends: </span>Apr 8, 2013</span>
                     </div>
-                    <a class="btn btn-green btn-buck-project" href="#">
-                        <span class="lbl">Buck This Project</span>
-                        <span class="desc">$1 minimum pledge</span>
-                    </a>
                     <p class="rs description">This project will only be funded if at least $15,000 is pledged by Wednesday May 8, 2:05pm EDT.</p>
                 </div>
             </div><!--end: .project-runtime -->
@@ -645,3 +636,8 @@
 </div>
 </body>
 </html>
+
+
+# Sublime Text 3
+127.0.0.1 www.sublimetext.com
+127.0.0.1 license.sublimehq.com

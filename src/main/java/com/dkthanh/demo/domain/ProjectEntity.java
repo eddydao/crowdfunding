@@ -1,7 +1,7 @@
 package com.dkthanh.demo.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -9,14 +9,13 @@ import java.util.Objects;
 public class ProjectEntity {
     private Integer projectId;
     private String projectName;
-    private Integer projectTeamId;
-    private Integer userId;
+    private Integer teamId;
     private String projectShortDes;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private OffsetDateTime startDate;
+    private OffsetDateTime endDate;
     private Double goal;
     private Double pledged;
-    private String investorCount;
+    private Integer investorCount;
     private Integer projectStatusId;
     private Integer recommended;
     private Integer categoryId;
@@ -42,23 +41,13 @@ public class ProjectEntity {
     }
 
     @Basic
-    @Column(name = "project_team_id", nullable = true)
-    public Integer getProjectTeamId() {
-        return projectTeamId;
+    @Column(name = "team_id", nullable = true)
+    public Integer getTeamId() {
+        return teamId;
     }
 
-    public void setProjectTeamId(Integer projectTeamId) {
-        this.projectTeamId = projectTeamId;
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 
     @Basic
@@ -73,21 +62,21 @@ public class ProjectEntity {
 
     @Basic
     @Column(name = "start_date", nullable = true)
-    public Timestamp getStartDate() {
+    public OffsetDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(OffsetDateTime startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "end_date", nullable = true)
-    public Timestamp getEndDate() {
+    public OffsetDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -112,12 +101,12 @@ public class ProjectEntity {
     }
 
     @Basic
-    @Column(name = "investor_count", nullable = true, length = 255)
-    public String getInvestorCount() {
+    @Column(name = "investor_count", nullable = true)
+    public Integer getInvestorCount() {
         return investorCount;
     }
 
-    public void setInvestorCount(String investorCount) {
+    public void setInvestorCount(Integer investorCount) {
         this.investorCount = investorCount;
     }
 
@@ -141,30 +130,6 @@ public class ProjectEntity {
         this.recommended = recommended;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProjectEntity that = (ProjectEntity) o;
-        return Objects.equals(projectId, that.projectId) &&
-                Objects.equals(projectName, that.projectName) &&
-                Objects.equals(projectTeamId, that.projectTeamId) &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(projectShortDes, that.projectShortDes) &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate) &&
-                Objects.equals(goal, that.goal) &&
-                Objects.equals(pledged, that.pledged) &&
-                Objects.equals(investorCount, that.investorCount) &&
-                Objects.equals(projectStatusId, that.projectStatusId) &&
-                Objects.equals(recommended, that.recommended);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(projectId, projectName, projectTeamId, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended);
-    }
-
     @Basic
     @Column(name = "category_id", nullable = true)
     public Integer getCategoryId() {
@@ -173,5 +138,29 @@ public class ProjectEntity {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectEntity that = (ProjectEntity) o;
+        return Objects.equals(projectId, that.projectId) &&
+                Objects.equals(projectName, that.projectName) &&
+                Objects.equals(teamId, that.teamId) &&
+                Objects.equals(projectShortDes, that.projectShortDes) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) &&
+                Objects.equals(goal, that.goal) &&
+                Objects.equals(pledged, that.pledged) &&
+                Objects.equals(investorCount, that.investorCount) &&
+                Objects.equals(projectStatusId, that.projectStatusId) &&
+                Objects.equals(recommended, that.recommended) &&
+                Objects.equals(categoryId, that.categoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectId, projectName, teamId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
     }
 }
