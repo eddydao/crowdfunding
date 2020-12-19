@@ -1,0 +1,103 @@
+<!-- header for file html-->
+
+<header id="header">
+        <div class="wrap-top-menu">
+            <div class="container_12 clearfix">
+                <div class="grid_12">
+                    <nav class="top-menu">
+                        <ul id="main-menu" class="nav nav-horizontal clearfix">
+                            <li class="active"><a href="#" th:href="@{/}">Home</a></li>
+                            <li class="sep"></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                        <a id="btn-toogle-menu" class="btn-toogle-menu" href="#alternate-menu">
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                        </a>
+                        <div id="right-menu">
+                            <ul class="alternate-menu">
+                                <li><a href="" th:href="@{/}">Home</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <i id="sys_btn_toggle_search" class="icon iBtnRed make-right"></i>
+                </div>
+            </div>
+        </div><!-- end: .wrap-top-menu -->
+        <div class="container_12 clearfix">
+            <div class="grid_12 header-content">
+                <div id="sys_header_right" class="header-right">
+                    <div class="account-panel">
+                        <a th:href="@{/register}" class="btn btn-red sys_show_popup_login">Register</a>
+                        <a th:href="@{/login}" class="btn btn-black sys_show_popup_login">Login</a>
+                    </div>
+                    <div class="form-search">
+                        <form action="#" th:action="@{/search}" th:object="${project}" method="post">
+                            <label for="sys_txt_keyword">
+                                <input id="sys_txt_keyword" name="search_box" class="txt-keyword" type="text" placeholder="Search projects"/>
+                            </label>
+                            <button class="btn-search" type="submit"><i class="icon iMagnifier"></i></button>
+                            <button class="btn-reset-keyword" type="reset"><i class="icon iXHover"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <h1 id="logo">
+                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                    </h1>
+                    <div class="main-nav clearfix">
+                        <div class="nav-item">
+                            <a th:href="@{/project/all}" class="nav-title">Discover</a>
+                            <p class="rs nav-description">Great Projects</p>
+                        </div>
+                        <span class="sep"></span>
+                        <div class="nav-item">
+                            <a href="#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
+                            <p class="rs nav-description">Your Project</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header><!--end: #header -->
+<!-- end header template -->
+
+
+<!-- footer template -->
+<footer id="footer">
+        <div class="container_12 main-footer">
+            <div class="grid_3 about-us">
+                <h3 class="rs title">About</h3>
+                <p class="rs description">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="rs email"><a class="fc-default  be-fc-orange" href="">customer.kickstar@gmail.com</a></p>
+                <p class="rs">+84 (024) 555 - 55 - 55</p>
+            </div><!--end: .contact-info -->
+            <div class="clear clear-2col"></div>
+            <div class="grid_3">
+                <h3 class="rs title">Discover &amp; Create</h3>
+                <div class="footer-menu">
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="#">What is Kickstars</a></li>
+                        <li><a class="be-fc-orange" href="#">Start a project</a></li>
+                        <li><a class="be-fc-orange" href="#">Project Guidlines</a></li>
+                        <li><a class="be-fc-orange" href="#">Press</a></li>
+                        <li><a class="be-fc-orange" href="#">Stats</a></li>
+                    </ul>
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="#">Staff Picks</a></li>
+                        <li><a class="be-fc-orange" href="#">Popular</a></li>
+                        <li><a class="be-fc-orange" href="#">Recent</a></li>
+                        <li><a class="be-fc-orange" href="#">Small Projects</a></li>
+                        <li><a class="be-fc-orange" href="#">Most Funded</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </footer><!--end: #footer -->
+<!-- end footer template  -->
+

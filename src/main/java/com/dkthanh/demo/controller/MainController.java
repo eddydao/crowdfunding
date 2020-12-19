@@ -2,10 +2,12 @@ package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.domain.CategoryEntity;
 import com.dkthanh.demo.domain.NewUserDTO;
+import com.dkthanh.demo.domain.TeamEntity;
 import com.dkthanh.demo.domain.UserEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.service.CategoryService;
 import com.dkthanh.demo.service.ProjectService;
+import com.dkthanh.demo.service.TeamService;
 import com.dkthanh.demo.service.UserService;
 import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class MainController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private TeamService teamService;
 
     /*
      *  Common function
@@ -121,13 +126,23 @@ public class MainController {
         return "redirect:/index";
     }
 
+
+
+    /*
+     *  Project detail page function
+     * ===========================================
+     */
+
     //  load project detail page
     @GetMapping(value = "/project/{id}")
-    public String getProjectDetailPage(Model model){
-        return null;
+    public String getProjectDetailPage(Model model, @PathVariable("id") Integer id){
+        ProjectFullInfoEntity p = projectService.getProjectDetail(id);
+        TeamEntity team = teamService.getTeamDetail(p.getTeamId());
+
+        model.addAttribute("project", p);
+
+        return "project-detail";
     }
-
-
     /*
      *  All project page function
      * ===========================================

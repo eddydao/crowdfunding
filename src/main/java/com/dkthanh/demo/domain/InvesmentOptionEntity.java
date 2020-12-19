@@ -5,25 +5,25 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "invesment_option", schema = "demo", catalog = "")
-@IdClass(InvesmentOptionEntityPK.class)
 public class InvesmentOptionEntity {
-    private Integer invesmentOptionId;
+    private Integer optionId;
     private Integer projectId;
-    private Integer invesmentCatalogId;
     private String optionName;
     private String optionDescription;
+    private Integer fundMax;
+    private Integer fundMin;
 
     @Id
-    @Column(name = "invesment_option_id", nullable = false)
-    public Integer getInvesmentOptionId() {
-        return invesmentOptionId;
+    @Column(name = "option_id", nullable = false)
+    public Integer getOptionId() {
+        return optionId;
     }
 
-    public void setInvesmentOptionId(Integer invesmentOptionId) {
-        this.invesmentOptionId = invesmentOptionId;
+    public void setOptionId(Integer optionId) {
+        this.optionId = optionId;
     }
 
-    @Id
+    @Basic
     @Column(name = "project_id", nullable = false)
     public Integer getProjectId() {
         return projectId;
@@ -31,16 +31,6 @@ public class InvesmentOptionEntity {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
-    }
-
-    @Id
-    @Column(name = "invesment_catalog_id", nullable = false)
-    public Integer getInvesmentCatalogId() {
-        return invesmentCatalogId;
-    }
-
-    public void setInvesmentCatalogId(Integer invesmentCatalogId) {
-        this.invesmentCatalogId = invesmentCatalogId;
     }
 
     @Basic
@@ -63,20 +53,41 @@ public class InvesmentOptionEntity {
         this.optionDescription = optionDescription;
     }
 
+    @Basic
+    @Column(name = "fund_max", nullable = true, precision = 0)
+    public Integer getFundMax() {
+        return fundMax;
+    }
+
+    public void setFundMax(Integer fundMax) {
+        this.fundMax = fundMax;
+    }
+
+    @Basic
+    @Column(name = "fund_min", nullable = true, precision = 0)
+    public Integer getFundMin() {
+        return fundMin;
+    }
+
+    public void setFundMin(Integer fundMin) {
+        this.fundMin = fundMin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvesmentOptionEntity that = (InvesmentOptionEntity) o;
-        return Objects.equals(invesmentOptionId, that.invesmentOptionId) &&
+        return Objects.equals(optionId, that.optionId) &&
                 Objects.equals(projectId, that.projectId) &&
-                Objects.equals(invesmentCatalogId, that.invesmentCatalogId) &&
                 Objects.equals(optionName, that.optionName) &&
-                Objects.equals(optionDescription, that.optionDescription);
+                Objects.equals(optionDescription, that.optionDescription) &&
+                Objects.equals(fundMax, that.fundMax) &&
+                Objects.equals(fundMin, that.fundMin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invesmentOptionId, projectId, invesmentCatalogId, optionName, optionDescription);
+        return Objects.hash(optionId, projectId, optionName, optionDescription, fundMax, fundMin);
     }
 }

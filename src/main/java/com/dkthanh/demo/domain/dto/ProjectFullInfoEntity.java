@@ -1,9 +1,11 @@
 package com.dkthanh.demo.domain.dto;
 
+import com.dkthanh.demo.domain.InvesmentOptionEntity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 public class ProjectFullInfoEntity implements Serializable {
@@ -12,14 +14,14 @@ public class ProjectFullInfoEntity implements Serializable {
     // bacsic info
     protected Integer projectId;
     protected String projectName;
-    protected Integer projectTeamId;
-    protected Integer userId;
+    protected Integer teamId;
+    protected String teamName;
     protected String projectShortDes;
-    protected Timestamp startDate;
-    protected Timestamp endDate;
+    protected OffsetDateTime startDate;
+    protected OffsetDateTime endDate;
     protected Double goal;
     protected Double pledged;
-    protected String investorCount;
+    protected Integer investorCount;
     protected Integer projectStatusId;
     protected Integer recommended;
     // resources info
@@ -33,11 +35,9 @@ public class ProjectFullInfoEntity implements Serializable {
     protected String categoryName;
     //
     protected Double percentPledged;
-
-    // user interact
-//    protected Integer likeCount;
-    //
-    protected Timestamp dayLeft;
+    // funding option of project
+    protected List<InvesmentOptionEntity> listOption;
+    protected Integer dayLeft;
 
     public ProjectFullInfoEntity() {
     }
@@ -45,17 +45,17 @@ public class ProjectFullInfoEntity implements Serializable {
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName
-            , Integer projectTeamId
-            , Integer userId
+            , Integer teamId
+            , String teamName
             , String projectShortDes
-            , Timestamp startDate
-            , Timestamp endDate
+            , OffsetDateTime startDate
+            , OffsetDateTime endDate
             , Double goal
             , Double pledged
-            , String investorCount
+            , Integer investorCount
             , Integer projectStatusId
             , Integer recommended
-            , Timestamp dayLeft
+            , Integer dayLeft
             , Integer materialThumbnailId
             , String materialThumbnailName
             , String materialThumbnailPath
@@ -64,8 +64,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , Double percentPledged) {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectTeamId = projectTeamId;
-        this.userId = userId;
+        this.teamId = teamId;
+        this.teamName = teamName;
         this.projectShortDes = projectShortDes;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -86,22 +86,21 @@ public class ProjectFullInfoEntity implements Serializable {
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName
-            , Integer projectTeamId
-            , Integer userId
+            , Integer teamId
             , String projectShortDes
-            , Timestamp startDate
-            , Timestamp endDate
+            , OffsetDateTime startDate
+            , OffsetDateTime endDate
             , Double goal
             , Double pledged
-            , String investorCount
+            , Integer investorCount
             , Integer projectStatusId
             , Integer recommended
             , Integer categoryId
-    ) {
+    )
+    {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectTeamId = projectTeamId;
-        this.userId = userId;
+        this.teamId = teamId;
         this.projectShortDes = projectShortDes;
         this.startDate = startDate;
         this.endDate = endDate;

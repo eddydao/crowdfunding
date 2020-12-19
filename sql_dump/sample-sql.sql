@@ -61,3 +61,33 @@ WHERE
   AND A.category_id = C.category_id
 GROUP BY A.investor_count
 ORDER BY A.investor_count;
+
+//------------------------------------
+// select project invesment option
+SELECT A.project_id,
+  B.option_id,
+  B.option_name,
+  B.option_description,
+  B.fund_max,
+  B.fund_min
+FROM 
+  project A,
+  invesment_option B,
+WHERE 
+  A.project_id = B.project_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
