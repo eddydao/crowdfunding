@@ -26,6 +26,10 @@ public class ProjectService {
     @Autowired
     private InvesmentOptionService optionService;
 
+//    @Autowired
+
+
+    // get popular project
     public List<ProjectFullInfoEntity> getPopularProjects(){
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
@@ -36,6 +40,7 @@ public class ProjectService {
         return null;
     }
 
+    //get recommended project
     public ProjectFullInfoEntity getRecommendedProject(){
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.IS_RECOMMENDED, 1);
@@ -47,6 +52,7 @@ public class ProjectService {
         return null;
     }
 
+    // get project detail by id
     public ProjectFullInfoEntity getProjectDetail(Integer id){
         Map<String, Object> map = new HashMap<>();
         ProjectFullInfoEntity project = new ProjectFullInfoEntity();
@@ -64,10 +70,12 @@ public class ProjectService {
         return project;
     }
 
+    // get project thumbnail path
     public String getProjectThumbnailPath(int projectId){
         return null;
     }
 
+    //search project by name
     public List<ProjectFullInfoEntity> searchProjectByNameContaining(String keyword){
         Optional<List<ProjectEntity>> listOptional = projectRepository.findProjectEntitiesByProjectNameContaining(keyword);
         if(listOptional.isPresent()){
@@ -104,6 +112,14 @@ public class ProjectService {
             }
             return listFullInfo;
         }
+        return null;
+    }
+
+    // get project list of creator
+    public List<ProjectFullInfoEntity> getProjectListOfCreator(Integer teamId){
+        List<ProjectFullInfoEntity> list = new ArrayList<>();
+
+        projectRepository.
         return null;
     }
 }
