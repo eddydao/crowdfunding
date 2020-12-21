@@ -47,7 +47,7 @@ public final class Constant {
         PAUSE(4, "PAUSE"),
         COMPLETE(5, "COMPLETE"),
         REJECT(6, "REJECT"),
-
+        EDITING(7, "EDITING")
         ;
 
         private Integer id;

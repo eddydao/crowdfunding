@@ -33,7 +33,13 @@ public class SysManagementController {
     @Autowired
     private UserDetailService userDetailService;
 
-    @GetMapping(value = "admin/dashboard")
+    // test UI
+    @GetMapping(value = "/creator/test")
+    public String testUI(){
+        return "/admin/create-project";
+    }
+
+    @GetMapping(value = "/admin/dashboard")
         public String getDashboard(){
             return "admin/dashboard";
         }
@@ -47,6 +53,7 @@ public class SysManagementController {
     /creator/project/delete/id
     /creator/team/user
      */
+
     // creator project/list
     @GetMapping(value = "/creator/project/list" )
     public String getCreatorProjectList(Model model, @PathVariable("creator-id") Integer creatorId, HttpServletRequest request, Authentication authentication){
