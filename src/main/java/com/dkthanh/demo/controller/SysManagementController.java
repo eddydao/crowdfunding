@@ -36,12 +36,12 @@ public class SysManagementController {
     // test UI
     @GetMapping(value = "/creator/test")
     public String testUI(){
-        return "/admin/creator-dashboard";
+        return "/admin/creator-report";
     }
 
     @GetMapping(value = "/admin/dashboard")
         public String getDashboard(){
-            return "admin/dashboard";
+            return "admin-dashboard";
         }
 
     /*
