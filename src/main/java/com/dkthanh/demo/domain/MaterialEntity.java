@@ -1,16 +1,11 @@
 package com.dkthanh.demo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "material", schema = "demo", catalog = "")
 @IdClass(MaterialEntityPK.class)
-@NoArgsConstructor
-@AllArgsConstructor
 public class MaterialEntity {
     private Integer materialId;
     private Integer projectId;

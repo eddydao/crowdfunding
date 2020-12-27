@@ -1,6 +1,6 @@
 package com.dkthanh.demo.dao;
 
-import com.dkthanh.demo.domain.InvesmentOptionEntity;
+import com.dkthanh.demo.domain.OptionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InvesmentOptionRepository extends JpaRepository<InvesmentOptionEntity, Integer> {
+public interface InvesmentOptionRepository extends JpaRepository<OptionEntity, Integer> {
 
-    Optional<List<InvesmentOptionEntity>> findByProjectId(Integer projectId);
+    Optional<List<OptionEntity>> findByProjectId(Integer projectId);
 
 }

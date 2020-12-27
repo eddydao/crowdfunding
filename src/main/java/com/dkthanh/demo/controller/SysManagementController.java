@@ -3,7 +3,10 @@ package com.dkthanh.demo.controller;
 import com.dkthanh.demo.domain.UserDetailEntity;
 import com.dkthanh.demo.domain.UserEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
-import com.dkthanh.demo.service.*;
+import com.dkthanh.demo.service.CategoryService;
+import com.dkthanh.demo.service.ProjectService;
+import com.dkthanh.demo.service.UserDetailService;
+import com.dkthanh.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +29,6 @@ public class SysManagementController {
 
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private TeamService teamService;
 
     @Autowired
     private UserDetailService userDetailService;

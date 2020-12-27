@@ -1,7 +1,7 @@
 package com.dkthanh.demo.domain;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -9,10 +9,10 @@ import java.util.Objects;
 public class ProjectEntity {
     private Integer projectId;
     private String projectName;
-    private Integer teamId;
+    private Integer userId;
     private String projectShortDes;
-    private OffsetDateTime startDate;
-    private OffsetDateTime endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
     private Double goal;
     private Double pledged;
     private Integer investorCount;
@@ -41,13 +41,13 @@ public class ProjectEntity {
     }
 
     @Basic
-    @Column(name = "team_id", nullable = true)
-    public Integer getTeamId() {
-        return teamId;
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -62,21 +62,21 @@ public class ProjectEntity {
 
     @Basic
     @Column(name = "start_date", nullable = true)
-    public OffsetDateTime getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(OffsetDateTime startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "end_date", nullable = true)
-    public OffsetDateTime getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(OffsetDateTime endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
@@ -147,7 +147,7 @@ public class ProjectEntity {
         ProjectEntity that = (ProjectEntity) o;
         return Objects.equals(projectId, that.projectId) &&
                 Objects.equals(projectName, that.projectName) &&
-                Objects.equals(teamId, that.teamId) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(projectShortDes, that.projectShortDes) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate) &&
@@ -161,6 +161,6 @@ public class ProjectEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, projectName, teamId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
+        return Objects.hash(projectId, projectName, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
     }
 }

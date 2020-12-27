@@ -6,27 +6,27 @@ import java.util.Objects;
 @Entity
 @Table(name = "category", schema = "demo", catalog = "")
 public class CategoryEntity {
-    private Integer categoryId;
-    private String categoryName;
+    private Integer id;
+    private String name;
 
     @Id
-    @Column(name = "category_id", nullable = false)
-    public Integer getCategoryId() {
-        return categoryId;
+    @Column(name = "id", nullable = false)
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Basic
-    @Column(name = "category_name", nullable = true, length = 255)
-    public String getCategoryName() {
-        return categoryName;
+    @Column(name = "name", nullable = true, length = 255)
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class CategoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryEntity that = (CategoryEntity) o;
-        return Objects.equals(categoryId, that.categoryId) &&
-                Objects.equals(categoryName, that.categoryName);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, categoryName);
+        return Objects.hash(id, name);
     }
 }

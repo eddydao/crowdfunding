@@ -1,7 +1,7 @@
 package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.InvesmentOptionRepository;
-import com.dkthanh.demo.domain.InvesmentOptionEntity;
+import com.dkthanh.demo.domain.OptionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,8 @@ import java.util.Optional;
 public class InvesmentOptionService {
     @Autowired
     private InvesmentOptionRepository repository;
-    public List<InvesmentOptionEntity> getListOptionOfProject(Integer projectId){
-        Optional<List<InvesmentOptionEntity>> listOptional = repository.findByProjectId(projectId);
+    public List<OptionEntity> getListOptionOfProject(Integer projectId){
+        Optional<List<OptionEntity>> listOptional = repository.findByProjectId(projectId);
         if(listOptional.isPresent()){
             return listOptional.get();
         }

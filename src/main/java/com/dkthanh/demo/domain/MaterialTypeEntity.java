@@ -6,27 +6,27 @@ import java.util.Objects;
 @Entity
 @Table(name = "material_type", schema = "demo", catalog = "")
 public class MaterialTypeEntity {
-    private Integer materialTypeId;
-    private String materialTypeName;
+    private Integer id;
+    private String name;
 
     @Id
-    @Column(name = "material_type_id", nullable = false)
-    public Integer getMaterialTypeId() {
-        return materialTypeId;
+    @Column(name = "id", nullable = false)
+    public Integer getId() {
+        return id;
     }
 
-    public void setMaterialTypeId(Integer materialTypeId) {
-        this.materialTypeId = materialTypeId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Basic
-    @Column(name = "material_type_name", nullable = true, length = 255)
-    public String getMaterialTypeName() {
-        return materialTypeName;
+    @Column(name = "name", nullable = true, length = 255)
+    public String getName() {
+        return name;
     }
 
-    public void setMaterialTypeName(String materialTypeName) {
-        this.materialTypeName = materialTypeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class MaterialTypeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MaterialTypeEntity that = (MaterialTypeEntity) o;
-        return Objects.equals(materialTypeId, that.materialTypeId) &&
-                Objects.equals(materialTypeName, that.materialTypeName);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(materialTypeId, materialTypeName);
+        return Objects.hash(id, name);
     }
 }
