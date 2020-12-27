@@ -47,7 +47,7 @@ public final class Constant {
         PAUSE(4, "PAUSE"),
         COMPLETE(5, "COMPLETE"),
         REJECT(6, "REJECT"),
-
+        EDITING(7, "EDITING")
         ;
 
         private Integer id;
@@ -81,6 +81,7 @@ public final class Constant {
         public static final String IS_RECOMMENDED = "isRecommended";
         public static final String PROJECT_STATUS = "projectStatus";
         public static final String TEAM_ID = "teamId";
+
 
         private PROJECT_KEY(){}
     }

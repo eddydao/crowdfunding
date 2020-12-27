@@ -117,9 +117,13 @@ public class ProjectService {
 
     // get project list of creator
     public List<ProjectFullInfoEntity> getProjectListOfCreator(Integer teamId){
-        List<ProjectFullInfoEntity> list = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.TEAM_ID, teamId);
 
-        projectRepository.
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
         return null;
     }
 }

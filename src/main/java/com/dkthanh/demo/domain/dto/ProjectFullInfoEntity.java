@@ -39,6 +39,9 @@ public class ProjectFullInfoEntity implements Serializable {
     protected List<InvesmentOptionEntity> listOption;
     protected Integer dayLeft;
 
+    // key for measurement
+    public Integer isEditable;
+
     public ProjectFullInfoEntity() {
     }
 
