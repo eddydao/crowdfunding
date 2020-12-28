@@ -1,6 +1,6 @@
 package com.dkthanh.demo.domain.dto;
 
-import com.dkthanh.demo.domain.InvesmentOptionEntity;
+import com.dkthanh.demo.domain.OptionEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,8 +14,8 @@ public class ProjectFullInfoEntity implements Serializable {
     // bacsic info
     protected Integer projectId;
     protected String projectName;
-    protected Integer teamId;
-    protected String teamName;
+    protected Integer userId;
+    protected String userFullName;
     protected String projectShortDes;
     protected OffsetDateTime startDate;
     protected OffsetDateTime endDate;
@@ -28,7 +28,9 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Integer materialThumbnailId;
     protected String materialThumbnailName;
     protected String materialThumbnailPath;
-
+    // status
+    protected Integer statusId;
+    protected String statusName;
 
     // category
     protected Integer categoryId;
@@ -36,7 +38,7 @@ public class ProjectFullInfoEntity implements Serializable {
     //
     protected Double percentPledged;
     // funding option of project
-    protected List<InvesmentOptionEntity> listOption;
+    protected List<OptionEntity> listOption;
     protected Integer dayLeft;
 
     // key for measurement
@@ -48,8 +50,8 @@ public class ProjectFullInfoEntity implements Serializable {
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName
-            , Integer teamId
-            , String teamName
+            , Integer userId
+            , String userName
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
@@ -64,11 +66,13 @@ public class ProjectFullInfoEntity implements Serializable {
             , String materialThumbnailPath
             , Integer categoryId
             , String categoryName
-            , Double percentPledged) {
+            , Double percentPledged
+            , Integer statusId
+            , String statusName) {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.teamId = teamId;
-        this.teamName = teamName;
+        this.userId = userId;
+        this.userFullName = userName;
         this.projectShortDes = projectShortDes;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -84,12 +88,14 @@ public class ProjectFullInfoEntity implements Serializable {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
+        this.statusId = statusId;
+        this.statusName = statusName;
     }
 
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName
-            , Integer teamId
+            , Integer userId
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
@@ -103,7 +109,7 @@ public class ProjectFullInfoEntity implements Serializable {
     {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.teamId = teamId;
+        this.userId = userId;
         this.projectShortDes = projectShortDes;
         this.startDate = startDate;
         this.endDate = endDate;

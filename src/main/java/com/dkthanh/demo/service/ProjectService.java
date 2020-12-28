@@ -2,8 +2,8 @@ package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.ProjectRepository;
 import com.dkthanh.demo.domain.CategoryEntity;
-import com.dkthanh.demo.domain.InvesmentOptionEntity;
 import com.dkthanh.demo.domain.MaterialEntity;
+import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.util.Constant;
@@ -63,7 +63,7 @@ public class ProjectService {
             project = listProject.get(0);
             Integer projectId = project.getProjectId();
 
-            List<InvesmentOptionEntity> listOption = optionService.getListOptionOfProject(projectId);
+            List<OptionEntity> listOption = optionService.getListOptionOfProject(projectId);
             project.setListOption(listOption);
         }
 
@@ -87,7 +87,7 @@ public class ProjectService {
                 ProjectFullInfoEntity fullEntity = new ProjectFullInfoEntity(
                         entity.getProjectId()
                         , entity.getProjectName()
-                        , entity.getTeamId()
+                        , entity.getUserId()
                         , entity.getProjectShortDes()
                         , entity.getStartDate()
                         , entity.getEndDate()
@@ -100,7 +100,7 @@ public class ProjectService {
                 );
                 CategoryEntity categoryEntity = categoryService.getCategoryById(entity.getCategoryId());
                 if(!categoryEntity.equals(null)){
-                    fullEntity.setCategoryName(categoryEntity.getCategoryName());
+                    fullEntity.setCategoryName(categoryEntity.getName());
                 }
 
                 MaterialEntity materialEntity = materialService.getMaterialByProjectId(entity.getProjectId());
@@ -116,9 +116,9 @@ public class ProjectService {
     }
 
     // get project list of creator
-    public List<ProjectFullInfoEntity> getProjectListOfCreator(Integer teamId){
+    public List<ProjectFullInfoEntity> getProjectListOfCreator(Integer userId){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.TEAM_ID, teamId);
+        map.put(Constant.PROJECT_KEY.USER_ID, userId);
 
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){

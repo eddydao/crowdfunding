@@ -4,21 +4,21 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "option_item", schema = "demo", catalog = "")
-public class OptionItemEntity {
-    private Integer optionItemId;
+@Table(name = "item", schema = "demo", catalog = "")
+public class ItemEntity {
+    private Integer itemId;
     private Integer optionId;
     private String itemName;
     private Integer quantity;
 
     @Id
-    @Column(name = "option_item_id", nullable = false)
-    public Integer getOptionItemId() {
-        return optionItemId;
+    @Column(name = "item_id", nullable = false)
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setOptionItemId(Integer optionItemId) {
-        this.optionItemId = optionItemId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     @Basic
@@ -55,8 +55,8 @@ public class OptionItemEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OptionItemEntity that = (OptionItemEntity) o;
-        return Objects.equals(optionItemId, that.optionItemId) &&
+        ItemEntity that = (ItemEntity) o;
+        return Objects.equals(itemId, that.itemId) &&
                 Objects.equals(optionId, that.optionId) &&
                 Objects.equals(itemName, that.itemName) &&
                 Objects.equals(quantity, that.quantity);
@@ -64,6 +64,6 @@ public class OptionItemEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(optionItemId, optionId, itemName, quantity);
+        return Objects.hash(itemId, optionId, itemName, quantity);
     }
 }

@@ -80,7 +80,7 @@ public final class Constant {
         public static final String PROJECT_ID = "projectId";
         public static final String IS_RECOMMENDED = "isRecommended";
         public static final String PROJECT_STATUS = "projectStatus";
-        public static final String TEAM_ID = "teamId";
+        public static final String USER_ID = "userId";
 
 
         private PROJECT_KEY(){}

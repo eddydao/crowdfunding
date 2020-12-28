@@ -17,8 +17,8 @@ import java.time.OffsetDateTime;
                 columns = {
                         @ColumnResult(name = "project_id", type = Integer.class),
                         @ColumnResult(name = "project_name", type = String.class),
-                        @ColumnResult(name = "team_id", type = Integer.class),
-                        @ColumnResult(name = "team_name", type = String.class),
+                        @ColumnResult(name = "user_id", type = Integer.class),
+                        @ColumnResult(name = "user_full_name", type = String.class),
                         @ColumnResult(name = "project_short_des", type = String.class),
                         @ColumnResult(name = "start_date", type = OffsetDateTime.class),
                         @ColumnResult(name = "end_date", type = OffsetDateTime.class),
@@ -33,7 +33,9 @@ import java.time.OffsetDateTime;
                         @ColumnResult(name = "path", type = String.class),
                         @ColumnResult(name = "category_id", type = Integer.class),
                         @ColumnResult(name = "category_name", type = String.class),
-                        @ColumnResult(name = "percent_pledged", type = Double.class)
+                        @ColumnResult(name = "percent_pledged", type = Double.class),
+                        @ColumnResult(name = "status_id", type = Integer.class),
+                        @ColumnResult(name = "status_name", type = String.class)
             })
         }
     )

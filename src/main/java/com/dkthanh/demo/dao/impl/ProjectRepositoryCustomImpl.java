@@ -23,7 +23,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         Integer projectId = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_ID);
         Integer isRecommended = (Integer) map.get(Constant.PROJECT_KEY.IS_RECOMMENDED);
         Integer projectStatus = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
-        Integer teamId = (Integer) map.get(Constant.PROJECT_KEY.TEAM_ID);
+        Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
 
 
         StringBuilder sql = new StringBuilder();
@@ -31,8 +31,8 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                 "SELECT\n" +
                         "  A.project_id,\n" +
                         "  A.project_name,\n" +
-                        "  A.team_id,\n" +
-                        "  E.team_name,\n"+
+                        "  A.user_id,\n" +
+                        "  CONCAT(F.last_name, F.first_name) as user_full_name,\n"+
                         "  A.project_short_des,\n" +
                         "  A.start_date,\n" +
                         "  A.end_date,\n" +
@@ -45,20 +45,24 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  B.material_id,\n" +
                         "  B.description,\n" +
                         "  B.path,\n" +
-                        "  C.category_id,\n" +
-                        "  C.category_name,\n" +
-                        "  0.0 as percent_pledged\n"+
+                        "  C.id as category_id,\n" +
+                        "  C.name as category_name,\n" +
+                        "  0.0 as percent_pledged,\n"+
+                        "  D.id as status_id,\n"+
+                        "  D.name as status_name\n"+
                         "FROM\n" +
                         "  project A,\n" +
                         "  material B,\n" +
                         "  category C,\n" +
                         "  status D,\n" +
-                        "  team E\n"+
+                        "  user E,\n"+
+                        "  user_detail F\n"+
                         "WHERE\n" +
                         "  A.project_id = B.project_id\n" +
-                        "  AND A.category_id = C.category_id\n" +
-                        "  AND A.team_id = E.team_id\n"+
-                        "  AND A.project_status_id = D.project_status_id\n");
+                        "  AND A.category_id = C.id\n" +
+                        "  AND A.user_id = E.id\n"+
+                        "  AND E.id  = F.user_id\n"+
+                        "  AND A.project_status_id = D.id\n");
 
         // get project detail with id
         if(projectId != null ){
@@ -70,11 +74,11 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
         //get project list with specific status
         if(projectStatus != null){
-            sql.append("  AND D.project_status_id = :status\n" );
+            sql.append("  AND D.id = :status\n" );
         }
         //get project list with team id
-        if(teamId != null){
-            sql.append("  AND E.team_id = :team_id\n" );
+        if(userId != null){
+            sql.append("  AND E.id = :user_id\n" );
         }
 
 
@@ -93,8 +97,8 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         if(projectStatus != null){
             sqlQuery.setParameter("status", projectStatus);
         }
-        if(teamId != null){
-            sqlQuery.setParameter("team_id", teamId);
+        if(userId != null){
+            sqlQuery.setParameter("user_id", userId);
         }
 
         return sqlQuery.getResultList();

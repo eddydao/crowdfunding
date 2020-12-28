@@ -1,22 +1,17 @@
 package com.dkthanh.demo.domain;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "project_investor", schema = "demo", catalog = "")
-@IdClass(ProjectInvestorEntityPK.class)
-public class ProjectInvestorEntity {
+public class ProjectInvestorEntityPK implements Serializable {
     private Integer userId;
     private Integer projectId;
     private Integer investionOptionId;
-    private BigDecimal pledged;
-    private Timestamp timestamp;
 
-    @Id
     @Column(name = "user_id", nullable = false)
+    @Id
     public Integer getUserId() {
         return userId;
     }
@@ -25,8 +20,8 @@ public class ProjectInvestorEntity {
         this.userId = userId;
     }
 
-    @Id
     @Column(name = "project_id", nullable = false)
+    @Id
     public Integer getProjectId() {
         return projectId;
     }
@@ -35,8 +30,8 @@ public class ProjectInvestorEntity {
         this.projectId = projectId;
     }
 
-    @Id
     @Column(name = "investion_option_id", nullable = false)
+    @Id
     public Integer getInvestionOptionId() {
         return investionOptionId;
     }
@@ -45,40 +40,18 @@ public class ProjectInvestorEntity {
         this.investionOptionId = investionOptionId;
     }
 
-    @Basic
-    @Column(name = "pledged", nullable = true, precision = 2)
-    public BigDecimal getPledged() {
-        return pledged;
-    }
-
-    public void setPledged(BigDecimal pledged) {
-        this.pledged = pledged;
-    }
-
-    @Basic
-    @Column(name = "timestamp", nullable = true)
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProjectInvestorEntity that = (ProjectInvestorEntity) o;
+        ProjectInvestorEntityPK that = (ProjectInvestorEntityPK) o;
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(projectId, that.projectId) &&
-                Objects.equals(investionOptionId, that.investionOptionId) &&
-                Objects.equals(pledged, that.pledged) &&
-                Objects.equals(timestamp, that.timestamp);
+                Objects.equals(investionOptionId, that.investionOptionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, projectId, investionOptionId, pledged, timestamp);
+        return Objects.hash(userId, projectId, investionOptionId);
     }
 }

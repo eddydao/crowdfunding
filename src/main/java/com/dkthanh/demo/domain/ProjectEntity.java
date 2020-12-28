@@ -9,7 +9,7 @@ import java.util.Objects;
 public class ProjectEntity {
     private Integer projectId;
     private String projectName;
-    private Integer teamId;
+    private Integer userId;
     private String projectShortDes;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
@@ -41,13 +41,13 @@ public class ProjectEntity {
     }
 
     @Basic
-    @Column(name = "team_id", nullable = true)
-    public Integer getTeamId() {
-        return teamId;
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -147,7 +147,7 @@ public class ProjectEntity {
         ProjectEntity that = (ProjectEntity) o;
         return Objects.equals(projectId, that.projectId) &&
                 Objects.equals(projectName, that.projectName) &&
-                Objects.equals(teamId, that.teamId) &&
+                Objects.equals(userId, that.userId) &&
                 Objects.equals(projectShortDes, that.projectShortDes) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate) &&
@@ -161,6 +161,6 @@ public class ProjectEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, projectName, teamId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
+        return Objects.hash(projectId, projectName, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
     }
 }

@@ -105,8 +105,8 @@
                     <nav class="lst-category">
                         <ul class="rs nav nav-category" th:each="category : ${categories}">
                             <li>
-                                <a th:href="@{/category/} + ${category.categoryId}">
-                                    <span th:text="${category.categoryName}"></span>
+                                <a th:href="@{/category/} + ${category.id}">
+                                    <span th:text="${category.name}"></span>
                                     <i class="icon iPlugGray"></i>
                                 </a>
                             </li>

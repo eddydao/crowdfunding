@@ -6,27 +6,27 @@ import java.util.Objects;
 @Entity
 @Table(name = "status", schema = "demo", catalog = "")
 public class StatusEntity {
-    private Integer projectStatusId;
-    private String statusName;
+    private Integer id;
+    private String name;
 
     @Id
-    @Column(name = "project_status_id", nullable = false)
-    public Integer getProjectStatusId() {
-        return projectStatusId;
+    @Column(name = "id", nullable = false)
+    public Integer getId() {
+        return id;
     }
 
-    public void setProjectStatusId(Integer projectStatusId) {
-        this.projectStatusId = projectStatusId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Basic
-    @Column(name = "status_name", nullable = true, length = 255)
-    public String getStatusName() {
-        return statusName;
+    @Column(name = "name", nullable = true, length = 255)
+    public String getName() {
+        return name;
     }
 
-    public void setStatusName(String statusName) {
-        this.statusName = statusName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class StatusEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StatusEntity that = (StatusEntity) o;
-        return Objects.equals(projectStatusId, that.projectStatusId) &&
-                Objects.equals(statusName, that.statusName);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectStatusId, statusName);
+        return Objects.hash(id, name);
     }
 }

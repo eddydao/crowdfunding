@@ -14,7 +14,7 @@ public class UserDetailEntity {
     private String totalAmount;
     private String address;
     private Integer countryId;
-    private Integer teamId;
+    private String phoneNum;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -96,6 +96,16 @@ public class UserDetailEntity {
         this.countryId = countryId;
     }
 
+    @Basic
+    @Column(name = "phone_num", nullable = true, length = 15)
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,21 +118,12 @@ public class UserDetailEntity {
                 Objects.equals(projectSupported, that.projectSupported) &&
                 Objects.equals(totalAmount, that.totalAmount) &&
                 Objects.equals(address, that.address) &&
-                Objects.equals(countryId, that.countryId);
+                Objects.equals(countryId, that.countryId) &&
+                Objects.equals(phoneNum, that.phoneNum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, projectSupported, totalAmount, address, countryId);
-    }
-
-    @Basic
-    @Column(name = "team_id", nullable = true)
-    public Integer getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+        return Objects.hash(userId, firstName, lastName, email, projectSupported, totalAmount, address, countryId, phoneNum);
     }
 }
