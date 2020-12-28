@@ -111,9 +111,6 @@
                                 </a>
                             </li>
                         </ul>
-                        <p class="rs view-all-category">
-                            <a href="category.html" class="be-fc-orange">+ View all categories</a>
-                        </p>
                     </nav><!--end: .lst-category -->
                 </div>
             </div><!--end: .left-lst-category -->
@@ -183,7 +180,7 @@
                                     <img th:src="@{/project/image/} + ${project.projectId}" alt="$TITLE">
                                 </a>
                                 <div class="wrap-short-detail">
-                                    <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text=""${project.projectName}></span></a></h3>
+                                    <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
                                     <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange">John Doe</a></p>
                                     <p class="rs title-description" th:text="${project.projectShortDes}"></p>
                                 </div>

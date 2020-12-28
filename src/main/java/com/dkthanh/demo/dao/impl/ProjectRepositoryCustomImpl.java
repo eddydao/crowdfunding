@@ -51,18 +51,12 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  D.id as status_id,\n"+
                         "  D.name as status_name\n"+
                         "FROM\n" +
-                        "  project A,\n" +
-                        "  material B,\n" +
-                        "  category C,\n" +
-                        "  status D,\n" +
-                        "  user E,\n"+
-                        "  user_detail F\n"+
-                        "WHERE\n" +
-                        "  A.project_id = B.project_id\n" +
-                        "  AND A.category_id = C.id\n" +
-                        "  AND A.user_id = E.id\n"+
-                        "  AND E.id  = F.user_id\n"+
-                        "  AND A.project_status_id = D.id\n");
+                        "  project A left join material B on A.project_id = B.project_id\n" +
+                        "  JOIN category C ON A.category_id = C.id\n" +
+                        "  JOIN status D ON A.project_status_id = D.id\n" +
+                        "  JOIN user E ON A.user_id = E.id\n" +
+                        "  JOIN user_detail F ON E.id = F.user_id\n"+
+                        "WHERE 1 = 1\n" );
 
         // get project detail with id
         if(projectId != null ){
