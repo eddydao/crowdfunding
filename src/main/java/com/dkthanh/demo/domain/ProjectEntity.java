@@ -1,7 +1,7 @@
 package com.dkthanh.demo.domain;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +11,8 @@ public class ProjectEntity {
     private String projectName;
     private Integer userId;
     private String projectShortDes;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private OffsetDateTime startDate;
+    private OffsetDateTime endDate;
     private Double goal;
     private Double pledged;
     private Integer investorCount;
@@ -62,21 +62,21 @@ public class ProjectEntity {
 
     @Basic
     @Column(name = "start_date", nullable = true)
-    public Timestamp getStartDate() {
+    public OffsetDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(OffsetDateTime startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "end_date", nullable = true)
-    public Timestamp getEndDate() {
+    public OffsetDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
     }
 

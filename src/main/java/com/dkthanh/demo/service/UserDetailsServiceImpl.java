@@ -1,5 +1,7 @@
 package com.dkthanh.demo.service;
 
+import com.dkthanh.demo.domain.RoleEntity;
+import com.dkthanh.demo.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
