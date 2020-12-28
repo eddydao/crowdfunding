@@ -56,7 +56,7 @@ public class SysManagementController {
 
     // creator project/list
     @GetMapping(value = "/creator/project/list" )
-    public String getCreatorProjectList(Model model, @PathVariable("creator-id") Integer creatorId, HttpServletRequest request, Authentication authentication){
+    public String getCreatorProjectList(Model model, Authentication authentication){
         String username = null;
         UserDetailEntity userDetailEntity = null;
         UserEntity user = null;
@@ -72,10 +72,10 @@ public class SysManagementController {
 
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
-        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(creatorId);
+        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
         model.addAttribute("project-list", list);
         model.addAttribute("creator", userDetailEntity);
-        return "/admin/creator-project-list";
+        return "/creator/creator-dashboard";
     }
 
     // creator project/id
@@ -83,7 +83,7 @@ public class SysManagementController {
     public String getProjectDetail(Model model, @PathVariable("id") Integer projectId, HttpServletRequest request, Authentication authentication){
         ProjectFullInfoEntity p = projectService.getProjectDetail(projectId);
         model.addAttribute("project", p);
-        return "/admin/creator-project-detail";
+        return "/creator/creator-project-detail";
     }
 
     //

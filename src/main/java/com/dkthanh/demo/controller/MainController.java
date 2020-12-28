@@ -52,7 +52,7 @@ public class MainController {
     // return temp result for testing
     @GetMapping(value = "/temp-result")
     public String tempResult(){
-        return "temp-result";
+        return "/temp-result";
     }
 
     //    Open register page
@@ -81,9 +81,9 @@ public class MainController {
     }
 
     // open login form
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/signin")
     public String login() {
-        return "login-page";
+        return "/login-page";
     }
 
     // search function - not complete
