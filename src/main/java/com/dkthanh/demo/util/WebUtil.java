@@ -3,6 +3,7 @@ package com.dkthanh.demo.util;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,5 +27,22 @@ public class WebUtil {
         ImageIO.write(bImage, type, bos);
         byte[] data = bos.toByteArray();
         return data;
+    }
+
+    public static String getBaseURL(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        StringBuffer url =  new StringBuffer();
+        url.append(scheme).append("://").append(serverName);
+        if ((serverPort != 80) && (serverPort != 443)) {
+            url.append(":").append(serverPort);
+        }
+        url.append(contextPath);
+        if(url.toString().endsWith("/")){
+            url.append("/");
+        }
+        return url.toString();
     }
 }

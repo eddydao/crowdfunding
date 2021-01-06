@@ -76,6 +76,68 @@ public final class Constant {
         }
     }
 
+    public enum PaypalPaymentIntent{
+        SALE(1, "sale"),
+        AUTHORIZE(2, "authorize"),
+        ORDER(3, "order");
+
+        private Integer id;
+        private String name;
+
+        PaypalPaymentIntent(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static PaypalPaymentIntent getStatusById(Integer id){
+            for (PaypalPaymentIntent e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
+    public enum PaymentMethod{
+        CREDIT_CARD(1, "credit_card"),
+        PAYPAL(2, "paypal"),
+        COD(3, "cod");
+
+        private Integer id;
+        private String name;
+
+        PaymentMethod(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static PaymentMethod getStatusById(Integer id){
+            for (PaymentMethod e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
     public static final class PROJECT_KEY{
         public static final String PROJECT_ID = "projectId";
         public static final String IS_RECOMMENDED = "isRecommended";
