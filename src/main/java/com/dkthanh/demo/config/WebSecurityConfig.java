@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register").permitAll()
                 .antMatchers("/creator/**").hasAnyRole("CREATOR", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
+//        http.authorizeRequests().antMatchers("/**").permitAll()
         .and().formLogin()//
                 // Submit URL của trang login
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
@@ -44,7 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 // Cấu hình cho Logout Page.
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
-
-//        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/");
+//        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
     }
 }
