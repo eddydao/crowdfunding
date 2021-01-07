@@ -210,6 +210,7 @@ public class MainController {
     }
 
     //
+//    @GetMapping(b)
 
     /*
     admin/project/list
@@ -219,4 +220,28 @@ public class MainController {
     admin/user/list
     admin/
      */
+
+    // get project list
+    @GetMapping(value = "/admin/project/list")
+    public String getAdminProjectList(){
+        return null;
+    }
+
+    // get pending list of project that need approval
+    @GetMapping(value = "/admin/project/pending-list")
+    public String getAdminPendingList(){
+        return null;
+    }
+
+    // category list for admin view
+    @GetMapping(value = "/admin/category/list")
+    public String getCategoryList(){
+        return null;
+    }
+
+    // get admin dashboard
+    @GetMapping(value = "/admin/dashboard")
+    public String getAdminDashboard(){
+        return null;
+    }
 }
