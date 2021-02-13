@@ -162,10 +162,6 @@ public class MainController {
         return "/creator/creator-report";
     }
 
-    @GetMapping(value = "/admin/dashboard")
-    public String getDashboard(){
-        return "admin/admin-dashboard";
-    }
 
     /*
     /creator/project/list
