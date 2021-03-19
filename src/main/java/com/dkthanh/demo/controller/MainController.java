@@ -59,7 +59,7 @@ public class MainController {
     // return temp result for testing
     @GetMapping(value = "/temp-result")
     public String tempResult(){
-        return "/temp-result";
+        return "/creator/test-upload";
     }
 
     //    Open register page
@@ -203,6 +203,12 @@ public class MainController {
         ProjectFullInfoEntity p = projectService.getProjectDetail(projectId);
         model.addAttribute("project", p);
         return "/creator/creator-project-detail";
+    }
+
+    //create project
+    @GetMapping(value = "/creator/create-project")
+    public String testCreateForm(){
+        return "/creator/create-project";
     }
 
     //
