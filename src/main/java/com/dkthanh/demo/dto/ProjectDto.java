@@ -2,9 +2,10 @@ package com.dkthanh.demo.dto;
 
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 @Data
 @ToString
@@ -17,8 +18,10 @@ public class ProjectDto {
     protected Integer countryId;
     protected String imageName;
     protected MultipartFile fileDatas;
-    protected OffsetDateTime startDate;
-    protected OffsetDateTime endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    protected LocalDate startDate;
+    protected LocalDate endDate;
     protected Integer duration;
 
     public ProjectDto(){}
@@ -31,7 +34,7 @@ public class ProjectDto {
             , Integer countryId
             , String imageName
             , MultipartFile fileDatas
-            , OffsetDateTime startDate
+            , LocalDate startDate
             , Integer duration) {
         this.projectId = projectId;
         this.projectName = projectName;

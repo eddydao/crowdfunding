@@ -209,6 +209,8 @@ public class MainController {
         if (result.hasErrors()) {
             return "redirect:/index";
         }
+
+        
         return null;
     }
 
