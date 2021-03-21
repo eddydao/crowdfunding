@@ -24,6 +24,7 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Integer investorCount;
     protected Integer projectStatusId;
     protected Integer recommended;
+    protected Integer countryId;
     // resources info
     protected Integer materialThumbnailId;
     protected String materialThumbnailName;
@@ -44,8 +45,12 @@ public class ProjectFullInfoEntity implements Serializable {
     // key for measurement
     public Integer isEditable;
 
+    // story
+    protected Integer storyId;
+
     public ProjectFullInfoEntity() {
     }
+
 
     public ProjectFullInfoEntity(
             Integer projectId
@@ -68,7 +73,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , String categoryName
             , Double percentPledged
             , Integer statusId
-            , String statusName) {
+            , String statusName
+            , Integer storyId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -90,8 +96,10 @@ public class ProjectFullInfoEntity implements Serializable {
         this.percentPledged = percentPledged;
         this.statusId = statusId;
         this.statusName = statusName;
+        this.storyId = storyId;
     }
 
+    // mapping basic info for JPA
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName

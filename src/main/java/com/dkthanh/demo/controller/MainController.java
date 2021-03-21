@@ -5,6 +5,7 @@ import com.dkthanh.demo.domain.NewUserDTO;
 import com.dkthanh.demo.domain.UserDetailEntity;
 import com.dkthanh.demo.domain.UserEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
+import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.CategoryService;
 import com.dkthanh.demo.service.ProjectService;
 import com.dkthanh.demo.service.UserDetailService;
@@ -153,24 +154,12 @@ public class MainController {
     /*
      *  Sys management function
      * ===========================================
-     */
-
-    // test UI
-    @GetMapping(value = "/creator/test")
-    public String testUI(){
-//        return "/creator/creator-report";
-        return "/creator/creator-report";
-    }
-
-
-    /*
-    /creator/project/list
-    /creator/create-project
-    /creator/project/id
-    /creator/project/save
-    /creator/project/edit/id
-    /creator/project/delete/id
-    /creator/team/user
+     * creator/project/list
+     * creator/create-project
+     * creator/project/id
+     * creator/project/save
+     * creator/project/edit/id
+     * creator/project/delete/id
      */
 
     // creator project/list
@@ -207,14 +196,26 @@ public class MainController {
 
     //create project
     @GetMapping(value = "/creator/create-project")
-    public String testCreateForm(){
+    public String openCreateProjectForm(Model model){
+        ProjectDto dto = new ProjectDto();
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
         return "/creator/create-project";
     }
 
-    //
-//    @GetMapping(b)
+    @PostMapping(value = "/creator/save-project")
+    public String saveProject(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+                              BindingResult result, final RedirectAttributes redirectAttributes){
+        if (result.hasErrors()) {
+            return "redirect:/index";
+        }
+        return null;
+    }
+
 
     /*
+    *  Admin management function
+    * ===========================================
     admin/project/list
     admin/project/id
     admin/project/approval
