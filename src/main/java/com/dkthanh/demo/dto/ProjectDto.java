@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @ToString
 public class ProjectDto {
     protected Integer projectId;
+    protected Integer step;
     // basic info
     protected String projectName;
     protected String subTitle;
