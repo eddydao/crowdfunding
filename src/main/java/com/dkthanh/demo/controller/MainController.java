@@ -20,10 +20,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,6 +50,45 @@ public class MainController {
      *  Common function
      * ===========================================
      */
+    private String doUpload(HttpServletRequest request, Model model, //
+                            ProjectDto myUploadForm) {
+
+        String description = myUploadForm.getImageName();
+        System.out.println("Description: " + description);
+
+        // Thư mục gốc upload file.
+        String uploadRootPath = request.getServletContext().getRealPath("upload");
+        System.out.println("uploadRootPath=" + uploadRootPath);
+
+        File uploadRootDir = new File(uploadRootPath);
+        // Tạo thư mục gốc upload nếu nó không tồn tại.
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+        MultipartFile fileDatas = myUploadForm.getFileDatas();
+        // Tên file gốc tại Client.
+        String name = fileDatas.getOriginalFilename();
+        System.out.println("Client File Name = " + name);
+
+        if (name != null && name.length() > 0) {
+            try {
+                // Tạo file tại Server.
+                File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+                stream.write(fileDatas.getBytes());
+                stream.close();
+                //
+//                    uploadedFiles.add(serverFile);
+                System.out.println("Write file: " + serverFile);
+            } catch (Exception e) {
+                System.out.println("Error Write file: " + name);
+//                    failedFiles.add(name);
+            }
+        }
+
+        return  uploadRootDir.getAbsolutePath() + File.separator + name;
+    }
 
     // load thumbnail image
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
@@ -210,8 +253,8 @@ public class MainController {
             return "redirect:/index";
         }
 
-        
-        return null;
+
+        return "redirect:/creator/create-project";
     }
 
 
