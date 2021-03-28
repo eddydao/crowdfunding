@@ -28,7 +28,11 @@ public class ProjectService {
 
 //    @Autowired
 
-
+    // get lastest project id
+    public Integer getLastestProjectId(){
+        Optional<ProjectEntity> entity = projectRepository.findFirstByOrderByProjectIdDesc();
+        return entity.get().getProjectId();
+    }
     // get popular project
     public List<ProjectFullInfoEntity> getPopularProjects(){
         Map<String, Object> map = new HashMap<>();

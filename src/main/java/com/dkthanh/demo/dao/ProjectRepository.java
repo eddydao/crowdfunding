@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>, ProjectRepositoryCustom {
     Optional<List<ProjectEntity>> findProjectEntitiesByProjectNameContaining(String keyword);
+
+    Optional<ProjectEntity> findFirstByOrderByProjectIdDesc();
 }

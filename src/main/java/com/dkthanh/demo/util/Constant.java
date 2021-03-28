@@ -1,6 +1,7 @@
 package com.dkthanh.demo.util;
 
 public final class Constant {
+    public static final Integer ID_STEP = 1;
 //    public static final class ROLES{
 //        public static final String INVESTOR     = "investor";
 //        public static final String FOUNDER      = "founder";
@@ -128,8 +129,41 @@ public final class Constant {
             return name;
         }
 
-        public static PaymentMethod getStatusById(Integer id){
+        public static PaymentMethod getPaymentMethodById(Integer id){
             for (PaymentMethod e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
+    public enum MaterialType{
+        THUMBNAIL(1, "thumbnail"),
+        IMAGE(2, "image"),
+        VIDEO(3, "video"),
+        TEXT(4, "text"),
+        ;
+
+        private Integer id;
+        private String name;
+
+        MaterialType(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static MaterialType getMaterialTypeById(Integer id){
+            for (MaterialType e : values()) {
                 if (e.getId().equals(id)) {
                     return e;
                 }

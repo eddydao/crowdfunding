@@ -1,15 +1,13 @@
 package com.dkthanh.demo.controller;
 
-import com.dkthanh.demo.domain.CategoryEntity;
-import com.dkthanh.demo.domain.NewUserDTO;
-import com.dkthanh.demo.domain.UserDetailEntity;
-import com.dkthanh.demo.domain.UserEntity;
+import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.CategoryService;
 import com.dkthanh.demo.service.ProjectService;
 import com.dkthanh.demo.service.UserDetailService;
 import com.dkthanh.demo.service.UserService;
+import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -240,7 +238,10 @@ public class MainController {
     //create project
     @GetMapping(value = "/creator/create-project")
     public String openCreateProjectForm(Model model){
+        //get lastest project id here
+        int lastestProjectId = projectService.getLastestProjectId();
         ProjectDto dto = new ProjectDto();
+        dto.setProjectId(lastestProjectId + Constant.ID_STEP);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         return "/creator/create-project";
@@ -253,6 +254,16 @@ public class MainController {
             return "redirect:/index";
         }
 
+        MaterialEntity materialEntity = new MaterialEntity();
+        materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
+
+        ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
+
+        int step = dto.getStep();
+        // insert basic information
+        if(step == 1){
+            projectFullInfoEntity.set
+        }
 
         return "redirect:/creator/create-project";
     }
