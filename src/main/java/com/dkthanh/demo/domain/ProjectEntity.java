@@ -22,6 +22,7 @@ public class ProjectEntity {
 
     @Id
     @Column(name = "project_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getProjectId() {
         return projectId;
     }

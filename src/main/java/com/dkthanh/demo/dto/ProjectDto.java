@@ -22,6 +22,7 @@ public class ProjectDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate endDate;
     protected Integer duration;
 
@@ -47,6 +48,4 @@ public class ProjectDto {
         this.startDate = startDate;
         this.duration = duration;
     }
-
-
 }

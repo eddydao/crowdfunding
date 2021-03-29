@@ -26,8 +26,6 @@ public class ProjectService {
     @Autowired
     private InvesmentOptionService optionService;
 
-//    @Autowired
-
     // get lastest project id
     public Integer getLastestProjectId(){
         Optional<ProjectEntity> entity = projectRepository.findFirstByOrderByProjectIdDesc();
@@ -129,5 +127,11 @@ public class ProjectService {
             return list;
         }
         return null;
+    }
+
+
+    // save project
+    public ProjectEntity saveProjectEntity(ProjectEntity entity){
+        return projectRepository.save(entity);
     }
 }

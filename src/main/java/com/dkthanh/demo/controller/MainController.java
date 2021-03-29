@@ -3,10 +3,7 @@ package com.dkthanh.demo.controller;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.dto.ProjectDto;
-import com.dkthanh.demo.service.CategoryService;
-import com.dkthanh.demo.service.ProjectService;
-import com.dkthanh.demo.service.UserDetailService;
-import com.dkthanh.demo.service.UserService;
+import com.dkthanh.demo.service.*;
 import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,10 @@ public class MainController {
     @Autowired
     private UserDetailService userDetailService;
 
+    @Autowired
+    private MaterialService materialService;
+
+
     /*
      *  Common function
      * ===========================================
@@ -76,7 +77,6 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(fileDatas.getBytes());
                 stream.close();
-                //
 //                    uploadedFiles.add(serverFile);
                 System.out.println("Write file: " + serverFile);
             } catch (Exception e) {
@@ -96,12 +96,6 @@ public class MainController {
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         response.getOutputStream().write(WebUtil.extractByte(path));
         response.getOutputStream().close();
-    }
-
-    // return temp result for testing
-    @GetMapping(value = "/temp-result")
-    public String tempResult(){
-        return "/creator/test-upload";
     }
 
     //    Open register page
@@ -227,24 +221,28 @@ public class MainController {
         return "/creator/creator-dashboard";
     }
 
-    // creator project/id
-    @GetMapping(value = "/creator/project/{id}")
-    public String getProjectDetail(Model model, @PathVariable("id") Integer projectId, HttpServletRequest request, Authentication authentication){
-        ProjectFullInfoEntity p = projectService.getProjectDetail(projectId);
-        model.addAttribute("project", p);
-        return "/creator/creator-project-detail";
-    }
-
-    //create project
+    /*
+    *   create project
+     */
     @GetMapping(value = "/creator/create-project")
     public String openCreateProjectForm(Model model){
-        //get lastest project id here
-        int lastestProjectId = projectService.getLastestProjectId();
+        ProjectEntity projectEntity = projectService.saveProjectEntity(new ProjectEntity());
+        int projectId = projectEntity.getProjectId();
+//        model.addAttribute("project", projectEntity);
+        return "redirect:/creator/project/" + projectId;
+    }
+
+    /*
+    *   redirect all request of edit or create a new project to this
+    *   send information of project modification to UI from here
+     */
+    @GetMapping(value = "/creator/project/{projectId}")
+    public String openProjectEditForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-        dto.setProjectId(lastestProjectId + Constant.ID_STEP);
+        dto.setProjectId(projectId);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
-        return "/creator/create-project";
+        return "/creator/project";
     }
 
     @PostMapping(value = "/creator/save-project")
@@ -256,13 +254,22 @@ public class MainController {
 
         MaterialEntity materialEntity = new MaterialEntity();
         materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
+        materialEntity.setDescription(dto.getProjectName());
+        materialEntity.setPath(this.doUpload(request, model,dto));
+        materialEntity.setProjectId(dto.getProjectId());
+        materialEntity = materialService.saveImage(materialEntity);
 
         ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
 
         int step = dto.getStep();
         // insert basic information
         if(step == 1){
-            projectFullInfoEntity.set
+            projectFullInfoEntity.setProjectName(dto.getProjectName());
+            projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
+            projectFullInfoEntity.setCategoryId(dto.getCategoryId());
+            projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
+//            projectFullInfoEntity.setStartDate(dto.getStartDate());
+//            projectFullInfoEntity.setEndDate(dto.getEndDate());
         }
 
         return "redirect:/creator/create-project";
