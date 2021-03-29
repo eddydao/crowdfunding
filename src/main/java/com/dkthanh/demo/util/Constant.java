@@ -172,6 +172,39 @@ public final class Constant {
         }
     }
 
+    public enum ProjectFormStep{
+        BASIC(1, "basic"),
+        FUNDING(2, "funding"),
+        REWARD(3, "reward"),
+        PAYMENT(4, "payment"),
+        ;
+
+        private Integer id;
+        private String name;
+
+        ProjectFormStep(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static ProjectFormStep getFormStepById(Integer id){
+            for (ProjectFormStep e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
     public static final class PROJECT_KEY{
         public static final String PROJECT_ID = "projectId";
         public static final String IS_RECOMMENDED = "isRecommended";
