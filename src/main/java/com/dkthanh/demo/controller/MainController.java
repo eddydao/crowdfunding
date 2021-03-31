@@ -143,11 +143,9 @@ public class MainController {
         return "/search_result";
     }
     /*
-     *  index page function
+     *  Index page function
      * ===========================================
      */
-
-    //    index page
     @GetMapping(value = "/index")
     public String index(Model model){
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
@@ -159,12 +157,13 @@ public class MainController {
         return "index";
     }
 
+    /*
+    *   Index page
+     */
     @GetMapping(value = "/")
     public String getHomePage(){
         return "redirect:/index";
     }
-
-
 
     /*
      *  Project detail page function
@@ -180,11 +179,6 @@ public class MainController {
 
         return "project-detail";
     }
-    /*
-     *  All project page function
-     * ===========================================
-     */
-
 
     /*
      *  Sys management function
@@ -222,13 +216,12 @@ public class MainController {
     }
 
     /*
-    *   create project
+    *   run this when user click to create project
      */
     @GetMapping(value = "/creator/create-project")
     public String openCreateProjectForm(Model model){
         ProjectEntity projectEntity = projectService.saveProjectEntity(new ProjectEntity());
         int projectId = projectEntity.getProjectId();
-//        model.addAttribute("project", projectEntity);
         return "redirect:/creator/project/" + projectId;
     }
 
@@ -245,6 +238,10 @@ public class MainController {
         return "/creator/project";
     }
 
+    /*
+    *   save project with information from form
+    *   not validate infor yet
+     */
     @PostMapping(value = "/creator/save-project")
     public String saveProject(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
                               BindingResult result, final RedirectAttributes redirectAttributes){

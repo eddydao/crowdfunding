@@ -334,6 +334,9 @@
                                     <form action="#" th:action = "@{/creator/save-project}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
                                         <!-- Project title and subtitle -->
                                         <div class="row form-group">
+                                            <input type="hidden" th:field="*{projectId}" readonly="true">
+                                        </div>
+                                        <div class="row form-group">
                                             <div class="col col-md-5">
                                                 <label for="text-input" class=" form-control-label"><b>Project title</b></label>
                                                 <small class="form-text text-muted">Write a clear, brief title that helps people quickly understand <br>the gist of your project.</small>
