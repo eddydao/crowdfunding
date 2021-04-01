@@ -235,7 +235,7 @@ public class MainController {
         dto.setProjectId(projectId);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
-        return "/creator/project";
+        return "/creator/overview";
     }
 
     /*

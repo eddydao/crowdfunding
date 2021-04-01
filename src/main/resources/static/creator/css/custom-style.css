@@ -1445,7 +1445,7 @@ section {
 }
 
 .account-dropdown {
-    min-width: 805px;
+    min-width: 305px;
     position: absolute;
     top: 58px;
     right: 0;
