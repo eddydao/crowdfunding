@@ -18,5 +18,5 @@ $("#file-input").change(function(){
 });
 
 $( document ).ready(function() {
-    $('#preview-img').attr('src', '../images/bg-title-01.jpg');
+    $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
 });

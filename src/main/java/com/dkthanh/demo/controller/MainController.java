@@ -239,6 +239,19 @@ public class MainController {
     }
 
     /*
+    *   return basic information of project
+     */
+
+    @GetMapping(value = "/creator/project/{projectId}/basic")
+    public String getProjectEditFormWithStep(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectDto dto = new ProjectDto();
+        dto.setProjectId(projectId);
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
+        return "/creator/project-basic";
+    }
+
+    /*
     *   save project with information from form
     *   not validate infor yet
      */

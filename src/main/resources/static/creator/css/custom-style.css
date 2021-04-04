@@ -1,12 +1,4 @@
-/*------------------------------------------------------------------
-[Master Stylesheet]
 
-Project:  CoolAdmin
-Version:	1.0
-Last change:	08/10/2018 [Add Define a table of contents Link]
-Assigned to:	Hau Nguyen
-Primary use:	Open Source
--------------------------------------------------------------------*/
 /*------------------------------------------------------------------
 [LAYOUT]
 
@@ -281,10 +273,10 @@ section {
 
 @media (max-width: 991px) {
     .page-wrapper {
-    overflow: auto;
-    background: #e5e5e5;
-    padding-bottom: 12vh;
-}
+        overflow: auto;
+        background: #e5e5e5;
+        padding-bottom: 12vh;
+    }
 }
 .page-container {
     background: #e5e5e5;
@@ -323,7 +315,7 @@ section {
 @media (max-width: 991px) {
     .main-content {
         padding-top: 50px;
-	padding-bottom: 100px;
+        padding-bottom: 100px;
     }
 }
 
@@ -977,7 +969,7 @@ section {
 .select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
- }
+}
 
 .rs-select2--border .select2-container--default .select2-selection--single,
 
@@ -5313,7 +5305,7 @@ section {
 }
 
 .switch.switch-text .switch-label::before,
-  .switch.switch-text .switch-label::after {
+.switch.switch-text .switch-label::after {
     position: absolute;
     top: 50%;
     width: 50%;
@@ -5459,7 +5451,7 @@ section {
 }
 
 .switch.switch-icon .switch-label::before,
-  .switch.switch-icon .switch-label::after {
+.switch.switch-icon .switch-label::after {
     position: absolute;
     top: 50%;
     width: 50%;
@@ -14657,4 +14649,24 @@ section {
 .custom-main-content{
     padding-top: 75px;
     min-height: 100vh;
+}
+
+.custom-table-top-campaign.table td {
+    border-top: none;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 24px;
+    padding: 12px 6px;
+}
+
+.custom-table-top-campaign.table tr td:first-child {
+    color: #808080;
+}
+
+.custom-table-top-campaign.table tr td:last-child {
+    color: #000000;
+    text-align: left;
+}
+
+.custom-table-top-campaign.table tr:last-child td {
+    border-bottom: none;
 }

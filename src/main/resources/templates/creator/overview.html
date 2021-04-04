@@ -37,7 +37,7 @@
             <div class="container-fluid">
                 <div class="header-mobile-inner">
                     <a class="logo" href="index.html">
-                        <img src="images/icon/logo.png" alt="CoolAdmin" />
+                        <img src="../images/icon/logo.png" alt="CoolAdmin" />
                     </a>
                     <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -266,7 +266,7 @@
                             <div class="account-wrap">
                                 <div class="account-item clearfix js-item-menu">
                                     <div class="image">
-                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                        <img src="../images/icon/avatar-01.jpg" alt="John Doe" />
                                     </div>
                                     <div class="content">
                                         <a class="js-acc-btn" href="#">john doe</a>
@@ -330,31 +330,33 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>
-                                                        <label class="form-control-label"><b>Basics</b></label>
-                                                        <small class="form-text text-muted">Name your project, upload an image or video, and establish your campaign details.</small>
+                                                        <a th:href="@{/creator/project/{projectId}/basic (projectId = ${project_dto.projectId})} " >
+                                                            <label class="form-control-label"><b>Basics</b></label>
+                                                            <small class="form-text text-muted">Name your project, upload an image or video, and establish your campaign details.</small>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label for="text-input" class=" form-control-label"><b>Funding</b></label>
+                                                        <labelclass=" form-control-label"><b>Funding</b></label>
                                                         <small class="form-text text-muted">Build out a budget and calculate your financial goals.</small>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label for="text-input" class=" form-control-label"><b>Rewards</b></label>
+                                                        <label class=" form-control-label"><b>Rewards</b></label>
                                                         <small class="form-text text-muted">Set your rewards.</small>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label for="text-input" class=" form-control-label"><b>Story</b></label>
+                                                        <label class=" form-control-label"><b>Story</b></label>
                                                         <small class="form-text text-muted">Add a detailed project description and convey your risks and challenges.</small>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label for="text-input" class=" form-control-label"><b>Payment</b></label>
+                                                        <label class=" form-control-label"><b>Payment</b></label>
                                                         <small class="form-text text-muted">Confirm your identity and link a bank account.</small>
                                                     </td>
                                                 </tr>
