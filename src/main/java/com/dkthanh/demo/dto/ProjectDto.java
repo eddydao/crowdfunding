@@ -25,6 +25,7 @@ public class ProjectDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate endDate;
     protected Integer duration;
+    protected Double goal;
 
     public ProjectDto(){}
 

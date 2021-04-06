@@ -418,6 +418,15 @@
                                                 <hr style="border-top: 1px solid #bbb;">
                                             </div>
                                         </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-5">
+                                                <label for="text-input" class=" form-control-label"><b>Project funding goal</b></label>
+                                                <small class="form-text text-muted"><br></small>
+                                            </div>
+                                            <div class="col-12 col-md-7">
+                                                <input type="text" id="text-input" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
+                                            </div>
+                                        </div>
                                         <div style="display: none;">
                                             <input type="text" th:field="*{step}">
                                         </div>
