@@ -96,7 +96,6 @@ public class ProjectService {
                         , entity.getGoal()
                         , entity.getPledged()
                         , entity.getInvestorCount()
-                        , entity.getProjectStatusId()
                         , entity.getRecommended()
                         , entity.getCategoryId()
                 );
