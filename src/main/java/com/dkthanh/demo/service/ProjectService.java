@@ -10,6 +10,7 @@ import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -34,7 +35,7 @@ public class ProjectService {
     // get popular project
     public List<ProjectFullInfoEntity> getPopularProjects(){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, Constant.ProjectStatus.RUNNING.getId());
         List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;
@@ -129,8 +130,24 @@ public class ProjectService {
     }
 
 
-    // save project
+    // save project entity
     public ProjectEntity saveProjectEntity(ProjectEntity entity){
         return projectRepository.save(entity);
+    }
+
+    public int saveProjectFullInfoEntity(ProjectFullInfoEntity entity){
+        ProjectEntity projectEntity = new ProjectEntity();
+
+        Integer projectId = entity.getProjectId();
+        String projectName = entity.getProjectName();
+        Integer userId = entity.getUserId();
+        String projectShortDes = entity.getProjectShortDes();
+        OffsetDateTime startDate = entity.getStartDate();
+        OffsetDateTime endDate = entity.getEndDate();
+        Double goal = entity.getGoal();
+//        Double
+
+
+        return 0;
     }
 }

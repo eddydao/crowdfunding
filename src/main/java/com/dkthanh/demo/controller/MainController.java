@@ -191,6 +191,10 @@ public class MainController {
      * creator/project/delete/id
      */
 
+    @GetMapping(value = "/creator")
+    public String creatorPage(){
+        return "redirect:/creator/project/list";
+    }
     // creator project/list
     @GetMapping(value = "/creator/project/list" )
     public String getCreatorProjectList(Model model, Authentication authentication){
@@ -205,8 +209,8 @@ public class MainController {
             user = userService.findUserByUsername(username);
         }
 
-        Integer userId  = user.getId();
-
+//        Integer userId  = user.getId();
+        Integer userId  = 2;
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
@@ -246,6 +250,7 @@ public class MainController {
     public String getProjectEditFormWithStep(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
         dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.BASIC.getId());
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         return "/creator/project-basic";
@@ -282,6 +287,11 @@ public class MainController {
 //            projectFullInfoEntity.setEndDate(dto.getEndDate());
         }
 
+        try {
+//            projectService.saveProjectEntity();
+        }catch (){
+
+        }
         return "redirect:/creator/create-project";
     }
 
