@@ -249,8 +249,11 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/basic")
     public String getProjectEditFormWithStep(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         return "/creator/project-basic";
@@ -283,15 +286,8 @@ public class MainController {
             projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
             projectFullInfoEntity.setCategoryId(dto.getCategoryId());
             projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
-//            projectFullInfoEntity.setStartDate(dto.getStartDate());
-//            projectFullInfoEntity.setEndDate(dto.getEndDate());
         }
 
-        try {
-//            projectService.saveProjectEntity();
-        }catch (){
-
-        }
         return "redirect:/creator/create-project";
     }
 

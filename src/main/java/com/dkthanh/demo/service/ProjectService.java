@@ -10,7 +10,6 @@ import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -135,19 +134,19 @@ public class ProjectService {
         return projectRepository.save(entity);
     }
 
-    public int saveProjectFullInfoEntity(ProjectFullInfoEntity entity){
-        ProjectEntity projectEntity = new ProjectEntity();
-
-        Integer projectId = entity.getProjectId();
-        String projectName = entity.getProjectName();
-        Integer userId = entity.getUserId();
-        String projectShortDes = entity.getProjectShortDes();
-        OffsetDateTime startDate = entity.getStartDate();
-        OffsetDateTime endDate = entity.getEndDate();
-        Double goal = entity.getGoal();
-//        Double
+    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
+        ProjectEntity entity = new ProjectEntity();
+        MaterialEntity materialEntity = new MaterialEntity();
 
 
+        if(dto != null){
+            entity.setProjectId(dto.getProjectId());
+            entity.setProjectName(dto.getProjectName());
+            entity.setCategoryId(dto.getCategoryId());
+            materialEntity.setProjectId(dto.getProjectId());
+            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
+            materialEntity.setPath(dto.getMaterialThumbnailPath());
+        }
         return 0;
     }
 }
