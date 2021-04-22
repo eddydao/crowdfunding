@@ -26,13 +26,15 @@ public class ProjectService {
     @Autowired
     private InvesmentOptionService optionService;
 
-//    @Autowired
-
-
+    // get lastest project id
+    public Integer getLastestProjectId(){
+        Optional<ProjectEntity> entity = projectRepository.findFirstByOrderByProjectIdDesc();
+        return entity.get().getProjectId();
+    }
     // get popular project
     public List<ProjectFullInfoEntity> getPopularProjects(){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, Constant.ProjectStatus.RUNNING.getId());
         List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;
@@ -94,7 +96,6 @@ public class ProjectService {
                         , entity.getGoal()
                         , entity.getPledged()
                         , entity.getInvestorCount()
-                        , entity.getProjectStatusId()
                         , entity.getRecommended()
                         , entity.getCategoryId()
                 );
@@ -125,5 +126,31 @@ public class ProjectService {
             return list;
         }
         return null;
+    }
+
+
+    // save project entity
+    public ProjectEntity saveProjectEntity(ProjectEntity entity){
+        return projectRepository.save(entity);
+    }
+
+    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
+        ProjectEntity entity = new ProjectEntity();
+        MaterialEntity materialEntity = new MaterialEntity();
+
+
+        if(dto != null){
+            entity.setProjectId(dto.getProjectId());
+            entity.setProjectName(dto.getProjectName());
+            entity.setCategoryId(dto.getCategoryId());
+            materialEntity.setProjectId(dto.getProjectId());
+            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
+            materialEntity.setPath(dto.getMaterialThumbnailPath());
+            projectRepository.save(entity);
+            materialService.saveImage(materialEntity);
+        }
+
+
+        return 0;
     }
 }

@@ -21,4 +21,8 @@ public class MaterialService {
         }
         return null;
     }
+
+    public MaterialEntity saveImage(MaterialEntity entity){
+        return materialRepository.save(entity);
+    }
 }

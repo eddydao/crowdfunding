@@ -1,32 +1,33 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Project | Kickstars</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/normalize.css"/>
-    <link rel="stylesheet" href="css/jquery.sidr.light.css"/>
-    <link rel="stylesheet" href="css/responsiveslides.css"/>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/jquery.sidr.light.css"/>
+    <link rel="stylesheet" href="../css/responsiveslides.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
     <!--[if lte IE 7]>
-    <link rel="stylesheet" href="css/ie7.css"/>
+    <link rel="stylesheet" href="../css/ie7.css"/>
     <![endif]-->
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="css/ie8.css"/>
+    <link rel="stylesheet" href="../css/ie8.css"/>
     <![endif]-->
-    <link rel="stylesheet" href="css/responsive.css"/>
+    <link rel="stylesheet" href="../css/responsive.css"/>
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="js/html5.js"></script>
+    <script type="text/javascript" src="../js/html5.js"></script>
     <![endif]-->
 
-    <script type="text/javascript" src="js/raphael-min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/responsiveslides.min.js"></script>
-    <script type="text/javascript" src="js/jquery.sidr.min.js"></script>
-    <script type="text/javascript" src="js/jquery.tweet.min.js"></script>
-    <script type="text/javascript" src="js/pie.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="../js/raphael-min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../js/responsiveslides.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.sidr.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.tweet.min.js"></script>
+    <script type="text/javascript" src="../js/pie.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
 
 </head>
 <body>
@@ -38,19 +39,19 @@
                 <div class="grid_12">
                     <nav class="top-menu">
                         <ul id="main-menu" class="nav nav-horizontal clearfix">
-                            <li class="active"><a href="#" th:href="@{/}">Home</a></li>
+                            <li class="active"><a href="../#" th:href="@{/}">Home</a></li>
                             <li class="sep"></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="../contact.html">Contact</a></li>
                         </ul>
-                        <a id="btn-toogle-menu" class="btn-toogle-menu" href="#alternate-menu">
+                        <a id="btn-toogle-menu" class="btn-toogle-menu" href="../#alternate-menu">
                             <span class="line-bar"></span>
                             <span class="line-bar"></span>
                             <span class="line-bar"></span>
                         </a>
                         <div id="right-menu">
                             <ul class="alternate-menu">
-                                <li><a href="" th:href="@{/}">Home</a></li>
-                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="../" th:href="@{/}">Home</a></li>
+                                <li><a href="../contact.html">Contact us</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -77,7 +78,7 @@
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
@@ -86,7 +87,7 @@
                         </div>
                         <span class="sep"></span>
                         <div class="nav-item">
-                            <a href="#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
+                            <a href="../#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
                             <p class="rs nav-description">Your Project</p>
                         </div>
                     </div>
@@ -98,17 +99,17 @@
     <div class="layout-2cols">
         <div class="content grid_8">
             <div class="project-detail">
-                <h2 class="rs project-title"><span th:text=${project.projectName}"></span></h2>
-                <p class="rs post-by">by <a href="#"><span th:text="${project.teamName}"></span></a></p>
+                <h2 class="rs project-title"><span th:text="${project.projectName}"></span></h2>
+                <p class="rs post-by">by <a href="../#"><span th:text="${project.userFullName}"></span></a></p>
                 <div class="project-short big-thumb">
                     <div class="top-project-info">
                         <div class="content-info-short clearfix">
                             <div class="thumb-img">
                                 <div class="rslides_container">
                                     <ul class="rslides" id="slider1">
-                                        <li><img src="" alt=""></li>
-<!--                                        <li><img src="images/ex/th-552x411-1.jpg" alt=""></li>-->
-<!--                                        <li><img src="images/ex/th-552x411-2.jpg" alt=""></li>-->
+                                        <li><img src="../" alt=""></li>
+                                        <!--                                        <li><img src="../images/ex/th-552x411-1.jpg" alt=""></li>-->
+                                        <!--                                        <li><img src="../images/ex/th-552x411-2.jpg" alt=""></li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -139,10 +140,10 @@
                 </div>
                 <div class="project-tab-detail tabbable accordion">
                     <ul class="nav nav-tabs clearfix">
-                        <li class="active"><a href="#">About</a></li>
-<!--                        <li><a href="#" class="be-fc-orange">Updates (0)</a></li>-->
-<!--                        <li><a href="#" class="be-fc-orange">Backers (270)</a></li>-->
-<!--                        <li><a href="#" class="be-fc-orange">Comments (2)</a></li>-->
+                        <li class="active"><a href="../#">About</a></li>
+                        <!--                        <li><a href="../#" class="be-fc-orange">Updates (0)</a></li>-->
+                        <!--                        <li><a href="../#" class="be-fc-orange">Backers (270)</a></li>-->
+                        <!--                        <li><a href="../#" class="be-fc-orange">Comments (2)</a></li>-->
                     </ul>
                     <div class="tab-content">
                         <div>
@@ -150,25 +151,15 @@
                             <div class="tab-pane active accordion-content">
                                 <div class="editor-content">
                                     <h3 class="rs title-inside">LYK and Bear #1: No Food Deed Unpunished</h3>
-                                    <p class="rs post-by">by <a href="#" class="fw-b fc-gray be-fc-orange">Ray Sumser</a> in <span class="fw-b fc-gray">New York, NY</span></p>
+                                    <p class="rs post-by">by <a href="../#" class="fw-b fc-gray be-fc-orange">Ray Sumser</a> in <span class="fw-b fc-gray">New York, NY</span></p>
                                     <p>Nam sit amet est sapien, a faucibus purus. Sed commodo facilisis tempus. Pellentesque placerat elementum adipiscing. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
                                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
                                     <p>
-                                        <img class="img-desc" src="images/ex/th-552x411-2.jpg" alt="$DESCRIPTION"/>
+                                        <img class="img-desc" src="../images/ex/th-552x411-2.jpg" alt="$DESCRIPTION"/>
                                         <span class="img-label">Me and project friends on meeting</span>
                                     </p>
                                     <p>Nam sit amet est sapien, a faucibus purus. Sed commodo facilisis tempus. Pellentesque placerat elementum adipiscing. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-                                    <div class="social-sharing">
-                                        <!-- AddThis Button BEGIN -->
-                                        <div class="addthis_toolbox addthis_default_style">
-                                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-                                            <a class="addthis_button_tweet"></a>
-                                            <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-                                            <a class="addthis_counter addthis_pill_style"></a>
-                                        </div>
-                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=undefined"></script>
-                                        <!-- AddThis Button END -->
-                                    </div>
+
                                 </div>
                             </div><!--end: .tab-pane(About) -->
                         </div>
@@ -181,11 +172,11 @@
                 <div class="box-gray">
                     <div class="project-date clearfix">
                         <i class="icon iCalendar"></i>
-                        <span class="val"><span class="fw-b">Launched: </span th:text="${project.startDate}"></span>
+                        <span class="val"><span class="fw-b">Launched: </span><span th:text="${project.startDate}"></span></span>
                     </div>
                     <div class="project-date clearfix">
                         <i class="icon iClock"></i>
-                        <span class="val"><span class="fw-b">Funding ends: </span th:text="${project.endDate}"></span>
+                        <span class="val"><span class="fw-b">Funding ends: </span><span th:text="${project.endDate}"></span></span>
                     </div>
                     <p class="rs description">This project will only be funded if at least $15,000 is pledged by Wednesday May 8, 2:05pm EDT.</p>
                 </div>
@@ -194,15 +185,16 @@
                 <div class="box-gray">
                     <h3 class="title-box">Project by</h3>
                     <div class="media">
-                        <a href="#" class="thumb-left">
-                            <img src="images/ex/th-90x90-1.jpg" alt="$USER_NAME"/>
+                        <a href="../#" class="thumb-left">
+                            <img src="../images/ex/th-90x90-1.jpg" alt="$USER_NAME"/>
                         </a>
                         <div class="media-body">
-                            <h4 class="rs pb10"><a href="#" class="be-fc-orange fw-b" ><span th:text="${project.teamName}"></span></a></h4>
+                            <h4 class="rs pb10"><a href="../#" class="be-fc-orange fw-b" ><span th:text="${project.userFullName}"></span></a></h4>
                             <p class="rs">Chicago, IL</p>
                             <p class="rs fc-gray" >5 projects</p>
                         </div>
                     </div>
+
                 </div>
             </div><!--end: .project-author -->
             <div class="clear clear-2col"></div>
@@ -220,7 +212,7 @@
                                 <p class="rs fw-b pb20">Ocupated (2 of 10)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -236,7 +228,7 @@
                                 <p class="rs fw-b pb20">Ocupated (2 of 10)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -252,7 +244,7 @@
                                 <p class="rs fw-b pb20">Ocupated (2 of 10)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -268,7 +260,7 @@
                                 <p class="rs fw-b pb20">Ocupated (12 of 30)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -284,7 +276,7 @@
                                 <p class="rs fw-b pb20">Ocupated (2 of 10)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -300,7 +292,7 @@
                                 <p class="rs fw-b pb20">Ocupated (2 of 10)</p>
                                 <p class="rs"><span class="fw-b">Estimated delivery:</span> Aug 2013</p>
                                 <p class="rs fw-thin fc-gray pb20">Ships within the US only</p>
-                                <p class="rs ta-c"><a class="btn big btn-red" href="#">Buck this project</a></p>
+                                <p class="rs ta-c"><a class="btn big btn-red" href="../#">Buck this project</a></p>
                             </div>
                         </div>
                     </li><!--end: pledge-item -->
@@ -314,7 +306,7 @@
             <div class="grid_3 about-us">
                 <h3 class="rs title">About</h3>
                 <p class="rs description">Donec rutrum elit ac arcu bibendum rhoncus in vitae turpis. Quisque fermentum gravida eros non faucibus. Curabitur fermentum, arcu sed cursus commodo.</p>
-                <p class="rs email"><a class="fc-default  be-fc-orange" href="mailto:info@megadrupal.com">info@megadrupal.com</a></p>
+                <p class="rs email"><a class="fc-default  be-fc-orange" href="../mailto:info@megadrupal.com">info@megadrupal.com</a></p>
                 <p class="rs">+1 (555) 555 - 55 - 55</p>
             </div><!--end: .contact-info -->
 
@@ -322,18 +314,18 @@
                 <h3 class="rs title">Discover &amp; Create</h3>
                 <div class="footer-menu">
                     <ul class="rs">
-                        <li><a class="be-fc-orange" href="#">What is Kickstars</a></li>
-                        <li><a class="be-fc-orange" href="#">Start a project</a></li>
-                        <li><a class="be-fc-orange" href="#">Project Guidlines</a></li>
-                        <li><a class="be-fc-orange" href="#">Press</a></li>
-                        <li><a class="be-fc-orange" href="#">Stats</a></li>
+                        <li><a class="be-fc-orange" href="../#">What is Kickstars</a></li>
+                        <li><a class="be-fc-orange" href="../#">Start a project</a></li>
+                        <li><a class="be-fc-orange" href="../#">Project Guidlines</a></li>
+                        <li><a class="be-fc-orange" href="../#">Press</a></li>
+                        <li><a class="be-fc-orange" href="../#">Stats</a></li>
                     </ul>
                     <ul class="rs">
-                        <li><a class="be-fc-orange" href="#">Staff Picks</a></li>
-                        <li><a class="be-fc-orange" href="#">Popular</a></li>
-                        <li><a class="be-fc-orange" href="#">Recent</a></li>
-                        <li><a class="be-fc-orange" href="#">Small Projects</a></li>
-                        <li><a class="be-fc-orange" href="#">Most Funded</a></li>
+                        <li><a class="be-fc-orange" href="../#">Staff Picks</a></li>
+                        <li><a class="be-fc-orange" href="../#">Popular</a></li>
+                        <li><a class="be-fc-orange" href="../#">Recent</a></li>
+                        <li><a class="be-fc-orange" href="../#">Small Projects</a></li>
+                        <li><a class="be-fc-orange" href="../#">Most Funded</a></li>
                     </ul>
                     <div class="clear"></div>
                 </div>
@@ -343,7 +335,7 @@
         <div class="copyright">
             <div class="container_12">
                 <div class="grid_12">
-                    <a class="logo-footer" href="index.html"><img src="images/logo-2.png" alt="$SITE_NAME"/></a>
+                    <a class="logo-footer" href="../index.html"><img src="../images/logo-2.png" alt="$SITE_NAME"/></a>
 
                 </div>
                 <div class="clear"></div>
@@ -388,7 +380,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <p class="rs pb10">By signing up, you agree to our <a href="#" class="fc-orange">terms of use</a> and <a href="#" class="fc-orange">privacy policy</a>.</p>
+                            <p class="rs pb10">By signing up, you agree to our <a href="../#" class="fc-orange">terms of use</a> and <a href="../#" class="fc-orange">privacy policy</a>.</p>
                             <p class="rs ta-c">
                                 <button class="btn btn-red btn-submit" type="submit">Register</button>
                             </p>
@@ -420,7 +412,7 @@
                                 <button class="btn btn-red btn-submit" type="submit">Login</button>
                             </p>
                             <p class="rs ta-c">
-                                <a href="#" class="fc-orange">I forgot my password</a>
+                                <a href="../#" class="fc-orange">I forgot my password</a>
                             </p>
                         </div>
                     </div>
@@ -432,8 +424,3 @@
 </div>
 </body>
 </html>
-
-
-# Sublime Text 3
-127.0.0.1 www.sublimetext.com
-127.0.0.1 license.sublimehq.com

@@ -22,8 +22,8 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Double goal;
     protected Double pledged;
     protected Integer investorCount;
-    protected Integer projectStatusId;
     protected Integer recommended;
+    protected Integer countryId;
     // resources info
     protected Integer materialThumbnailId;
     protected String materialThumbnailName;
@@ -44,6 +44,9 @@ public class ProjectFullInfoEntity implements Serializable {
     // key for measurement
     public Integer isEditable;
 
+    // story
+    protected Integer storyId;
+
     public ProjectFullInfoEntity() {
     }
 
@@ -51,47 +54,50 @@ public class ProjectFullInfoEntity implements Serializable {
             Integer projectId
             , String projectName
             , Integer userId
-            , String userName
+            , String userFullName
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
             , Double goal
             , Double pledged
             , Integer investorCount
-            , Integer projectStatusId
             , Integer recommended
-            , Integer dayLeft
+            , Integer countryId
             , Integer materialThumbnailId
             , String materialThumbnailName
             , String materialThumbnailPath
+            , Integer statusId
+            , String statusName
             , Integer categoryId
             , String categoryName
             , Double percentPledged
-            , Integer statusId
-            , String statusName) {
+            , Integer dayLeft
+            , Integer storyId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
-        this.userFullName = userName;
+        this.userFullName = userFullName;
         this.projectShortDes = projectShortDes;
         this.startDate = startDate;
         this.endDate = endDate;
         this.goal = goal;
         this.pledged = pledged;
         this.investorCount = investorCount;
-        this.projectStatusId = projectStatusId;
         this.recommended = recommended;
-        this.dayLeft = dayLeft;
+        this.countryId = countryId;
         this.materialThumbnailId = materialThumbnailId;
         this.materialThumbnailName = materialThumbnailName;
         this.materialThumbnailPath = materialThumbnailPath;
+        this.statusId = statusId;
+        this.statusName = statusName;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
-        this.statusId = statusId;
-        this.statusName = statusName;
+        this.dayLeft = dayLeft;
+        this.storyId = storyId;
     }
 
+    // mapping basic info for jpa
     public ProjectFullInfoEntity(
             Integer projectId
             , String projectName
@@ -102,7 +108,6 @@ public class ProjectFullInfoEntity implements Serializable {
             , Double goal
             , Double pledged
             , Integer investorCount
-            , Integer projectStatusId
             , Integer recommended
             , Integer categoryId
     )
@@ -116,7 +121,6 @@ public class ProjectFullInfoEntity implements Serializable {
         this.goal = goal;
         this.pledged = pledged;
         this.investorCount = investorCount;
-        this.projectStatusId = projectStatusId;
         this.recommended = recommended;
         this.categoryId = categoryId;
     }
