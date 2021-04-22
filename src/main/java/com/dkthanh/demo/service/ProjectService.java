@@ -146,7 +146,11 @@ public class ProjectService {
             materialEntity.setProjectId(dto.getProjectId());
             materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
             materialEntity.setPath(dto.getMaterialThumbnailPath());
+            projectRepository.save(entity);
+            materialService.saveImage(materialEntity);
         }
+
+
         return 0;
     }
 }

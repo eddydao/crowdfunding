@@ -259,6 +259,10 @@ public class MainController {
         return "/creator/project-basic";
     }
 
+    /*
+    * Return reward information of project
+     */
+
     @GetMapping(value = "/creator/project/{projectId}/reward")
     public String getProjectFundingInfoForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
@@ -271,6 +275,8 @@ public class MainController {
         model.addAttribute("project_dto", dto);
         return "/creator/project-reward";
     }
+
+
 
     /*
     *   save project with information from form
@@ -299,8 +305,10 @@ public class MainController {
             projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
             projectFullInfoEntity.setCategoryId(dto.getCategoryId());
             projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
+
         }
 
+        projectService.saveProjectFullInfoEntity(projectFullInfoEntity);
         return "redirect:/creator/create-project";
     }
 
