@@ -1,6 +1,7 @@
 package com.dkthanh.demo.domain;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +29,9 @@ public class CategoryEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    @OneToMany(mappedBy = "category")
+    private List<ProjectEntity> projects;
 
     @Override
     public boolean equals(Object o) {
