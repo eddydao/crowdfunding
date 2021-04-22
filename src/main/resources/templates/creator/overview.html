@@ -338,14 +338,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <labelclass=" form-control-label"><b>Funding</b></label>
-                                                        <small class="form-text text-muted">Build out a budget and calculate your financial goals.</small>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class=" form-control-label"><b>Rewards</b></label>
-                                                        <small class="form-text text-muted">Set your rewards.</small>
+                                                        <a th:href="@{/creator/project/{projectId}/funding (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Rewards</b></label>
+                                                            <small class="form-text text-muted">Set your rewards.</small>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                                 <tr>

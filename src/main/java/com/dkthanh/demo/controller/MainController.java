@@ -247,7 +247,7 @@ public class MainController {
      */
 
     @GetMapping(value = "/creator/project/{projectId}/basic")
-    public String getProjectEditFormWithStep(Model model, @PathVariable("projectId") Integer projectId){
+    public String getProjectBasicInfoForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
         ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
@@ -257,6 +257,19 @@ public class MainController {
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         return "/creator/project-basic";
+    }
+
+    @GetMapping(value = "/creator/project/{projectId}/reward")
+    public String getProjectFundingInfoForm(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectDto dto = new ProjectDto();
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
+        return "/creator/project-reward";
     }
 
     /*
