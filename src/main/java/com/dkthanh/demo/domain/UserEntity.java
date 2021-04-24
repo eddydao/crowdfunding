@@ -42,6 +42,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<ProjectEntity> projects;
 
+    @OneToMany(mappedBy = "user")
+    private List<Package> packages;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

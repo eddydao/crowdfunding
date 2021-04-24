@@ -57,6 +57,10 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project")
     private List<OptionEntity> options;
 
+    @OneToMany(mappedBy = "project")
+    private List<Package> packages;
+
+
     @OneToOne
     @JoinColumn(name = "story_id")
     private StoryEntity story;

@@ -1,16 +1,23 @@
 package com.dkthanh.demo.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
+
 public class ProjectInvestorEntityPK implements Serializable {
+    @Column(name = "user_id", nullable = false)
     private Integer userId;
+    @Column(name = "project_id", nullable = false)
     private Integer projectId;
+
+    @Column(name = "investion_option_id", nullable = false)
     private Integer investionOptionId;
 
-    @Column(name = "user_id", nullable = false)
+
     @Id
     public Integer getUserId() {
         return userId;
@@ -20,7 +27,7 @@ public class ProjectInvestorEntityPK implements Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "project_id", nullable = false)
+
     @Id
     public Integer getProjectId() {
         return projectId;

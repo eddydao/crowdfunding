@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "option", schema = "demo", catalog = "")
@@ -25,4 +26,7 @@ public class OptionEntity {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
+
+    @OneToMany(mappedBy = "option")
+    private List<Package> packages;
 }
