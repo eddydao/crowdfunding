@@ -289,26 +289,26 @@ public class MainController {
             return "redirect:/index";
         }
 
-        MaterialEntity materialEntity = new MaterialEntity();
-        materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
-        materialEntity.setDescription(dto.getProjectName());
-        materialEntity.setPath(this.doUpload(request, model,dto));
-        materialEntity.setProjectId(dto.getProjectId());
-        materialEntity = materialService.saveImage(materialEntity);
+//        MaterialEntity materialEntity = new MaterialEntity();
+//        materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
+//        materialEntity.setDescription(dto.getProjectName());
+//        materialEntity.setPath(this.doUpload(request, model,dto));
+//        materialEntity.setProjectId(dto.getProjectId());
+//        materialEntity = materialService.saveImage(materialEntity);
+//
+//        ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
+//
+//        int step = dto.getStep();
+//        // insert basic information
+//        if(step == 1){
+//            projectFullInfoEntity.setProjectName(dto.getProjectName());
+//            projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
+//            projectFullInfoEntity.setCategoryId(dto.getCategoryId());
+//            projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
+//
+//        }
 
-        ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
-
-        int step = dto.getStep();
-        // insert basic information
-        if(step == 1){
-            projectFullInfoEntity.setProjectName(dto.getProjectName());
-            projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
-            projectFullInfoEntity.setCategoryId(dto.getCategoryId());
-            projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
-
-        }
-
-        projectService.saveProjectFullInfoEntity(projectFullInfoEntity);
+//        projectService.saveProjectFullInfoEntity(projectFullInfoEntity);
         return "redirect:/creator/create-project";
     }
 

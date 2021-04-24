@@ -1,169 +1,65 @@
 package com.dkthanh.demo.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "project", schema = "demo", catalog = "")
+@Data
+@ToString
 public class ProjectEntity {
-    private Integer projectId;
-    private String projectName;
-    private Integer userId;
-    private String projectShortDes;
-    private OffsetDateTime startDate;
-    private OffsetDateTime endDate;
-    private Double goal;
-    private Double pledged;
-    private Integer investorCount;
-    private Integer projectStatusId;
-    private Integer recommended;
-    private Integer categoryId;
-
     @Id
     @Column(name = "project_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getProjectId() {
-        return projectId;
-    }
+    private Integer projectId;
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    @Basic
     @Column(name = "project_name", nullable = true, length = 255)
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Basic
+    private String projectName;
     @Column(name = "project_short_des", nullable = true, length = 255)
-    public String getProjectShortDes() {
-        return projectShortDes;
-    }
-
-    public void setProjectShortDes(String projectShortDes) {
-        this.projectShortDes = projectShortDes;
-    }
-
-    @Basic
+    private String projectShortDes;
     @Column(name = "start_date", nullable = true)
-    public OffsetDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    @Basic
+    private OffsetDateTime startDate;
     @Column(name = "end_date", nullable = true)
-    public OffsetDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    @Basic
+    private OffsetDateTime endDate;
     @Column(name = "goal", nullable = true, precision = 0)
-    public Double getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Double goal) {
-        this.goal = goal;
-    }
-
-    @Basic
+    private Double goal;
     @Column(name = "pledged", nullable = true, precision = 0)
-    public Double getPledged() {
-        return pledged;
-    }
-
-    public void setPledged(Double pledged) {
-        this.pledged = pledged;
-    }
-
-    @Basic
+    private Double pledged;
     @Column(name = "investor_count", nullable = true)
-    public Integer getInvestorCount() {
-        return investorCount;
-    }
-
-    public void setInvestorCount(Integer investorCount) {
-        this.investorCount = investorCount;
-    }
-
-    @Basic
-    @Column(name = "project_status_id", nullable = true)
-    public Integer getProjectStatusId() {
-        return projectStatusId;
-    }
-
-    public void setProjectStatusId(Integer projectStatusId) {
-        this.projectStatusId = projectStatusId;
-    }
-
-    @Basic
+    private Integer investorCount;
     @Column(name = "recommended", nullable = true)
-    public Integer getRecommended() {
-        return recommended;
-    }
+    private Integer recommended;
 
-    public void setRecommended(Integer recommended) {
-        this.recommended = recommended;
-    }
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 
-    @Basic
-    @Column(name = "category_id", nullable = true)
-    public Integer getCategoryId() {
-        return categoryId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private StatusEntity projectStatus;
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private CountryEntity country;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private UserEntity user;
 
 
+    @OneToMany(mappedBy = "project")
+    private List<MaterialEntity> materials;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProjectEntity that = (ProjectEntity) o;
-        return Objects.equals(projectId, that.projectId) &&
-                Objects.equals(projectName, that.projectName) &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(projectShortDes, that.projectShortDes) &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate) &&
-                Objects.equals(goal, that.goal) &&
-                Objects.equals(pledged, that.pledged) &&
-                Objects.equals(investorCount, that.investorCount) &&
-                Objects.equals(projectStatusId, that.projectStatusId) &&
-                Objects.equals(recommended, that.recommended) &&
-                Objects.equals(categoryId, that.categoryId);
-    }
+    @OneToMany(mappedBy = "project")
+    private List<OptionEntity> options;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(projectId, projectName, userId, projectShortDes, startDate, endDate, goal, pledged, investorCount, projectStatusId, recommended, categoryId);
-    }
+    @OneToOne
+    @JoinColumn(name = "story_id")
+    private StoryEntity story;
+
+
 }

@@ -1,13 +1,23 @@
 package com.dkthanh.demo.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "user", schema = "demo", catalog = "")
+@Data
+@ToString
 public class UserEntity {
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "username", nullable = false, length = 255)
     private String username;
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
     public UserEntity() {
@@ -24,54 +34,18 @@ public class UserEntity {
         this.password = password;
     }
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserDetailEntity userDetail;
 
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "user")
+    private List<ProjectEntity> projects;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "username", nullable = false, length = 255)
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Basic
-    @Column(name = "password", nullable = false, length = 255)
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(username, that.username) &&
-                Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password);
-    }
-
-
-
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",
+                    referencedColumnName = "role_id"))
+    private List<RoleEntity> roles;
 }

@@ -1,7 +1,6 @@
 package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.ProjectRepository;
-import com.dkthanh.demo.domain.CategoryEntity;
 import com.dkthanh.demo.domain.MaterialEntity;
 import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
@@ -84,33 +83,33 @@ public class ProjectService {
             List<ProjectEntity> listEntity = listOptional.get();
             List<ProjectFullInfoEntity> listFullInfo = new ArrayList<>();
             int rowCount = listEntity.size();
-            for(int i = 0; i < rowCount; i++){
-                ProjectEntity entity = listEntity.get(i);
-                ProjectFullInfoEntity fullEntity = new ProjectFullInfoEntity(
-                        entity.getProjectId()
-                        , entity.getProjectName()
-                        , entity.getUserId()
-                        , entity.getProjectShortDes()
-                        , entity.getStartDate()
-                        , entity.getEndDate()
-                        , entity.getGoal()
-                        , entity.getPledged()
-                        , entity.getInvestorCount()
-                        , entity.getRecommended()
-                        , entity.getCategoryId()
-                );
-                CategoryEntity categoryEntity = categoryService.getCategoryById(entity.getCategoryId());
-                if(!categoryEntity.equals(null)){
-                    fullEntity.setCategoryName(categoryEntity.getName());
-                }
-
-                MaterialEntity materialEntity = materialService.getMaterialByProjectId(entity.getProjectId());
-                fullEntity.setMaterialThumbnailId(materialEntity.getMaterialId());
-                fullEntity.setMaterialThumbnailName(materialEntity.getDescription());
-                fullEntity.setMaterialThumbnailPath(materialEntity.getPath());
-
-                listFullInfo.add(fullEntity);
-            }
+//            for(int i = 0; i < rowCount; i++){
+//                ProjectEntity entity = listEntity.get(i);
+//                ProjectFullInfoEntity fullEntity = new ProjectFullInfoEntity(
+//                        entity.getProjectId()
+//                        , entity.getProjectName()
+//                        , entity.getUserId()
+//                        , entity.getProjectShortDes()
+//                        , entity.getStartDate()
+//                        , entity.getEndDate()
+//                        , entity.getGoal()
+//                        , entity.getPledged()
+//                        , entity.getInvestorCount()
+//                        , entity.getRecommended()
+//                        , entity.getCategoryId()
+//                );
+//                CategoryEntity categoryEntity = categoryService.getCategoryById(entity.getCategoryId());
+//                if(!categoryEntity.equals(null)){
+//                    fullEntity.setCategoryName(categoryEntity.getName());
+//                }
+//
+//                MaterialEntity materialEntity = materialService.getMaterialByProjectId(entity.getProjectId());
+//                fullEntity.setMaterialThumbnailId(materialEntity.getMaterialId());
+//                fullEntity.setMaterialThumbnailName(materialEntity.getDescription());
+//                fullEntity.setMaterialThumbnailPath(materialEntity.getPath());
+//
+//                listFullInfo.add(fullEntity);
+//            }
             return listFullInfo;
         }
         return null;
@@ -139,16 +138,16 @@ public class ProjectService {
         MaterialEntity materialEntity = new MaterialEntity();
 
 
-        if(dto != null){
-            entity.setProjectId(dto.getProjectId());
-            entity.setProjectName(dto.getProjectName());
-            entity.setCategoryId(dto.getCategoryId());
-            materialEntity.setProjectId(dto.getProjectId());
-            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
-            materialEntity.setPath(dto.getMaterialThumbnailPath());
-            projectRepository.save(entity);
-            materialService.saveImage(materialEntity);
-        }
+//        if(dto != null){
+//            entity.setProjectId(dto.getProjectId());
+//            entity.setProjectName(dto.getProjectName());
+////            entity.setCategoryId(dto.getCategoryId());
+//            materialEntity.setProjectId(dto.getProjectId());
+//            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
+//            materialEntity.setPath(dto.getMaterialThumbnailPath());
+//            projectRepository.save(entity);
+//            materialService.saveImage(materialEntity);
+//        }
 
 
         return 0;
