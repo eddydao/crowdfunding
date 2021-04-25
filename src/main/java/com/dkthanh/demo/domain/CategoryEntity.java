@@ -15,6 +15,6 @@ public class CategoryEntity {
     @Column(name = "name", nullable = true, length = 255)
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectEntity> projects;
 }

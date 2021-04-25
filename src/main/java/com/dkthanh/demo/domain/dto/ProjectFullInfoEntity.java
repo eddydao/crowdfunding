@@ -44,8 +44,8 @@ public class ProjectFullInfoEntity implements Serializable {
     // key for measurement
     public Integer isEditable;
 
-    // story
-    protected Integer storyId;
+
+    
 
     public ProjectFullInfoEntity() {
     }
@@ -71,8 +71,7 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer categoryId
             , String categoryName
             , Double percentPledged
-            , Integer dayLeft
-            , Integer storyId) {
+            , Integer dayLeft) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -94,7 +93,6 @@ public class ProjectFullInfoEntity implements Serializable {
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
         this.dayLeft = dayLeft;
-        this.storyId = storyId;
     }
 
     // mapping basic info for jpa

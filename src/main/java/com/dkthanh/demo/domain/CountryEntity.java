@@ -17,6 +17,6 @@ public class CountryEntity {
     @Column(name = "country_name", nullable = true, length = 255)
     private String countryName;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectEntity> projects;
 }

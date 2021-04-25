@@ -11,8 +11,9 @@ import javax.persistence.*;
 @ToString
 public class StoryEntity {
     @Id
-    @Column(name = "story_id", nullable = false)
-    private Integer storyId;
+    @Column(name = "project_id", nullable = false)
+    private Integer projectId;
+
     @Column(name = "story_des", nullable = true, length = -1)
     private String storyDes;
 

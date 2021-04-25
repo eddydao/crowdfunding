@@ -34,8 +34,8 @@ public class UserEntity {
         this.password = password;
     }
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     private UserDetailEntity userDetail;
 
 

@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "project", schema = "demo", catalog = "")
+@Table(name = "project")
 @Data
 @ToString
 public class ProjectEntity {
@@ -47,7 +47,7 @@ public class ProjectEntity {
     private CountryEntity country;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
 
@@ -60,9 +60,8 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project")
     private List<Package> packages;
 
-
-    @OneToOne
-    @JoinColumn(name = "story_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_id")
     private StoryEntity story;
 
 

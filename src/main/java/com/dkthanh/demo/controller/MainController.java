@@ -1,5 +1,7 @@
 package com.dkthanh.demo.controller;
 
+import com.dkthanh.demo.dao.MaterialTypeRepository;
+import com.dkthanh.demo.dao.StoryRepository;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.dto.ProjectDto;
@@ -44,7 +46,11 @@ public class MainController {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialTypeRepository materialTypeRepository;
 
+    @Autowired
+    private StoryRepository storyRepository;
     /*
      *  Common function
      * ===========================================
@@ -290,26 +296,39 @@ public class MainController {
         }
 
 //        MaterialEntity materialEntity = new MaterialEntity();
-//        materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
-//        materialEntity.setDescription(dto.getProjectName());
-//        materialEntity.setPath(this.doUpload(request, model,dto));
-//        materialEntity.setProjectId(dto.getProjectId());
-//        materialEntity = materialService.saveImage(materialEntity);
-//
-//        ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
-//
-//        int step = dto.getStep();
-//        // insert basic information
-//        if(step == 1){
-//            projectFullInfoEntity.setProjectName(dto.getProjectName());
-//            projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
-//            projectFullInfoEntity.setCategoryId(dto.getCategoryId());
-//            projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
-//
-//        }
 
-//        projectService.saveProjectFullInfoEntity(projectFullInfoEntity);
-        return "redirect:/creator/create-project";
+//
+        ProjectEntity projectEntity = new ProjectEntity();
+        int step = dto.getStep();
+        // insert basic information
+        if(step == 1){
+            // get category detail
+            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
+
+
+            projectEntity.setProjectId(dto.getProjectId());
+            projectEntity.setProjectName(dto.getProjectName());
+            projectEntity.setProjectShortDes(dto.getSubTitle());
+            projectEntity.setCategory(category);
+            projectEntity.setGoal(dto.getGoal());
+//            projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIDNIGHT, ZoneOffset.UTC));
+            //
+//            StoryEntity storyEntity = storyRepository.findById(projectEntity.getProjectId()).orElse(new StoryEntity());
+
+            // get material type
+            MaterialTypeEntity materialTypeEntity = materialTypeRepository.findById(Constant.MaterialType.THUMBNAIL.getId()).get();
+
+            // new material entity
+            MaterialEntity materialEntity = new MaterialEntity();
+            materialEntity.setMaterialType(materialTypeEntity);
+            materialEntity.setDescription(dto.getProjectName());
+            materialEntity.setPath(this.doUpload(request, model,dto));
+//            materialEntity.setProject(dto.getProjectId());
+//            materialEntity = materialService.saveImage(materialEntity);
+        }
+
+        projectService.saveProjectEntity(projectEntity);
+        return "redirect:/creator/project/1";
     }
 
 
