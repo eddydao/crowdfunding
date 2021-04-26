@@ -3,18 +3,6 @@
 $( document ).ready(function() {
     $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
 
-    var enddate_input=$('input[name="end-date"]');
-    var startdate_input=$('input[name="start-date"]');
-    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-    var options={
-        format: 'dd/mm/yyyy',
-        container: container,
-        todayHighlight: true,
-        autoclose: true,
-    };
-    enddate_input.datepicker(options);
-    startdate_input.datepicker(options);
-
 });
 
 
