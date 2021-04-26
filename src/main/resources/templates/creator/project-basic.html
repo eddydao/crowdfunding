@@ -402,7 +402,7 @@
                                                 <label class=" form-control-label"><b>Target launch date</b></label>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="date" id="startDate" name="" th:field="*{startDate}">
+                                                <input class="form-control" th:field="*{startDate}" id="start-date" name="start-date" placeholder="DD/MM/YYYY" type="text"/>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -410,8 +410,29 @@
                                                 <label class=" form-control-label"><b>Duration</b></label>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="date" id="duration" name="" th:field="*{duration}">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="inp-date" id="fixed-day" checked  onclick="javascript:showSpecEndDateInput();">
+                                                    <label class="form-check-label" >
+                                                      Fixed number of days (1-60)
+                                                    </label>
+                                                    <div class="col-12 col-md-7" id="inp-fixed-day" >
+                                                        <input type="text" placeholder="Enter number of days">
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="inp-date" id="spec-date" onclick="javascript:showSpecEndDateInput();" >
+                                                    <label class="form-check-label">
+                                                      End in specific date
+                                                    </label>
+                                                    <div class="col-12 col-md-7" id="inp-spec-date" style="visibility:hidden">
+                                                        <label for=""></label>
+                                                        <input class="form-control" id="end-date" name="end-date" placeholder="DD/MM/YYYY" type="text"/>
+                                                    </div>
+                                                  </div>
                                             </div>
+                                            <!-- <div class="col-12 col-md-7">
+                                                <input type="date" id="duration" name="" th:field="*{duration}">
+                                            </div> -->
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-12">
