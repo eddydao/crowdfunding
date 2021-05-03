@@ -54,6 +54,9 @@ public class MainController {
 
     @Autowired
     private OptionService optionService;
+
+    @Autowired
+    private ItemService itemService;
     /*
      *  Common function
      * ===========================================
@@ -294,7 +297,7 @@ public class MainController {
 
         if(projectEntity != null){
             optionList = optionService.getOptionListByProjectId(projectId);
-
+            
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
