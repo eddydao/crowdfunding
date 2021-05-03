@@ -51,6 +51,9 @@ public class MainController {
 
     @Autowired
     private StoryRepository storyRepository;
+
+    @Autowired
+    private OptionService optionService;
     /*
      *  Common function
      * ===========================================
@@ -287,15 +290,15 @@ public class MainController {
         dto.setStep(Constant.ProjectFormStep.REWARD.getId());
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
 
         if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
 
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
-        model.addAttribute("project_dto", dto);
-
-
+        model.addAttribute("options", optionList);
         return "/creator/project-reward";
     }
 

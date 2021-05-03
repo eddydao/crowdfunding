@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "project_investor", schema = "demo", catalog = "")
+@Table(name = "package", schema = "demo", catalog = "")
 @Data
 @ToString
 public class Package {

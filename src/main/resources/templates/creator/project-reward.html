@@ -244,25 +244,23 @@
                                                                 <span>Includes</span>
                                                             </div>
                                                         </div>
-                                                        <div class="card">
+                                                        <div class="card" th:each="option : ${options}">
                                                             <div class="card-body">
                                                                 <div class="mx-auto d-block">
                                                                     <div class="row">
                                                                         <div class="col-lg-3">
-                                                                            <span>Abc</span>
+                                                                            <span th:text="*{option.fundMin}"></span>
                                                                           </section>
                                                                         </div>
                                                                         <div class="col-lg-5">
-                                                                            <span>Abc</span>
-                                                                            <div>
-                                                                                this is description of item
+                                                                            <span th:text="${option.optionName}"></span>
+                                                                            <div th:text="${option.optionDescription}">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-4">
                                                                             <div>
-                                                                                <ul>
-                                                                                    <li>abc</li>
-                                                                                    <li>def</li>
+                                                                                <ul th:each="item : ${option.items}">
+                                                                                    <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
                                                                                 </ul>
                                                                             </div>
                                                                         </div>
