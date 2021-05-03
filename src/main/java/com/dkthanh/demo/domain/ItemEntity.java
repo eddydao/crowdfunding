@@ -11,8 +11,6 @@ public class ItemEntity {
     @Id
     @Column(name = "item_id", nullable = false)
     private Integer itemId;
-//    @Column(name = "option_id", nullable = true)
-//    private Integer optionId;
     @Column(name = "item_name", nullable = true, length = 255)
     private String itemName;
     @Column(name = "quantity", nullable = true)
@@ -21,4 +19,10 @@ public class ItemEntity {
     @ManyToOne
     @JoinColumn(name = "option_id")
     private OptionEntity option;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
+
+
 }

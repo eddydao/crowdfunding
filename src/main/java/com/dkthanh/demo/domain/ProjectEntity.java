@@ -62,6 +62,9 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project")
     private List<Package> packages;
 
+    @OneToMany(mappedBy = "project")
+    private List<ItemEntity> items;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private StoryEntity story;

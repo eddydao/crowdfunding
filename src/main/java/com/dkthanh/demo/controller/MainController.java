@@ -294,14 +294,16 @@ public class MainController {
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         List<OptionEntity> optionList = null;
+        List<ItemEntity> itemList = null;
 
         if(projectEntity != null){
             optionList = optionService.getOptionListByProjectId(projectId);
-            
+            itemList= itemService.getItemsOfProject(projectId);
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("options", optionList);
+        model.addAttribute("items", itemList);
         return "/creator/project-reward";
     }
 
