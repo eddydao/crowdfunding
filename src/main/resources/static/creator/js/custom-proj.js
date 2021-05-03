@@ -1,8 +1,10 @@
 // custom js of dev
 
 $( document ).ready(function() {
-    $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
-
+    var thumbnailImg = document.getElementById("preview-img").src;
+    if(thumbnailImg == null){
+        $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
+    }
 });
 
 

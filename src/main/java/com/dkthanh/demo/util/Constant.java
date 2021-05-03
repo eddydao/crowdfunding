@@ -174,8 +174,8 @@ public final class Constant {
 
     public enum ProjectFormStep{
         BASIC(1, "basic"),
-        FUNDING(2, "funding"),
-        REWARD(3, "reward"),
+        REWARD(2, "reward"),
+        STORY(3, "story"),
         PAYMENT(4, "payment"),
         ;
 

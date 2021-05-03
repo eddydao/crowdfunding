@@ -53,6 +53,11 @@ public class ProjectService {
         return null;
     }
 
+    // get project entity by id
+    public ProjectEntity getProjectEntityById(Integer id){
+        return projectRepository.findById(id).orElse(null);
+    }
+
     // get project detail by id
     public ProjectFullInfoEntity getProjectDetail(Integer id){
         Map<String, Object> map = new HashMap<>();

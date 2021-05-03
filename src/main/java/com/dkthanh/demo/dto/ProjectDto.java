@@ -19,6 +19,7 @@ public class ProjectDto {
     protected Integer countryId;
     protected String imageName;
     protected MultipartFile fileDatas;
+    protected String thumbnailPathFile;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected LocalDate startDate;
@@ -26,6 +27,8 @@ public class ProjectDto {
     protected LocalDate endDate;
     protected Integer duration;
     protected Double goal;
+
+    // reward
 
     public ProjectDto(){}
 

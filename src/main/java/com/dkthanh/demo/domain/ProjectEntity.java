@@ -33,6 +33,8 @@ public class ProjectEntity {
     private Integer investorCount;
     @Column(name = "recommended", nullable = true)
     private Integer recommended;
+    @Column(name = "thumbnail_path", nullable = true)
+    private String thumbnailPath;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

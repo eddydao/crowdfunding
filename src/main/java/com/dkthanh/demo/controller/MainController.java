@@ -62,7 +62,8 @@ public class MainController {
         System.out.println("Description: " + description);
 
         // Thư mục gốc upload file.
-        String uploadRootPath = request.getServletContext().getRealPath("upload");
+        String path = System.getProperty("user.dir");
+        String uploadRootPath = path + "/resources/images/project-assets/" + myUploadForm.getProjectId();
         System.out.println("uploadRootPath=" + uploadRootPath);
 
         File uploadRootDir = new File(uploadRootPath);
@@ -83,11 +84,9 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(fileDatas.getBytes());
                 stream.close();
-//                    uploadedFiles.add(serverFile);
                 System.out.println("Write file: " + serverFile);
             } catch (Exception e) {
                 System.out.println("Error Write file: " + name);
-//                    failedFiles.add(name);
             }
         }
 
@@ -98,9 +97,10 @@ public class MainController {
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
     public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable("project_id") int projectId) throws IOException {
-        String path = projectService.getProjectDetail(projectId).getMaterialThumbnailPath();
+//        String path = projectService.getProjectDetail(projectId).getMaterialThumbnailPath();
+        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath();
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        response.getOutputStream().write(WebUtil.extractByte(path));
+        response.getOutputStream().write(WebUtil.extractByte(thumbnailImagePath));
         response.getOutputStream().close();
     }
 
@@ -148,6 +148,8 @@ public class MainController {
         model.addAttribute("tags", categoryService.getAllCategory());
         return "/search_result";
     }
+
+
     /*
      *  Index page function
      * ===========================================
@@ -255,10 +257,17 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/basic")
     public String getProjectBasicInfoForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+        if(projectEntity != null){
+            dto.setProjectName(projectEntity.getProjectName());
+            dto.setSubTitle(projectEntity.getProjectShortDes());
+            dto.setCategoryId(projectEntity.getCategory().getId());
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath());
+            dto.setGoal(projectEntity.getGoal());
+        }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
@@ -275,10 +284,18 @@ public class MainController {
         ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
-        dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+
+        if(projectEntity != null){
+
+        }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+
+
         return "/creator/project-reward";
     }
 
@@ -294,10 +311,6 @@ public class MainController {
         if (result.hasErrors()) {
             return "redirect:/index";
         }
-
-//        MaterialEntity materialEntity = new MaterialEntity();
-
-//
         ProjectEntity projectEntity = new ProjectEntity();
         int step = dto.getStep();
         // insert basic information
@@ -311,20 +324,7 @@ public class MainController {
             projectEntity.setProjectShortDes(dto.getSubTitle());
             projectEntity.setCategory(category);
             projectEntity.setGoal(dto.getGoal());
-//            projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIDNIGHT, ZoneOffset.UTC));
-            //
-//            StoryEntity storyEntity = storyRepository.findById(projectEntity.getProjectId()).orElse(new StoryEntity());
-
-            // get material type
-            MaterialTypeEntity materialTypeEntity = materialTypeRepository.findById(Constant.MaterialType.THUMBNAIL.getId()).get();
-
-            // new material entity
-            MaterialEntity materialEntity = new MaterialEntity();
-            materialEntity.setMaterialType(materialTypeEntity);
-            materialEntity.setDescription(dto.getProjectName());
-            materialEntity.setPath(this.doUpload(request, model,dto));
-//            materialEntity.setProject(dto.getProjectId());
-//            materialEntity = materialService.saveImage(materialEntity);
+            projectEntity.setThumbnailPath(this.doUpload(request, model, dto));
         }
 
         projectService.saveProjectEntity(projectEntity);
