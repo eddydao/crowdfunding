@@ -281,6 +281,35 @@ public class MainController {
     }
 
     /*
+     *   save project with basic information from form
+     *   not validate infor yet
+     */
+    @PostMapping(value = "/creator/save-project-basic")
+    public String saveProjectBasic(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+                              BindingResult result, final RedirectAttributes redirectAttributes){
+        if (result.hasErrors()) {
+            return "redirect:/index";
+        }
+        ProjectEntity projectEntity = new ProjectEntity();
+        int step = dto.getStep();
+        // insert basic information
+        if(step == 1){
+            // get category detail
+            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
+
+            projectEntity.setProjectId(dto.getProjectId());
+            projectEntity.setProjectName(dto.getProjectName());
+            projectEntity.setProjectShortDes(dto.getSubTitle());
+            projectEntity.setCategory(category);
+            projectEntity.setGoal(dto.getGoal());
+            projectEntity.setThumbnailPath(this.doUpload(request, model, dto));
+        }
+
+        projectService.saveProjectEntity(projectEntity);
+        return "redirect:/creator/project/"+ dto.getProjectId();
+    }
+
+    /*
     * Return reward information of project
      */
 
@@ -304,40 +333,48 @@ public class MainController {
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("options", optionList);
         model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", dto);
         return "/creator/project-reward";
     }
 
+    /*
+    *   Save info of rewards tier and items of project
+     */
 
+    @PostMapping(value = "/creator/save-project-reward")
+    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+                                    BindingResult result, final RedirectAttributes redirectAttributes){
+        return null;
+    }
 
     /*
-    *   save project with information from form
-    *   not validate infor yet
+    *   Open story edit page
      */
-    @PostMapping(value = "/creator/save-project")
-    public String saveProject(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
-                              BindingResult result, final RedirectAttributes redirectAttributes){
-        if (result.hasErrors()) {
-            return "redirect:/index";
-        }
-        ProjectEntity projectEntity = new ProjectEntity();
-        int step = dto.getStep();
-        // insert basic information
-        if(step == 1){
-            // get category detail
-            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
 
+    @GetMapping(value = "/creator/project/{projectId}/story")
+    public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectDto dto = new ProjectDto();
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
-            projectEntity.setProjectId(dto.getProjectId());
-            projectEntity.setProjectName(dto.getProjectName());
-            projectEntity.setProjectShortDes(dto.getSubTitle());
-            projectEntity.setCategory(category);
-            projectEntity.setGoal(dto.getGoal());
-            projectEntity.setThumbnailPath(this.doUpload(request, model, dto));
+        dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
+        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
+            itemList= itemService.getItemsOfProject(projectId);
         }
 
-        projectService.saveProjectEntity(projectEntity);
-        return "redirect:/creator/project/1";
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("options", optionList);
+        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", dto);
+        return "/creator/project-story";
     }
+
 
 
     /*

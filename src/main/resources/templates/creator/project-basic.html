@@ -327,7 +327,7 @@
                                     <strong>Basic information about your project</strong>
                                 </div>
                                 <div class="card-body card-block custom-col">
-                                    <form action="#" th:action = "@{/creator/save-project}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
+                                    <form action="#" th:action = "@{/creator/save-project-basic}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
                                         <!-- Project title and subtitle -->
                                         <div class="row form-group">
                                             <input type="hidden" th:field="*{projectId}" readonly="true">
@@ -447,7 +447,7 @@
                                                 <small class="form-text text-muted"><br></small>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="text" id="text-input" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
+                                                <input type="text" id="text-input-goal" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
                                             </div>
                                         </div>
                                         <div style="display: none;">

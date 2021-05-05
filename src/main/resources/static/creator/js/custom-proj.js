@@ -40,3 +40,49 @@ function showSpecEndDateInput() {
 
 }
 
+var toolbarOptions = [
+    [{'header':1}, {'header':2}],
+    ['bold', 'italic', 'underline'],
+    ['blockquote'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'color': [] }, { 'background': [] }],
+    ['image', 'link'],
+    [{ 'align': [] }]
+]
+var options ={
+    modules: {
+        toolbar: {
+            container: '#toolbar'
+        }
+    },
+    placeholder: 'Your content here...',
+    theme: 'snow'
+
+}
+
+var quill = new Quill('#editor', options);
+
+function selectLocalImage() {
+    const input = document.createElement('image-input');
+    input.setAttribute('type', 'file');
+    input.click();
+
+    // Listen upload local image and save to server
+    input.onchange = () => {
+        const file = input.files[0];
+        // upload to server here with js
+        file.src = URL.createObjectURL(file);
+        insertToEditor(file.src);
+    };
+}
+
+function insertToEditor(url) {
+    // push image url to rich editor.
+    const range = editor.getSelection();
+    quill.insertEmbed(range.index, 'image', `${url}`);
+}
+
+quill.getModule('toolbar').addHandler('image-upload', () => {
+    selectLocalImage();
+  });
