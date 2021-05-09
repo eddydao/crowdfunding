@@ -357,20 +357,14 @@ public class MainController {
         ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
-        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+        dto.setStep(Constant.ProjectFormStep.STORY.getId());
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        List<OptionEntity> optionList = null;
-        List<ItemEntity> itemList = null;
 
         if(projectEntity != null){
-            optionList = optionService.getOptionListByProjectId(projectId);
-            itemList= itemService.getItemsOfProject(projectId);
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
-        model.addAttribute("options", optionList);
-        model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         return "/creator/project-story";
     }
