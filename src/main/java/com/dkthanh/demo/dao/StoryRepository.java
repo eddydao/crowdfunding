@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StoryRepository extends JpaRepository<StoryEntity, Integer> {
+    public StoryEntity findStoryEntityByProjectProjectId(Integer projectId);
 }

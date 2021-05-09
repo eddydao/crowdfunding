@@ -1,7 +1,6 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
-import com.dkthanh.demo.dao.StoryRepository;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.dto.ProjectDto;
@@ -50,7 +49,7 @@ public class MainController {
     private MaterialTypeRepository materialTypeRepository;
 
     @Autowired
-    private StoryRepository storyRepository;
+    private StoryService storyService;
 
     @Autowired
     private OptionService optionService;
@@ -360,13 +359,31 @@ public class MainController {
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        StoryEntity story = null;
 
         if(projectEntity != null){
+            story = storyService.getStoryByProjectId(projectId);
         }
 
+        if(story == null){
+            story = new StoryEntity();
+            story.setProjectId(projectId);
+            story.setProject(projectEntity);
+            storyService.save(story);
+
+        }
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+        model.addAttribute("story", story);
         return "/creator/project-story";
+    }
+
+    @PostMapping(value = "creator/save-project-story")
+    public String saveProjectStory(HttpServletRequest request,Model model, @ModelAttribute("story") @Validated StoryEntity story,
+                                    BindingResult result, final RedirectAttributes redirectAttributes){
+//        int projectDto = dto.getProjectId();
+        String content = story.getStoryDes();
+        return null;
     }
 
 
