@@ -3,11 +3,15 @@ package com.dkthanh.demo.controller;
 import com.dkthanh.demo.dao.MaterialTypeRepository;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
+import com.dkthanh.demo.domain.dto.StoryDto;
+import com.dkthanh.demo.domain.dto.UploadFormDto;
 import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.*;
 import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -56,19 +60,22 @@ public class MainController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private ResourcePath resourcePath;
     /*
      *  Common function
      * ===========================================
      */
-    private String doUpload(HttpServletRequest request, Model model, //
-                            ProjectDto myUploadForm) {
+    private String doUpload(UploadFormDto myUploadForm) {
 
         String description = myUploadForm.getImageName();
         System.out.println("Description: " + description);
 
         // Thư mục gốc upload file.
         String path = System.getProperty("user.dir");
-        String uploadRootPath = path + "/resources/images/project-assets/" + myUploadForm.getProjectId();
+        String uploadRelativePath = "images/project-assets/" + myUploadForm.getProjectId();
+        String uploadRootPath = path + "/src/main/resources/static/" + uploadRelativePath;
         System.out.println("uploadRootPath=" + uploadRootPath);
 
         File uploadRootDir = new File(uploadRootPath);
@@ -94,18 +101,21 @@ public class MainController {
                 System.out.println("Error Write file: " + name);
             }
         }
-
-        return  uploadRootDir.getAbsolutePath() + File.separator + name;
+        return uploadRelativePath +  File.separator + name;
     }
 
     // load thumbnail image
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
     public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable("project_id") int projectId) throws IOException {
-//        String path = projectService.getProjectDetail(projectId).getMaterialThumbnailPath();
         String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath();
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        response.getOutputStream().write(WebUtil.extractByte(thumbnailImagePath));
+        String s = resourcePath.getPath();
+        String absolutePath = s + thumbnailImagePath;
+        File f = new File(absolutePath);
+        if(f.exists() && !f.isDirectory()){
+            response.getOutputStream().write(WebUtil.extractByte(absolutePath));
+        }
         response.getOutputStream().close();
     }
 
@@ -295,13 +305,13 @@ public class MainController {
         if(step == 1){
             // get category detail
             CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
-
+            UploadFormDto uploadDto = new UploadFormDto(dto.getProjectId(), dto.getImageName(), dto.getFileDatas());
             projectEntity.setProjectId(dto.getProjectId());
             projectEntity.setProjectName(dto.getProjectName());
             projectEntity.setProjectShortDes(dto.getSubTitle());
             projectEntity.setCategory(category);
             projectEntity.setGoal(dto.getGoal());
-            projectEntity.setThumbnailPath(this.doUpload(request, model, dto));
+            projectEntity.setThumbnailPath(this.doUpload(uploadDto));
         }
 
         projectService.saveProjectEntity(projectEntity);
@@ -371,11 +381,22 @@ public class MainController {
             story.setProject(projectEntity);
             storyService.save(story);
 
+
         }
+
+        StoryDto storyDto = new StoryDto(projectId, story.getStoryDes());
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
-        model.addAttribute("story", story);
+        model.addAttribute("story_dto", storyDto);
         return "/creator/project-story";
+    }
+
+    @PostMapping(value = "/creator/project/story/upload-image")
+    public ResponseEntity<?> uploadImage(@RequestParam(value = "image") MultipartFile uploadfiles, @RequestParam(value = "projectId") Integer projectId){
+        UploadFormDto uploadFormDto = new UploadFormDto(projectId, uploadfiles);
+        String pathFile  = this.doUpload( uploadFormDto);
+//        pathFile.
+        return new ResponseEntity<String>(pathFile,HttpStatus.OK);
     }
 
     @PostMapping(value = "creator/save-project-story")

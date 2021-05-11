@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
                 http.authorizeRequests().antMatchers("/**").permitAll();
+        http.csrf().disable();
 //        http.authorizeRequests().antMatchers("/","/index", "/logout", "/css/**", "/js/**"
 //                , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register").permitAll()
 //                .antMatchers("/creator/**").hasAnyRole("CREATOR", "ADMIN")

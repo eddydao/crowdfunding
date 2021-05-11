@@ -2,6 +2,7 @@ package com.dkthanh.demo.util;
 
 public final class Constant {
     public static final Integer ID_STEP = 1;
+//    public static final String
 //    public static final class ROLES{
 //        public static final String INVESTOR     = "investor";
 //        public static final String FOUNDER      = "founder";

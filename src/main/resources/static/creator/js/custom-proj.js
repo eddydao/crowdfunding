@@ -13,7 +13,12 @@ $( document ).ready(function() {
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
             ['insert', ['link', 'picture', 'video']]
-        ]
+        ],
+        callbacks:{
+            onImageUpload: function(image){
+                uploadImage(image[0], projectId);
+            }
+        }
     });
 
     var thumbnailImg = document.getElementById("preview-img").src;
@@ -21,6 +26,29 @@ $( document ).ready(function() {
         $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
     }
 });
+
+function uploadImage(image, projectId){
+    
+    var data = new FormData();
+    data.append("image", image);
+    data.append("projectId", projectId);
+    $.ajax({
+        url: "/creator/project/story/upload-image",
+        cache: false,
+        contentType : false,
+        processData: false,
+        data: data,
+        type: "POST",
+        success: function(filePath) {
+            var image = $('<img>').attr('th:src', filePath).addClass("img-fluid");
+            console.log(filePath);
+            $('#summernote').summernote("insertNode", image[0]);
+        },
+        error: function(filePath) {
+            console.log(filePath);
+        }
+    })
+}
 
 
 
@@ -54,24 +82,3 @@ function showSpecEndDateInput() {
     else { document.getElementById('inp-spec-date').style.visibility = 'hidden';}
 
 }
-
-
-// function selectLocalImage() {
-//     const input = document.createElement('image-input');
-//     input.setAttribute('type', 'file');
-//     input.click();
-//
-//     // Listen upload local image and save to server
-//     input.onchange = () => {
-//         const file = input.files[0];
-//         // upload to server here with js
-//         file.src = URL.createObjectURL(file);
-//         insertToEditor(file.src);
-//     };
-// }
-//
-// function insertToEditor(url) {
-//     // push image url to rich editor.
-//     const range = editor.getSelection();
-//     quill.insertEmbed(range.index, 'image', `${url}`);
-// }
