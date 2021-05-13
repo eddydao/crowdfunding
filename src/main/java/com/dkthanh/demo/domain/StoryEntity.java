@@ -1,6 +1,8 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.persistence.*;
 @Table(name = "story", schema = "demo", catalog = "")
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoryEntity {
     @Id
     @Column(name = "project_id", nullable = false)

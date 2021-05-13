@@ -63,6 +63,8 @@ public class MainController {
 
     @Autowired
     private ResourcePath resourcePath;
+
+    public static final String RELATIVE_PATH = "../../../";
     /*
      *  Common function
      * ===========================================
@@ -380,8 +382,6 @@ public class MainController {
             story.setProjectId(projectId);
             story.setProject(projectEntity);
             storyService.save(story);
-
-
         }
 
         StoryDto storyDto = new StoryDto(projectId, story.getStoryDes());
@@ -394,17 +394,19 @@ public class MainController {
     @PostMapping(value = "/creator/project/story/upload-image")
     public ResponseEntity<?> uploadImage(@RequestParam(value = "image") MultipartFile uploadfiles, @RequestParam(value = "projectId") Integer projectId){
         UploadFormDto uploadFormDto = new UploadFormDto(projectId, uploadfiles);
-        String pathFile  = "../../../" + this.doUpload( uploadFormDto);  // get relative path for returned image path uploaded by creator;
-//        pathFile.
+        String pathFile  = RELATIVE_PATH + this.doUpload( uploadFormDto);  // get relative path for returned image path uploaded by creator;
         return new ResponseEntity<String>(pathFile,HttpStatus.OK);
     }
 
     @PostMapping(value = "creator/save-project-story")
     public String saveProjectStory(HttpServletRequest request,Model model, @ModelAttribute("story") @Validated StoryEntity story,
                                     BindingResult result, final RedirectAttributes redirectAttributes){
-//        int projectDto = dto.getProjectId();
         String content = story.getStoryDes();
-        return null;
+        Integer projectId = story.getProjectId();
+        StoryEntity storyEntity = storyService.getStoryByProjectId(projectId);
+        storyEntity.setStoryDes(content);
+        storyService.save(storyEntity);
+        return "redirect:/creator/project/"+ projectId;
     }
 
 
