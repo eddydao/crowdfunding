@@ -166,6 +166,25 @@ public class MainController {
         return "/search_result";
     }
 
+    public String modifiedResourceRelativePath(String content, boolean isMerge){
+        StringBuilder modifiedContent = null;
+        if(!isMerge){
+            String[] contentArray = content.split(RELATIVE_PATH);
+            modifiedContent = new StringBuilder();
+            for (int i = 0; i < contentArray.length; i++){
+                modifiedContent.append(contentArray[i]);
+            }
+        }else{
+            String[] contentArray = content.split("<img src=\"");
+            modifiedContent = new StringBuilder();
+            for (int i = 0; i < contentArray.length-1; i++){
+                modifiedContent.append(contentArray[i] + "<img src=\"../../../");
+            }
+            modifiedContent.append(contentArray[contentArray.length-1]);
+        }
+        return modifiedContent.toString();
+    }
+
 
     /*
      *  Index page function
@@ -383,8 +402,7 @@ public class MainController {
             story.setProject(projectEntity);
             storyService.save(story);
         }
-
-        StoryDto storyDto = new StoryDto(projectId, story.getStoryDes());
+        StoryDto storyDto = new StoryDto(projectId, modifiedResourceRelativePath(story.getStoryDes(), true) );
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         model.addAttribute("story_dto", storyDto);
@@ -402,6 +420,8 @@ public class MainController {
     public String saveProjectStory(HttpServletRequest request,Model model, @ModelAttribute("story") @Validated StoryEntity story,
                                     BindingResult result, final RedirectAttributes redirectAttributes){
         String content = story.getStoryDes();
+
+        modifiedResourceRelativePath(content, false);
         Integer projectId = story.getProjectId();
         StoryEntity storyEntity = storyService.getStoryByProjectId(projectId);
         storyEntity.setStoryDes(content);
