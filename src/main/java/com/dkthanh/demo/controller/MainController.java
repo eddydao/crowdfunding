@@ -394,7 +394,7 @@ public class MainController {
     @PostMapping(value = "/creator/project/story/upload-image")
     public ResponseEntity<?> uploadImage(@RequestParam(value = "image") MultipartFile uploadfiles, @RequestParam(value = "projectId") Integer projectId){
         UploadFormDto uploadFormDto = new UploadFormDto(projectId, uploadfiles);
-        String pathFile  = this.doUpload( uploadFormDto);
+        String pathFile  = "../../../" + this.doUpload( uploadFormDto);  // get relative path for returned image path uploaded by creator;
 //        pathFile.
         return new ResponseEntity<String>(pathFile,HttpStatus.OK);
     }

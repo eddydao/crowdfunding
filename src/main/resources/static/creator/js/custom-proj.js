@@ -28,7 +28,7 @@ $( document ).ready(function() {
 });
 
 function uploadImage(image, projectId){
-    
+    debugger
     var data = new FormData();
     data.append("image", image);
     data.append("projectId", projectId);
@@ -40,9 +40,9 @@ function uploadImage(image, projectId){
         data: data,
         type: "POST",
         success: function(filePath) {
-            var image = $('<img>').attr('th:src', filePath).addClass("img-fluid");
+            var image = $('<img>').attr('src', filePath).addClass("img-fluid");
             console.log(filePath);
-            $('#summernote').summernote("insertNode", image[0]);
+            $('#editor').summernote("insertNode", image[0]);
         },
         error: function(filePath) {
             console.log(filePath);
