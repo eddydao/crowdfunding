@@ -1,0 +1,104 @@
+<!-- edit reward modal -->
+<div class="modal fade" id="editRewardModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+data-backdrop="static"  th:fragment="editRewardModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal" th:action="@{/creator/save-reward}" th:object = "${option}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="smallmodalLabel">Edit reward</h5>
+                    <small class="form-text text-muted">Make sure your rewards are just right. After a backer has selected a reward, you can't edit it.</small>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label"><b>Title</b></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="input-option-title" name="text-input" placeholder="Title" class="form-control" th:field="*{optionName}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label"><b>Amount</b></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="text-input" name="text-input" class="form-control" th:field="*{fundMin}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label"><b>Description</b></label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label"><b>Item</b></label>
+                        </div>
+                        <div class="col-12 col-md-9" >
+                            <div class="row" th:each="item,i : ${option.items}">
+                                <div style="display: none;">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemId}">
+                                </div>
+                                <div class="col-12 col-md-7">
+                                        <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemName}">
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}"> 
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <button type="button" class="btn" data-toggle="modal">
+                                        remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-3"></div>
+                        <div class="col-12 col-md-9">
+                            <button type="button" class="btn" data-toggle="modal" data-target="#addItem" style="width: 100%;color: white;background-color: black;">
+                                Add items
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" value="save" name="action">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- add item modal -->
+<div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="addItem">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="smallmodalLabel">Edit your item</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <label for="text-input" class=" form-control-label"><b>Choose one</b></label>
+                            <select name="" id=""  class="form-control" >
+                                <option th:each="item : ${items}"
+                                        th:value="${item.itemId}"
+                                        th:text="${item.itemName}">Please select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

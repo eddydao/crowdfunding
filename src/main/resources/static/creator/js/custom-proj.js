@@ -28,7 +28,6 @@ $( document ).ready(function() {
 });
 
 function uploadImage(image, projectId){
-    debugger
     var data = new FormData();
     data.append("image", image);
     data.append("projectId", projectId);
@@ -81,4 +80,20 @@ function showSpecEndDateInput() {
     }
     else { document.getElementById('inp-spec-date').style.visibility = 'hidden';}
 
+}
+
+function openEditRewardModal(projectId, optionId){
+    debugger
+    $.ajax({
+        url: "/creator/project/" + projectId + "/reward/" + optionId,
+        success: function(data){
+            console.log(data);
+            $("#editRewardModalHolder").html(data);
+            $("#editRewardModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
 }

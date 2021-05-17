@@ -367,15 +367,36 @@ public class MainController {
         return "/creator/project-reward";
     }
 
+    @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
+    public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
+            @PathVariable("optionId") Integer optionId){
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", optionEntity);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardModal";
+    }
+    /*
+    Create new reward
+     */
+    @PostMapping(value = "/creator/save-reward", params = "action=save")
+    public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionEntity option,
+                                      BindingResult result, final RedirectAttributes redirectAttributes){
+//        /creator/project/{projectId}/create-reward
+        return null;
+    }
+
+
     /*
     *   Save info of rewards tier and items of project
      */
 
-    @PostMapping(value = "/creator/save-project-reward")
-    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
-                                    BindingResult result, final RedirectAttributes redirectAttributes){
-        return null;
-    }
+//    @PostMapping(value = "/creator/save-project-reward")
+//    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+//                                    BindingResult result, final RedirectAttributes redirectAttributes){
+//        return null;
+//    }
 
     /*
     *   Open story edit page

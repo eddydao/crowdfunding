@@ -17,4 +17,8 @@ public class OptionService {
     public List<OptionEntity> getOptionListByProjectId(Integer projectId){
         return optionRepository.findOptionEntitiesByProjectProjectId(projectId);
     }
+
+    public OptionEntity getOptionByProjectIdAndOptionId(Integer projectId, Integer optionId){
+        return optionRepository.findOptionEntitiesByProjectProjectIdAndOptionId(projectId, optionId);
+    }
 }
