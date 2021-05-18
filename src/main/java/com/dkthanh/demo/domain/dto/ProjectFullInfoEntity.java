@@ -24,10 +24,6 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Integer investorCount;
     protected Integer recommended;
     protected Integer countryId;
-    // resources info
-    protected Integer materialThumbnailId;
-    protected String materialThumbnailName;
-    protected String materialThumbnailPath;
     // status
     protected Integer statusId;
     protected String statusName;
@@ -63,9 +59,6 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer investorCount
             , Integer recommended
             , Integer countryId
-            , Integer materialThumbnailId
-            , String materialThumbnailName
-            , String materialThumbnailPath
             , Integer statusId
             , String statusName
             , Integer categoryId
@@ -84,9 +77,6 @@ public class ProjectFullInfoEntity implements Serializable {
         this.investorCount = investorCount;
         this.recommended = recommended;
         this.countryId = countryId;
-        this.materialThumbnailId = materialThumbnailId;
-        this.materialThumbnailName = materialThumbnailName;
-        this.materialThumbnailPath = materialThumbnailPath;
         this.statusId = statusId;
         this.statusName = statusName;
         this.categoryId = categoryId;

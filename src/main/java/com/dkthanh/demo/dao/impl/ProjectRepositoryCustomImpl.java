@@ -41,9 +41,6 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  A.investor_count,\n" +
                         "  A.recommended,\n" +
                         "  A.country_id,\n" +
-                        "  B.material_id,\n" +
-                        "  B.description,\n" +
-                        "  B.path,\n" +
                         "  A.status_id as status_id,\n"+
                         "  D.name as status_name,\n"+
                         "  C.id as category_id,\n" +
@@ -51,12 +48,12 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  0.0 as percent_pledged,\n"+
                         "  0 as day_left\n"+
                         "FROM\n" +
-                        "  project A left join material B on A.project_id = B.project_id\n" +
-                        "  JOIN category C ON A.category_id = C.id\n" +
-                        "  JOIN status D ON A.status_id = D.status_id\n" +
-                        "  JOIN story G ON A.project_id = G.project_id\n" +
-                        "  JOIN user E ON A.user_id = E.id\n" +
-                        "  JOIN user_detail F ON E.id = F.user_id\n"+
+                        "  project A \n" +
+                        "  LEFT JOIN category C ON A.category_id = C.id\n" +
+                        "  LEFT JOIN status D ON A.status_id = D.status_id\n" +
+                        "  LEFT JOIN story G ON A.project_id = G.project_id\n" +
+                        "  LEFT JOIN user E ON A.user_id = E.id\n" +
+                        "  LEFT JOIN user_detail F ON E.id = F.user_id\n"+
                         "WHERE 1 = 1\n" );
 
         // get project detail with id

@@ -47,7 +47,7 @@ public class ProjectService {
         map.put(Constant.PROJECT_KEY.IS_RECOMMENDED, 1);
         map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
         List<ProjectFullInfoEntity> project = projectRepository.getProjectListWithDetail(map);
-        if(project instanceof ProjectFullInfoEntity && project.size() == 1){
+        if(project != null && project.size() == 1){
             return project.get(0);
         }
         return null;
