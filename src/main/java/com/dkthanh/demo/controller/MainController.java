@@ -1,12 +1,18 @@
 package com.dkthanh.demo.controller;
 
+import com.dkthanh.demo.dao.MaterialTypeRepository;
 import com.dkthanh.demo.domain.*;
+import com.dkthanh.demo.domain.dto.OptionDto;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
+import com.dkthanh.demo.domain.dto.StoryDto;
+import com.dkthanh.demo.domain.dto.UploadFormDto;
 import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.*;
 import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -44,19 +50,35 @@ public class MainController {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private MaterialTypeRepository materialTypeRepository;
 
+    @Autowired
+    private StoryService storyService;
+
+    @Autowired
+    private OptionService optionService;
+
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private ResourcePath resourcePath;
+
+    public static final String RELATIVE_PATH = "../../../";
     /*
      *  Common function
      * ===========================================
      */
-    private String doUpload(HttpServletRequest request, Model model, //
-                            ProjectDto myUploadForm) {
+    private String doUpload(UploadFormDto myUploadForm) {
 
         String description = myUploadForm.getImageName();
         System.out.println("Description: " + description);
 
         // Thư mục gốc upload file.
-        String uploadRootPath = request.getServletContext().getRealPath("upload");
+        String path = System.getProperty("user.dir");
+        String uploadRelativePath = "images/project-assets/" + myUploadForm.getProjectId();
+        String uploadRootPath = path + "/src/main/resources/static/" + uploadRelativePath;
         System.out.println("uploadRootPath=" + uploadRootPath);
 
         File uploadRootDir = new File(uploadRootPath);
@@ -77,24 +99,26 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
                 stream.write(fileDatas.getBytes());
                 stream.close();
-//                    uploadedFiles.add(serverFile);
                 System.out.println("Write file: " + serverFile);
             } catch (Exception e) {
                 System.out.println("Error Write file: " + name);
-//                    failedFiles.add(name);
             }
         }
-
-        return  uploadRootDir.getAbsolutePath() + File.separator + name;
+        return uploadRelativePath +  File.separator + name;
     }
 
     // load thumbnail image
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
     public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable("project_id") int projectId) throws IOException {
-        String path = projectService.getProjectDetail(projectId).getMaterialThumbnailPath();
+        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath();
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        response.getOutputStream().write(WebUtil.extractByte(path));
+        String s = resourcePath.getPath();
+        String absolutePath = s + thumbnailImagePath;
+        File f = new File(absolutePath);
+        if(f.exists() && !f.isDirectory()){
+            response.getOutputStream().write(WebUtil.extractByte(absolutePath));
+        }
         response.getOutputStream().close();
     }
 
@@ -142,6 +166,27 @@ public class MainController {
         model.addAttribute("tags", categoryService.getAllCategory());
         return "/search_result";
     }
+
+    public String modifiedResourceRelativePath(String content, boolean isMerge){
+        StringBuilder modifiedContent = null;
+        if(!isMerge){
+            String[] contentArray = content.split(RELATIVE_PATH);
+            modifiedContent = new StringBuilder();
+            for (int i = 0; i < contentArray.length; i++){
+                modifiedContent.append(contentArray[i]);
+            }
+        }else{
+            String[] contentArray = content.split("<img src=\"");
+            modifiedContent = new StringBuilder();
+            for (int i = 0; i < contentArray.length-1; i++){
+                modifiedContent.append(contentArray[i] + "<img src=\"../../../");
+            }
+            modifiedContent.append(contentArray[contentArray.length-1]);
+        }
+        return modifiedContent.toString();
+    }
+
+
     /*
      *  Index page function
      * ===========================================
@@ -249,14 +294,50 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/basic")
     public String getProjectBasicInfoForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+        if(projectEntity != null){
+            dto.setProjectName(projectEntity.getProjectName());
+            dto.setSubTitle(projectEntity.getProjectShortDes());
+            dto.setCategoryId(projectEntity.getCategory().getId());
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath());
+            dto.setGoal(projectEntity.getGoal());
+        }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         return "/creator/project-basic";
+    }
+
+    /*
+     *   save project with basic information from form
+     *   not validate infor yet
+     */
+    @PostMapping(value = "/creator/save-project-basic")
+    public String saveProjectBasic(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+                              BindingResult result, final RedirectAttributes redirectAttributes){
+        if (result.hasErrors()) {
+            return "redirect:/index";
+        }
+        ProjectEntity projectEntity = new ProjectEntity();
+        int step = dto.getStep();
+        // insert basic information
+        if(step == 1){
+            // get category detail
+            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
+            UploadFormDto uploadDto = new UploadFormDto(dto.getProjectId(), dto.getImageName(), dto.getFileDatas());
+            projectEntity.setProjectId(dto.getProjectId());
+            projectEntity.setProjectName(dto.getProjectName());
+            projectEntity.setProjectShortDes(dto.getSubTitle());
+            projectEntity.setCategory(category);
+            projectEntity.setGoal(dto.getGoal());
+            projectEntity.setThumbnailPath(this.doUpload(uploadDto));
+        }
+
+        projectService.saveProjectEntity(projectEntity);
+        return "redirect:/creator/project/"+ dto.getProjectId();
     }
 
     /*
@@ -269,48 +350,115 @@ public class MainController {
         ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
-        dto.setStep(Constant.ProjectFormStep.BASIC.getId());
+        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
+        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
+            itemList= itemService.getItemsOfProject(projectId);
+        }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("options", optionList);
+        model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         return "/creator/project-reward";
     }
 
+    @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
+    public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
+            @PathVariable("optionId") Integer optionId){
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardModal";
+    }
+    /*
+    Create new reward
+     */
+    @PostMapping(value = "/creator/save-reward", params = "action=save")
+    public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto optionDto,
+                                      BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer projectId  = optionDto.getProjectId();
+        Integer optionId = optionDto.getOptionId();
+        OptionEntity option = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        option.setOptionName(optionDto.getOptionName());
+        option.setOptionDescription(optionDto.getOptionDescription());
+        option.setFundMin(optionDto.getFundMin());
+        option.setItems(optionDto.getItems());
+        optionService.save(option);
+        return "redirect:/creator/project/" +projectId + "/reward/" ;
+    }
 
 
     /*
-    *   save project with information from form
-    *   not validate infor yet
+    *   Save info of rewards tier and items of project
      */
-    @PostMapping(value = "/creator/save-project")
-    public String saveProject(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
-                              BindingResult result, final RedirectAttributes redirectAttributes){
-        if (result.hasErrors()) {
-            return "redirect:/index";
+
+//    @PostMapping(value = "/creator/save-project-reward")
+//    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
+//                                    BindingResult result, final RedirectAttributes redirectAttributes){
+//        return null;
+//    }
+
+    /*
+    *   Open story edit page
+     */
+
+    @GetMapping(value = "/creator/project/{projectId}/story")
+    public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectDto dto = new ProjectDto();
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.STORY.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        StoryEntity story = null;
+
+        if(projectEntity != null){
+            story = storyService.getStoryByProjectId(projectId);
         }
 
-        MaterialEntity materialEntity = new MaterialEntity();
-        materialEntity.setMaterialTypeId(Constant.MaterialType.IMAGE.getId());
-        materialEntity.setDescription(dto.getProjectName());
-        materialEntity.setPath(this.doUpload(request, model,dto));
-        materialEntity.setProjectId(dto.getProjectId());
-        materialEntity = materialService.saveImage(materialEntity);
-
-        ProjectFullInfoEntity projectFullInfoEntity = new ProjectFullInfoEntity();
-
-        int step = dto.getStep();
-        // insert basic information
-        if(step == 1){
-            projectFullInfoEntity.setProjectName(dto.getProjectName());
-            projectFullInfoEntity.setProjectShortDes(dto.getSubTitle());
-            projectFullInfoEntity.setCategoryId(dto.getCategoryId());
-            projectFullInfoEntity.setMaterialThumbnailId(materialEntity.getMaterialId() != null ? materialEntity.getMaterialId() : null);
-
+        if(story == null){
+            story = new StoryEntity();
+            story.setProjectId(projectId);
+            story.setProject(projectEntity);
+            storyService.save(story);
         }
-
-        projectService.saveProjectFullInfoEntity(projectFullInfoEntity);
-        return "redirect:/creator/create-project";
+        StoryDto storyDto = new StoryDto(projectId, modifiedResourceRelativePath(story.getStoryDes(), true) );
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
+        model.addAttribute("story_dto", storyDto);
+        return "/creator/project-story";
     }
+
+    @PostMapping(value = "/creator/project/story/upload-image")
+    public ResponseEntity<?> uploadImage(@RequestParam(value = "image") MultipartFile uploadfiles, @RequestParam(value = "projectId") Integer projectId){
+        UploadFormDto uploadFormDto = new UploadFormDto(projectId, uploadfiles);
+        String pathFile  = RELATIVE_PATH + this.doUpload( uploadFormDto);  // get relative path for returned image path uploaded by creator;
+        return new ResponseEntity<String>(pathFile,HttpStatus.OK);
+    }
+
+    @PostMapping(value = "creator/save-project-story")
+    public String saveProjectStory(HttpServletRequest request,Model model, @ModelAttribute("story") @Validated StoryEntity story,
+                                    BindingResult result, final RedirectAttributes redirectAttributes){
+        String content = story.getStoryDes();
+
+        modifiedResourceRelativePath(content, false);
+        Integer projectId = story.getProjectId();
+        StoryEntity storyEntity = storyService.getStoryByProjectId(projectId);
+        storyEntity.setStoryDes(content);
+        storyService.save(storyEntity);
+        return "redirect:/creator/project/"+ projectId;
+    }
+
 
 
     /*

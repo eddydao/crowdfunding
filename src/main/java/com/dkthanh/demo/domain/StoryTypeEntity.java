@@ -1,45 +1,22 @@
 package com.dkthanh.demo.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "story_type", schema = "demo", catalog = "")
+@Data
+@ToString
 public class StoryTypeEntity {
-    private Integer storyTypeId;
-    private String storyTypeName;
-
     @Id
     @Column(name = "story_type_id", nullable = false)
-    public Integer getStoryTypeId() {
-        return storyTypeId;
-    }
-
-    public void setStoryTypeId(Integer storyTypeId) {
-        this.storyTypeId = storyTypeId;
-    }
-
-    @Basic
+    private Integer storyTypeId;
     @Column(name = "story_type_name", nullable = true, length = 255)
-    public String getStoryTypeName() {
-        return storyTypeName;
-    }
+    private String storyTypeName;
 
-    public void setStoryTypeName(String storyTypeName) {
-        this.storyTypeName = storyTypeName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StoryTypeEntity that = (StoryTypeEntity) o;
-        return Objects.equals(storyTypeId, that.storyTypeId) &&
-                Objects.equals(storyTypeName, that.storyTypeName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(storyTypeId, storyTypeName);
-    }
+    @OneToMany(mappedBy = "storyType")
+    private List<StoryEntity> stories;
 }

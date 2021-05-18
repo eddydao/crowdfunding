@@ -24,10 +24,6 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Integer investorCount;
     protected Integer recommended;
     protected Integer countryId;
-    // resources info
-    protected Integer materialThumbnailId;
-    protected String materialThumbnailName;
-    protected String materialThumbnailPath;
     // status
     protected Integer statusId;
     protected String statusName;
@@ -44,8 +40,8 @@ public class ProjectFullInfoEntity implements Serializable {
     // key for measurement
     public Integer isEditable;
 
-    // story
-    protected Integer storyId;
+
+    
 
     public ProjectFullInfoEntity() {
     }
@@ -63,16 +59,12 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer investorCount
             , Integer recommended
             , Integer countryId
-            , Integer materialThumbnailId
-            , String materialThumbnailName
-            , String materialThumbnailPath
             , Integer statusId
             , String statusName
             , Integer categoryId
             , String categoryName
             , Double percentPledged
-            , Integer dayLeft
-            , Integer storyId) {
+            , Integer dayLeft) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -85,16 +77,12 @@ public class ProjectFullInfoEntity implements Serializable {
         this.investorCount = investorCount;
         this.recommended = recommended;
         this.countryId = countryId;
-        this.materialThumbnailId = materialThumbnailId;
-        this.materialThumbnailName = materialThumbnailName;
-        this.materialThumbnailPath = materialThumbnailPath;
         this.statusId = statusId;
         this.statusName = statusName;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
         this.dayLeft = dayLeft;
-        this.storyId = storyId;
     }
 
     // mapping basic info for jpa

@@ -30,7 +30,7 @@
     <link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <!-- Main CSS-->
     <!-- <link href="../../css/theme.css" rel="stylesheet" media="all"> -->
     <link href="../../css/custom-style.css" rel="stylesheet" media="all">
@@ -327,7 +327,7 @@
                                     <strong>Basic information about your project</strong>
                                 </div>
                                 <div class="card-body card-block custom-col">
-                                    <form action="#" th:action = "@{/creator/save-project}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
+                                    <form action="#" th:action = "@{/creator/save-project-basic}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
                                         <!-- Project title and subtitle -->
                                         <div class="row form-group">
                                             <input type="hidden" th:field="*{projectId}" readonly="true">
@@ -387,7 +387,7 @@
                                             <div class="col col-md-7">
                                                 <input type="file" id="file-input" name="file-input" class="form-control-file" th:field="*{fileDatas}">
                                                 <div style="width: 100%; height: 400px;">
-                                                    <img id="preview-img" src="#" alt="your image" style="max-width:100%; max-height:100%;"/>
+                                                    <img id="preview-img" src="#" alt="your image" style="max-width:100%; max-height:100%;" th:src="@{/project/image/} + ${project_dto.projectId}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -402,7 +402,9 @@
                                                 <label class=" form-control-label"><b>Target launch date</b></label>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="date" id="startDate" name="" th:field="*{startDate}">
+                                                <div class="col-12 col-md-7">
+                                                    <input class="form-control"  id="start-date" name="start-date" placeholder="DD/MM/YYYY" type="date" th:field="*{startDate}"/>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -410,8 +412,29 @@
                                                 <label class=" form-control-label"><b>Duration</b></label>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="date" id="duration" name="" th:field="*{duration}">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="inp-date" id="fixed-day" checked  onclick="javascript:showSpecEndDateInput();">
+                                                    <label class="form-check-label" >
+                                                      Fixed number of days (1-60)
+                                                    </label>
+                                                    <div class="col-12 col-md-7" id="inp-fixed-day" >
+                                                        <input type="text" placeholder="Enter number of days">
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="inp-date" id="spec-date" onclick="javascript:showSpecEndDateInput();" >
+                                                    <label class="form-check-label">
+                                                      End in specific date
+                                                    </label>
+                                                    <div class="col-12 col-md-7" id="inp-spec-date" style="visibility:hidden">
+                                                        <label for=""></label>
+                                                        <input class="form-control" id="end-date" name="end-date" placeholder="DD/MM/YYYY" type="date"/>
+                                                    </div>
+                                                  </div>
                                             </div>
+                                            <!-- <div class="col-12 col-md-7">
+                                                <input type="date" id="duration" name="" th:field="*{duration}">
+                                            </div> -->
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-12">
@@ -424,7 +447,7 @@
                                                 <small class="form-text text-muted"><br></small>
                                             </div>
                                             <div class="col-12 col-md-7">
-                                                <input type="text" id="text-input" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
+                                                <input type="text" id="text-input-goal" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
                                             </div>
                                         </div>
                                         <div style="display: none;">
@@ -470,7 +493,7 @@
 <script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
 <script src="../../vendor/select2/select2.min.js">
 </script>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <!-- Main JS-->
 <script src="../../js/main.js"></script>
 <script src="../../js/custom-proj.js"></script>

@@ -1,4 +1,56 @@
 // custom js of dev
+
+$( document ).ready(function() {
+
+    $('#editor').summernote({
+        height: 550,
+        maxHeight: 550,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']]
+        ],
+        callbacks:{
+            onImageUpload: function(image){
+                uploadImage(image[0], projectId);
+            }
+        }
+    });
+
+    var thumbnailImg = document.getElementById("preview-img").src;
+    if(thumbnailImg == null){
+        $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
+    }
+});
+
+function uploadImage(image, projectId){
+    var data = new FormData();
+    data.append("image", image);
+    data.append("projectId", projectId);
+    $.ajax({
+        url: "/creator/project/story/upload-image",
+        cache: false,
+        contentType : false,
+        processData: false,
+        data: data,
+        type: "POST",
+        success: function(filePath) {
+            var image = $('<img>').attr('src', filePath).addClass("img-fluid");
+            console.log(filePath);
+            $('#editor').summernote("insertNode", image[0]);
+        },
+        error: function(filePath) {
+            console.log(filePath);
+        }
+    })
+}
+
+
+
 var reader = new FileReader();
 reader.onload = function (e) {
     var src = e.target.result;
@@ -17,6 +69,31 @@ $("#file-input").change(function(){
     readURL(this);
 });
 
-$( document ).ready(function() {
-    $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
-});
+function showSpecEndDateInput() {
+    if (document.getElementById('fixed-day').checked) {
+        document.getElementById('inp-fixed-day').style.visibility = 'visible';
+    }
+    else { document.getElementById('inp-fixed-day').style.visibility = 'hidden'; }
+
+    if (document.getElementById('spec-date').checked) {
+        document.getElementById('inp-spec-date').style.visibility = 'visible';
+    }
+    else { document.getElementById('inp-spec-date').style.visibility = 'hidden';}
+
+}
+
+function openEditRewardModal(projectId, optionId){
+    debugger
+    $.ajax({
+        url: "/creator/project/" + projectId + "/reward/" + optionId,
+        success: function(data){
+            console.log(data);
+            $("#editRewardModalHolder").html(data);
+            $("#editRewardModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}

@@ -27,16 +27,12 @@ import java.time.OffsetDateTime;
                         @ColumnResult(name = "investor_count", type = Integer.class),
                         @ColumnResult(name = "recommended", type = Integer.class),
                         @ColumnResult(name = "country_id", type = Integer.class),
-                        @ColumnResult(name = "material_id", type = Integer.class),
-                        @ColumnResult(name = "description", type = String.class),
-                        @ColumnResult(name = "path", type = String.class),
                         @ColumnResult(name = "status_id", type = Integer.class),
                         @ColumnResult(name = "status_name", type = String.class),
                         @ColumnResult(name = "category_id", type = Integer.class),
                         @ColumnResult(name = "category_name", type = String.class),
                         @ColumnResult(name = "percent_pledged", type = Double.class),
-                        @ColumnResult(name = "day_left", type = Integer.class),
-                        @ColumnResult(name = "story_id", type = Integer.class)
+                        @ColumnResult(name = "day_left", type = Integer.class)
             })
         }
     )

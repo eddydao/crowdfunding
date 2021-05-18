@@ -8,5 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MaterialRepository extends JpaRepository<MaterialEntity, MaterialEntityPK> {
-    Optional<List<MaterialEntity>> findAllByProjectId(Integer id);
+//    Optional<List<MaterialEntity>> findAllByProjectId(Integer id);
+    Optional<List<MaterialEntity>> findAllByProjectProjectIdAndMaterialTypeId(int projectId, int materialTypeId);
 }

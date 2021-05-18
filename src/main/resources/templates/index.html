@@ -123,12 +123,12 @@
                     <div class="top-project-info">
                         <div class="content-info-short clearfix">
                             <a href="#" class="thumb-img">
-                                <img src="images/ex/th-292x204-1.jpg" alt="$TITLE">
+                                <img th:src="@{/project/image/} + ${recommended_project.projectId}" alt="$TITLE">
                             </a>
                             <div class="wrap-short-detail">
-                                <h3 class="rs acticle-title"><a class="be-fc-orange" href="project.html">LYK and Bear #1: No Food Deed Unpunished</a></h3>
+                                <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${recommended_project.projectId}" ><span th:text="${recommended_project.projectName}"></span></a></h3>
                                 <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange">Ray Sumser</a> in <span class="fw-b fc-gray">New York, NY</span></p>
-                                <p class="rs title-description">Nam sit amet est sapien, a faucibus purus. Sed commodo facilisis tempus. Pellentesque placerat elementum adipiscing.</p>
+                                <p class="rs title-description" th:text="${recommended_project.projectShortDes}"></p>
                             </div>
                             <p class="rs clearfix comment-view">
                                 <a href="#" class="fc-gray be-fc-orange">75 comments</a>

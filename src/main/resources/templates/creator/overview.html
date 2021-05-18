@@ -338,7 +338,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <a th:href="@{/creator/project/{projectId}/funding (projectId = ${project_dto.projectId})} " >
+                                                        <a th:href="@{/creator/project/{projectId}/reward (projectId = ${project_dto.projectId})} " >
                                                             <label class=" form-control-label"><b>Rewards</b></label>
                                                             <small class="form-text text-muted">Set your rewards.</small>
                                                         </a>
@@ -346,8 +346,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label class=" form-control-label"><b>Story</b></label>
-                                                        <small class="form-text text-muted">Add a detailed project description and convey your risks and challenges.</small>
+                                                        <a th:href="@{/creator/project/{projectId}/story (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Story</b></label>
+                                                            <small class="form-text text-muted">Add a detailed project description and convey your risks and challenges.</small>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                                 <tr>

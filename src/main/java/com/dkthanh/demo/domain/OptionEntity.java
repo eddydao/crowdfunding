@@ -1,93 +1,35 @@
 package com.dkthanh.demo.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "option", schema = "demo", catalog = "")
+@Data
+@ToString
 public class OptionEntity {
-    private Integer optionId;
-    private Integer projectId;
-    private String optionName;
-    private String optionDescription;
-    private Integer fundMax;
-    private Integer fundMin;
-
     @Id
     @Column(name = "option_id", nullable = false)
-    public Integer getOptionId() {
-        return optionId;
-    }
-
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
-    }
-
-    @Basic
-    @Column(name = "project_id", nullable = false)
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    @Basic
+    private Integer optionId;
     @Column(name = "option_name", nullable = true, length = 255)
-    public String getOptionName() {
-        return optionName;
-    }
-
-    public void setOptionName(String optionName) {
-        this.optionName = optionName;
-    }
-
-    @Basic
+    private String optionName;
     @Column(name = "option_description", nullable = true, length = 255)
-    public String getOptionDescription() {
-        return optionDescription;
-    }
-
-    public void setOptionDescription(String optionDescription) {
-        this.optionDescription = optionDescription;
-    }
-
-    @Basic
+    private String optionDescription;
     @Column(name = "fund_max", nullable = true, precision = 0)
-    public Integer getFundMax() {
-        return fundMax;
-    }
-
-    public void setFundMax(Integer fundMax) {
-        this.fundMax = fundMax;
-    }
-
-    @Basic
+    private Integer fundMax;
     @Column(name = "fund_min", nullable = true, precision = 0)
-    public Integer getFundMin() {
-        return fundMin;
-    }
+    private Integer fundMin;
 
-    public void setFundMin(Integer fundMin) {
-        this.fundMin = fundMin;
-    }
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OptionEntity that = (OptionEntity) o;
-        return Objects.equals(optionId, that.optionId) &&
-                Objects.equals(projectId, that.projectId) &&
-                Objects.equals(optionName, that.optionName) &&
-                Objects.equals(optionDescription, that.optionDescription) &&
-                Objects.equals(fundMax, that.fundMax) &&
-                Objects.equals(fundMin, that.fundMin);
-    }
+    @OneToMany(mappedBy = "option")
+    private List<Package> packages;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(optionId, projectId, optionName, optionDescription, fundMax, fundMin);
-    }
+    @OneToMany(mappedBy = "option")
+    private List<ItemEntity> items;
 }

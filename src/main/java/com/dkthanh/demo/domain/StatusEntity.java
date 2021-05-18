@@ -1,45 +1,23 @@
 package com.dkthanh.demo.domain;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Table(name = "status", schema = "demo", catalog = "")
+@Data
+@ToString
 public class StatusEntity {
-    private Integer id;
+    @Id
+    @Column(name = "status_id", nullable = false)
+    private Integer statusId;
+    @Column(name = "name", nullable = true, length = 255)
     private String name;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    public Integer getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "projectStatus")
+    private List<ProjectEntity> projects;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = 255)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StatusEntity that = (StatusEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

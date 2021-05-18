@@ -2,6 +2,7 @@ package com.dkthanh.demo.util;
 
 public final class Constant {
     public static final Integer ID_STEP = 1;
+//    public static final String
 //    public static final class ROLES{
 //        public static final String INVESTOR     = "investor";
 //        public static final String FOUNDER      = "founder";
@@ -174,8 +175,8 @@ public final class Constant {
 
     public enum ProjectFormStep{
         BASIC(1, "basic"),
-        FUNDING(2, "funding"),
-        REWARD(3, "reward"),
+        REWARD(2, "reward"),
+        STORY(3, "story"),
         PAYMENT(4, "payment"),
         ;
 
