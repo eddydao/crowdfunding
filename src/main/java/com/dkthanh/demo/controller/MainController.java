@@ -2,6 +2,7 @@ package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
 import com.dkthanh.demo.domain.*;
+import com.dkthanh.demo.domain.dto.OptionDto;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.domain.dto.StoryDto;
 import com.dkthanh.demo.domain.dto.UploadFormDto;
@@ -372,8 +373,9 @@ public class MainController {
             @PathVariable("optionId") Integer optionId){
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId);
         model.addAttribute("projectId", projectId);
-        model.addAttribute("option", optionEntity);
+        model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());
         return "/creator/fragments/modal :: editRewardModal";
     }
@@ -381,10 +383,17 @@ public class MainController {
     Create new reward
      */
     @PostMapping(value = "/creator/save-reward", params = "action=save")
-    public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionEntity option,
+    public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto optionDto,
                                       BindingResult result, final RedirectAttributes redirectAttributes){
-//        /creator/project/{projectId}/create-reward
-        return null;
+        Integer projectId  = optionDto.getProjectId();
+        Integer optionId = optionDto.getOptionId();
+        OptionEntity option = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        option.setOptionName(optionDto.getOptionName());
+        option.setOptionDescription(optionDto.getOptionDescription());
+        option.setFundMin(optionDto.getFundMin());
+        option.setItems(optionDto.getItems());
+        optionService.save(option);
+        return "redirect:/creator/project/" +projectId + "/reward/" ;
     }
 
 

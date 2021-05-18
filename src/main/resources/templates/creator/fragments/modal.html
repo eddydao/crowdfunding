@@ -9,6 +9,10 @@ data-backdrop="static"  th:fragment="editRewardModal">
                     <small class="form-text text-muted">Make sure your rewards are just right. After a backer has selected a reward, you can't edit it.</small>
                 </div>
                 <div class="modal-body">
+                    <div class="row form-group" style="display: none;">
+                        <input type="text" id="input-option-id" name="text-input" placeholder="Title" class="form-control" th:field="*{optionId}">
+                        <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">
+                    </div>
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="text-input" class=" form-control-label"><b>Title</b></label>
@@ -49,7 +53,7 @@ data-backdrop="static"  th:fragment="editRewardModal">
                                     <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}"> 
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <button type="button" class="btn" data-toggle="modal">
+                                    <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">
                                         remove
                                     </button>
                                 </div>

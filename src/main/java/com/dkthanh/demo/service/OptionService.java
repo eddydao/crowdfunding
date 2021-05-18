@@ -21,4 +21,8 @@ public class OptionService {
     public OptionEntity getOptionByProjectIdAndOptionId(Integer projectId, Integer optionId){
         return optionRepository.findOptionEntitiesByProjectProjectIdAndOptionId(projectId, optionId);
     }
+
+    public OptionEntity save(OptionEntity optionEntity){
+        return optionRepository.save(optionEntity);
+    }
 }
