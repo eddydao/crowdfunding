@@ -107,9 +107,7 @@
                             <div class="thumb-img">
                                 <div class="rslides_container">
                                     <ul class="rslides" id="slider1">
-                                        <li><img src="../" alt=""></li>
-                                        <!--                                        <li><img src="../images/ex/th-552x411-1.jpg" alt=""></li>-->
-                                        <!--                                        <li><img src="../images/ex/th-552x411-2.jpg" alt=""></li>-->
+                                        <li><img th:src="@{/project/image/} + ${project.projectId}" alt="Project-image"></li>
                                     </ul>
                                 </div>
                             </div>

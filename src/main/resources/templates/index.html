@@ -64,8 +64,8 @@
             <div class="grid_12 header-content">
                 <div id="sys_header_right" class="header-right">
                     <div class="account-panel">
-                        <a th:href="@{/register}" class="btn btn-red sys_show_popup_login">Register</a>
-                        <a th:href="@{/login}" class="btn btn-black sys_show_popup_login">Login</a>
+                        <a th:href="@{/register}" class="btn btn-red">Register</a>
+                        <a th:href="@{/signin}" class="btn btn-black">Login</a>
                     </div>
                     <div class="form-search">
                         <form action="#" th:action="@{/search}" th:object="${project}" method="post">
@@ -253,7 +253,7 @@
 
 </div>
 
-<div class="popup-common" id="sys_popup_common">
+<!-- <div class="popup-common" id="sys_popup_common">
     <div class="overlay-bl-bg"></div>
     <div class="container_12 pop-content">
         <div class="grid_12 wrap-btn-close ta-r">
@@ -330,6 +330,6 @@
         </div>
         <div class="clear"></div>
     </div>
-</div>
+</div> -->
 </body>
 </html>

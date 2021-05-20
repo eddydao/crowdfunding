@@ -32,7 +32,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  A.project_id,\n" +
                         "  A.project_name,\n" +
                         "  A.user_id,\n" +
-                        "  CONCAT(F.last_name, F.first_name) as user_full_name,\n"+
+                        "  CONCAT(F.last_name , ' ' , F.first_name) as user_full_name,\n"+
                         "  A.project_short_des,\n" +
                         "  A.start_date,\n" +
                         "  A.end_date,\n" +

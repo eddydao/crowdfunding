@@ -66,6 +66,7 @@ public class MainController {
     private ResourcePath resourcePath;
 
     public static final String RELATIVE_PATH = "../../../";
+    public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
     /*
      *  Common function
      * ===========================================
@@ -111,7 +112,7 @@ public class MainController {
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
     public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable("project_id") int projectId) throws IOException {
-        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath();
+        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath() != null ? projectService.getProjectEntityById(projectId).getThumbnailPath() : REPLACE_THUMBNAIL_PATH;
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         String s = resourcePath.getPath();
         String absolutePath = s + thumbnailImagePath;
@@ -271,7 +272,11 @@ public class MainController {
     public String openCreateProjectForm(Model model){
         ProjectEntity projectEntity = projectService.saveProjectEntity(new ProjectEntity());
         int projectId = projectEntity.getProjectId();
-        return "redirect:/creator/project/" + projectId;
+        ProjectDto dto = new ProjectDto();
+        dto.setProjectId(projectId);
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
+        return "redirect:/creator/project/" + projectId + "/basic";
     }
 
     /*
@@ -301,8 +306,8 @@ public class MainController {
         if(projectEntity != null){
             dto.setProjectName(projectEntity.getProjectName());
             dto.setSubTitle(projectEntity.getProjectShortDes());
-            dto.setCategoryId(projectEntity.getCategory().getId());
-            dto.setThumbnailPathFile(projectEntity.getThumbnailPath());
+            dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? projectEntity.getThumbnailPath() : null);
             dto.setGoal(projectEntity.getGoal());
         }
 
