@@ -105,6 +105,7 @@ public class MainController {
                 System.out.println("Error Write file: " + name);
             }
         }
+        System.out.println("File location = " + uploadRelativePath +  File.separator + name);
         return uploadRelativePath +  File.separator + name;
     }
 
@@ -307,7 +308,7 @@ public class MainController {
             dto.setProjectName(projectEntity.getProjectName());
             dto.setSubTitle(projectEntity.getProjectShortDes());
             dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
-            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? projectEntity.getThumbnailPath() : null);
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : null);
             dto.setGoal(projectEntity.getGoal());
         }
 
@@ -326,7 +327,8 @@ public class MainController {
         if (result.hasErrors()) {
             return "redirect:/index";
         }
-        ProjectEntity projectEntity = new ProjectEntity();
+        // ProjectEntity projectEntity = new ProjectEntity();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
         int step = dto.getStep();
         // insert basic information
         if(step == 1){
