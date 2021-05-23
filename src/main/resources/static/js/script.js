@@ -233,9 +233,10 @@ $(function(){
 });
 
 function fundTheProject(projectId, optionId){
-    debugger
-    var pledge = $("#pledge-input").val()
+    var pledgeId = "pledge-input" + optionId;
+    var pledge = $("#" + pledgeId).val()
     var data = new FormData();
+
     data.append("projectId", projectId);
     data.append("optionId", optionId);
     data.append("pledge", pledge);

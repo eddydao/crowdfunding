@@ -19,8 +19,8 @@ public class ProjectFullInfoEntity implements Serializable {
     protected String projectShortDes;
     protected OffsetDateTime startDate;
     protected OffsetDateTime endDate;
-    protected Double goal;
-    protected Double pledged;
+    protected Long goal;
+    protected Long pledged;
     protected Integer investorCount;
     protected Integer recommended;
     protected Integer countryId;
@@ -56,8 +56,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
-            , Double goal
-            , Double pledged
+            , Long goal
+            , Long pledged
             , Integer investorCount
             , Integer recommended
             , String thumbnailPath
@@ -99,8 +99,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
-            , Double goal
-            , Double pledged
+            , Long goal
+            , Long pledged
             , Integer investorCount
             , Integer recommended
             , Integer categoryId

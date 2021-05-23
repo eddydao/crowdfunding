@@ -16,7 +16,7 @@ public class Package {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer packageId;
 
-    private Integer pledged;
+    private Long pledged;
     private Timestamp timestamp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

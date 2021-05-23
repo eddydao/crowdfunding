@@ -67,6 +67,9 @@ public class MainController {
     @Autowired
     private ResourcePath resourcePath;
 
+    @Autowired
+    private PackageService packageService;
+
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
     /*
@@ -256,7 +259,7 @@ public class MainController {
         Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
         Integer optionId = dto.getOptionId();
         Integer projectId = dto.getProjectId();
-        Integer pledge = dto.getPledge();
+        Long pledge = dto.getPledge();
         Integer userId  = 2;
         UserEntity user = userService.findUserById(userId);
 
@@ -268,7 +271,9 @@ public class MainController {
         userChoosedPack.setOption(optionEntity);
         userChoosedPack.setPledged(pledge);
         userChoosedPack.setUser(user);
+        packageService.savePackage(userChoosedPack);
 
+        // return to check out screen -> apply paypal here first, then save the package infors
         return null;
     }
 
@@ -425,7 +430,7 @@ public class MainController {
             @PathVariable("optionId") Integer optionId){
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, 0);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());

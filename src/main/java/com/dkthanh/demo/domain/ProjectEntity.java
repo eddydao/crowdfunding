@@ -26,9 +26,9 @@ public class ProjectEntity {
     @Column(name = "end_date", nullable = true)
     private OffsetDateTime endDate;
     @Column(name = "goal", nullable = true, precision = 0)
-    private Double goal;
+    private Long goal;
     @Column(name = "pledged", nullable = true, precision = 0)
-    private Double pledged;
+    private Long pledged;
     @Column(name = "investor_count", nullable = true)
     private Integer investorCount;
     @Column(name = "recommended", nullable = true)

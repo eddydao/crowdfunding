@@ -21,8 +21,8 @@ public class UserDetailEntity {
     private String email;
     @Column(name = "project_supported", nullable = true, length = 255)
     private String projectSupported;
-    @Column(name = "total_amount", nullable = true, length = 255)
-    private String totalAmount;
+    @Column(name = "total_amount", nullable = true, length = 25)
+    private Long totalAmount;
     @Column(name = "address", nullable = true, length = 255)
     private String address;
     @Column(name = "country_id", nullable = true)

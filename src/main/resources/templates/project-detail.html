@@ -208,7 +208,7 @@
 <!--                                    <form action="#" th:action = "@{/project/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">-->
                                         <span th:value="${option.optionId}" style="display: none;"></span>
                                         <span th:value="${option.projectId}" style="display: none;"></span>
-                                        <input placeholder="Pledge" id="pledge-input">
+                                        <input placeholder="Pledge" id="pledge-input" th:attrappend="id=${option.optionId}">
                                         <p class="rs fw-thin fc-gray pb20"></p>
                                         <p class="rs ta-c"><button class="btn big btn-red"
                                                                    th:onclick="'fundTheProject(\'' + ${option.projectId} + '\',\'' + ${option.optionId} + '\');'">Back this project</button></p>
