@@ -460,18 +460,22 @@ public class MainController {
         OptionEntity optionEntity = new OptionEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         if(optionDto.getOptionId() == null ){
+            optionEntity.setOptionName(optionDto.getOptionName());
+            optionEntity.setOptionDescription(optionDto.getOptionDescription());
+            optionEntity.setFundMin(optionDto.getFundMin());
+            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
-            projectEntity.getOptions().add(optionEntity);
-            projectService.saveProjectEntity(projectEntity);
+        } else {
+            optionEntity.setOptionId(optionDto.getOptionId());
+            optionEntity.setOptionName(optionDto.getOptionName());
+            optionEntity.setOptionDescription(optionDto.getOptionDescription());
+            optionEntity.setFundMin(optionDto.getFundMin());
+            optionEntity.setItems(optionDto.getItems());
+            optionEntity.setProject(projectEntity);
         }
-        Integer optionId = optionEntity.getOptionId();
-        OptionEntity option = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        optionEntity.setOptionName(optionDto.getOptionName());
-        optionEntity.setOptionDescription(optionDto.getOptionDescription());
-        optionEntity.setFundMin(optionDto.getFundMin());
-        optionEntity.setItems(optionDto.getItems());
-        optionService.save(optionEntity);
-        return "redirect:/creator/project/" +projectId + "/reward/" ;
+        projectEntity.getOptions().add(optionEntity);
+        projectService.saveProjectEntity(projectEntity);
+        return "redirect:/creator/project/" +projectId + "/reward" ;
     }
 
 
