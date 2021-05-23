@@ -13,6 +13,7 @@ import java.util.List;
 public class OptionEntity {
     @Id
     @Column(name = "option_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer optionId;
     @Column(name = "option_name", nullable = true, length = 255)
     private String optionName;
@@ -23,8 +24,8 @@ public class OptionEntity {
     @Column(name = "fund_min", nullable = true, precision = 0)
     private Long fundMin;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 
     @OneToMany(mappedBy = "option")

@@ -228,10 +228,12 @@
                                                                 <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
                                                             </div>
                                                             <div class = "" style="float:right">
-                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReward">
+                                                                <button type="button" class="btn btn-primary"
+                                                                        th:onclick="'openAddRewardModal(\'' + ${project_dto.projectId} + '\');'">
                                                                     Add your reward
                                                                 </button>
                                                             </div>
+                                                            <div id="createRewardModalHolder"></div>
                                                         </div>
                                                         <br>
                                                         <div class="row">

@@ -56,7 +56,7 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project")
     private List<MaterialEntity> materials;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<OptionEntity> options;
 
     @OneToMany(mappedBy = "project")

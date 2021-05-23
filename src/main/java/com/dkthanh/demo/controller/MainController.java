@@ -425,6 +425,24 @@ public class MainController {
         return "/creator/project-reward";
     }
 
+    @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
+    public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+//        OptionEntity optionEntity = new OptionEntity();
+//        optionEntity.setProject(projectEntity);
+//        projectEntity.getOptions().add(optionEntity);
+//        projectService.saveProjectEntity(projectEntity);
+        OptionDto dto = new OptionDto(null, null,
+                null, null, null, projectId, null);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", null);
+        return "/creator/fragments/modal :: createReward";
+    }
+    /*
+    Open edit reward modal
+     */
+
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
     public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
@@ -449,7 +467,7 @@ public class MainController {
         option.setOptionDescription(optionDto.getOptionDescription());
         option.setFundMin(optionDto.getFundMin());
         option.setItems(optionDto.getItems());
-        optionService.save(option);
+        optionService.save(option);    
         return "redirect:/creator/project/" +projectId + "/reward/" ;
     }
 
