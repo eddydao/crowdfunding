@@ -428,10 +428,6 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
     public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-//        OptionEntity optionEntity = new OptionEntity();
-//        optionEntity.setProject(projectEntity);
-//        projectEntity.getOptions().add(optionEntity);
-//        projectService.saveProjectEntity(projectEntity);
         OptionDto dto = new OptionDto(null, null,
                 null, null, null, projectId, null);
         model.addAttribute("projectId", projectId);
@@ -461,13 +457,20 @@ public class MainController {
     public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto optionDto,
                                       BindingResult result, final RedirectAttributes redirectAttributes){
         Integer projectId  = optionDto.getProjectId();
-        Integer optionId = optionDto.getOptionId();
+        OptionEntity optionEntity = new OptionEntity();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        if(optionDto.getOptionId() == null ){
+            optionEntity.setProject(projectEntity);
+            projectEntity.getOptions().add(optionEntity);
+            projectService.saveProjectEntity(projectEntity);
+        }
+        Integer optionId = optionEntity.getOptionId();
         OptionEntity option = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        option.setOptionName(optionDto.getOptionName());
-        option.setOptionDescription(optionDto.getOptionDescription());
-        option.setFundMin(optionDto.getFundMin());
-        option.setItems(optionDto.getItems());
-        optionService.save(option);    
+        optionEntity.setOptionName(optionDto.getOptionName());
+        optionEntity.setOptionDescription(optionDto.getOptionDescription());
+        optionEntity.setFundMin(optionDto.getFundMin());
+        optionEntity.setItems(optionDto.getItems());
+        optionService.save(optionEntity);
         return "redirect:/creator/project/" +projectId + "/reward/" ;
     }
 
