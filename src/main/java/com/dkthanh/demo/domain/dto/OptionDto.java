@@ -19,4 +19,5 @@ public class OptionDto {
     private Integer fundMin;
     private List<ItemEntity> items;
     private Integer projectId;
+    private Integer pledge;
 }

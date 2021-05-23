@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -14,9 +13,10 @@ import java.sql.Timestamp;
 public class Package {
     @Id
     @Column(name = "package_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer packageId;
 
-    private BigDecimal pledged;
+    private Integer pledged;
     private Timestamp timestamp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

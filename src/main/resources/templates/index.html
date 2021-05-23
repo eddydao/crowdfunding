@@ -101,7 +101,7 @@
             <div class="grid_4 left-lst-category">
                 <div class="wrap-lst-category">
                     <h3 class="title-welcome rs">Welcome to Kickstars!</h3>
-                    <p class="description rs">Pellentesque laoreet sapien id lacus luctus non fringilla elit lobortis. Fusce augue diam, tempor posuere pharetra sed, feugiat non sapien.</p>
+                    <!-- <p class="description rs">Pellentesque laoreet sapien id lacus luctus non fringilla elit lobortis. Fusce augue diam, tempor posuere pharetra sed, feugiat non sapien.</p> -->
                     <nav class="lst-category">
                         <ul class="rs nav nav-category" th:each="category : ${categories}">
                             <li>
@@ -116,25 +116,26 @@
             </div><!--end: .left-lst-category -->
             <div class="grid_8 marked-category">
                 <div class="wrap-title clearfix">
-                    <h2 class="title-mark rs">Staff Picks: <span class="fc-orange" >Category</span></h2>
-                    <a href="category.html" class="count-project be-fc-orange">See all <span class="fw-b">24</span> Comics projects</a>
+                    <h2 class="title-mark rs">Staff Picks: <span class="fc-orange" th:text="${recommended_project.categoryName}"></span></h2>
+                   <!-- <a href="category.html" class="count-project be-fc-orange">See all <span class="fw-b">24</span> Comics projects</a> -->
                 </div>
                 <div class="box-marked-project project-short">
                     <div class="top-project-info">
                         <div class="content-info-short clearfix">
                             <a href="#" class="thumb-img">
-                                <img th:src="@{/project/image/} + ${recommended_project.projectId}" alt="$TITLE">
+                                <!-- <img th:src="@{/project/image/} + ${recommended_project.projectId}" alt="$TITLE"> -->
+                                <img th:src="${recommended_project.thumbnailPath}" alt="Project-image">
                             </a>
                             <div class="wrap-short-detail">
                                 <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${recommended_project.projectId}" ><span th:text="${recommended_project.projectName}"></span></a></h3>
-                                <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange">Ray Sumser</a> in <span class="fw-b fc-gray">New York, NY</span></p>
+                                <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></a> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
                                 <p class="rs title-description" th:text="${recommended_project.projectShortDes}"></p>
                             </div>
-                            <p class="rs clearfix comment-view">
+                            <!-- <p class="rs clearfix comment-view">
                                 <a href="#" class="fc-gray be-fc-orange">75 comments</a>
                                 <span class="sep">|</span>
                                 <a href="#" class="fc-gray be-fc-orange">378 views</a>
-                            </p>
+                            </p> -->
                         </div>
                     </div><!--end: .top-project-info -->
                     <div class="bottom-project-info clearfix">
@@ -143,18 +144,18 @@
                         </div>
                         <div class="group-fee clearfix">
                             <div class="fee-item">
-                                <p class="rs lbl">Bankers</p>
-                                <span class="val">270</span>
+                                <p class="rs lbl">Backers</p>
+                                <span class="val" th:text="${recommended_project.investorCount}"></span>
                             </div>
                             <div class="sep"></div>
                             <div class="fee-item">
                                 <p class="rs lbl">Pledged</p>
-                                <span class="val">$38,000</span>
+                                <span class="val">$<span th:text="${recommended_project.pledged}"></span></span>
                             </div>
                             <div class="sep"></div>
                             <div class="fee-item">
                                 <p class="rs lbl">Days Left</p>
-                                <span class="val">25</span>
+                                <span class="val" th:text="${recommended_project.dayLeft}"></span>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -177,35 +178,36 @@
                         <div class="top-project-info">
                             <div class="content-info-short clearfix">
                                 <a href="#" class="thumb-img">
-                                    <img th:src="@{/project/image/} + ${project.projectId}" alt="$TITLE">
+                                    <!-- <img th:src="@{/project/image/} + ${project.projectId}" alt="$TITLE"> -->
+                                    <img th:src="${project.thumbnailPath}" alt="Project-image">
                                 </a>
                                 <div class="wrap-short-detail">
                                     <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
-                                    <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange">John Doe</a></p>
+                                    <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></a></p>
                                     <p class="rs title-description" th:text="${project.projectShortDes}"></p>
                                 </div>
                             </div>
                         </div>
                         <div class="bottom-project-info clearfix">
-                            <div class="line-progress">
+                            <!-- <div class="line-progress">
                                 <div class="bg-progress">
                                     <span  style="width: 50%"></span>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="group-fee clearfix">
                                 <div class="fee-item">
                                     <p class="rs lbl">Funded</p>
-                                    <span class="val">50%</span>
+                                    <span class="val"><span th:text="${project.percentPledged}"></span>%</span>
                                 </div>
                                 <div class="sep"></div>
                                 <div class="fee-item">
                                     <p class="rs lbl">Pledged</p>
-                                    <span class="val">$38,000</span>
+                                    <span class="val">$<span th:text="${project.pledged}"></span></span>
                                 </div>
                                 <div class="sep"></div>
                                 <div class="fee-item">
                                     <p class="rs lbl">Days Left</p>
-                                    <span class="val">25</span>
+                                    <span class="val" th:text="${project.dayLeft}"></span>
                                 </div>
                             </div>
                         </div>

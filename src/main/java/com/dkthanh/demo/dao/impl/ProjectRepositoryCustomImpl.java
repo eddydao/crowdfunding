@@ -40,7 +40,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  A.pledged,\n" +
                         "  A.investor_count,\n" +
                         "  A.recommended,\n" +
+                        "  A.thumbnail_path,\n" +
                         "  A.country_id,\n" +
+                        "  H.country_name,\n" +
                         "  A.status_id as status_id,\n"+
                         "  D.name as status_name,\n"+
                         "  C.id as category_id,\n" +
@@ -54,6 +56,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  LEFT JOIN story G ON A.project_id = G.project_id\n" +
                         "  LEFT JOIN user E ON A.user_id = E.id\n" +
                         "  LEFT JOIN user_detail F ON E.id = F.user_id\n"+
+                        "  LEFT JOIN country H ON A.country_id = H.country_id\n"+
                         "WHERE 1 = 1\n" );
 
         // get project detail with id

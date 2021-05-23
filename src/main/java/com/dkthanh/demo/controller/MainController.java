@@ -1,6 +1,7 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
+import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.OptionDto;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
@@ -30,6 +31,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -198,6 +200,11 @@ public class MainController {
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
         List<ProjectFullInfoEntity> popularProjects = projectService.getPopularProjects();
         ProjectFullInfoEntity recommendedProject = projectService.getRecommendedProject();
+        for(int i = 0; i < popularProjects.size(); i++){
+            popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
+        }
+        
+        recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
         model.addAttribute("categories", categoryEntityList);
         model.addAttribute("popular_projects", popularProjects);
         model.addAttribute("recommended_project", recommendedProject);
@@ -221,10 +228,48 @@ public class MainController {
     @GetMapping(value = "/project/{id}")
     public String getProjectDetailPage(Model model, @PathVariable("id") Integer id){
         ProjectFullInfoEntity p = projectService.getProjectDetail(id);
+        StoryEntity story = storyService.getStoryByProjectId(id);
+        List<OptionEntity> options =  optionService.getOptionListByProjectId(id);
+        p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+        List<OptionDto> optionDtos = new ArrayList<>();
+        for(int i = 0; i < options.size(); i++){
+            OptionEntity option = options.get(i);
+            OptionDto optionDto = new OptionDto(option.getOptionId(),
+                                                option.getOptionName(),
+                                                option.getOptionDescription(),
+                                                option.getFundMin(),
+                                                option.getItems(),
+                                                option.getProject().getProjectId(),
+                                         null);
+            optionDtos.add(optionDto);
+        }
 
         model.addAttribute("project", p);
-
+        model.addAttribute("story", story);
+        model.addAttribute("options", optionDtos);
         return "project-detail";
+    }
+
+    @PostMapping(value = "/project/fund-project")
+    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                 BindingResult result, final RedirectAttributes redirectAttributes){
+        Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
+        Integer optionId = dto.getOptionId();
+        Integer projectId = dto.getProjectId();
+        Integer pledge = dto.getPledge();
+        Integer userId  = 2;
+        UserEntity user = userService.findUserById(userId);
+
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+
+        userChoosedPack.setProject(projectEntity);
+        userChoosedPack.setOption(optionEntity);
+        userChoosedPack.setPledged(pledge);
+        userChoosedPack.setUser(user);
+
+        return null;
     }
 
     /*
@@ -380,7 +425,7 @@ public class MainController {
             @PathVariable("optionId") Integer optionId){
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, 0);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());
