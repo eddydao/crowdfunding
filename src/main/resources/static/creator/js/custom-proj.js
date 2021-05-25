@@ -111,3 +111,27 @@ function openEditRewardModal(projectId, optionId){
 
     })
 }
+
+function openAddItemModal(projectId, optionId){
+    var dataForm = new FormData();
+
+    dataForm.append("projectId", projectId);
+    dataForm.append("optionId", optionId);
+    $.ajax({
+        // url: "/creator/project/" + projectId + "/reward/" + optionId+ "/addItem",
+        url:"/creator/project/reward/addItemModal",
+        ache: false,
+        contentType : false,
+        processData: false,
+        data: dataForm,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#addItemModalHolder").html(data);
+            $("#addItemModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}

@@ -425,6 +425,10 @@ public class MainController {
         return "/creator/project-reward";
     }
 
+    /*
+    Open create new reward modal
+     */
+
     @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
     public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
@@ -450,6 +454,31 @@ public class MainController {
         model.addAttribute("items", optionEntity.getItems());
         return "/creator/fragments/modal :: editRewardModal";
     }
+
+    /*
+    Open select item modal
+     */
+
+    @PostMapping(value = "/creator/project/reward/addItemModal")
+    public String openItemSelectionModal(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                         BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer optionId = dto.getOptionId();
+        Integer projectId = dto.getProjectId();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity ;
+        if(optionId != null){
+            optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+        }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", projectEntity.getItems());
+        return "/creator/fragments/modal :: addItemModal";
+    }
+
+
+
+
     /*
     Create new reward
      */
