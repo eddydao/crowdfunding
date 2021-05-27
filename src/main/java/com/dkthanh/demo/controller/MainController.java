@@ -358,7 +358,7 @@ public class MainController {
             dto.setProjectName(projectEntity.getProjectName());
             dto.setSubTitle(projectEntity.getProjectShortDes());
             dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
-            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : null);
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : REPLACE_THUMBNAIL_PATH);
             dto.setGoal(projectEntity.getGoal());
         }
 
