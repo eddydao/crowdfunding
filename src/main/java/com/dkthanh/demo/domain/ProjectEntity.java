@@ -1,7 +1,6 @@
 package com.dkthanh.demo.domain;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -10,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "project")
 @Data
-@ToString
 public class ProjectEntity {
     @Id
     @Column(name = "project_id", nullable = false)

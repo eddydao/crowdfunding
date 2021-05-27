@@ -79,8 +79,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
 
         // group by
-        sql.append("GROUP BY A.investor_count\n" +
-                        "ORDER BY A.investor_count;"
+        sql.append("ORDER BY A.investor_count;"
         );
         Query sqlQuery = em.createNativeQuery(sql.toString(), ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP);
         if(projectId != null ){

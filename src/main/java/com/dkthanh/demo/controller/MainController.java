@@ -307,11 +307,11 @@ public class MainController {
         }
 
 //        Integer userId  = user.getId();
-        Integer userId  = 2;
+        Integer userId  = 3;
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
-        model.addAttribute("project-list", list);
+        model.addAttribute("projects", list);
         model.addAttribute("creator", userDetailEntity);
         return "/creator/creator-dashboard";
     }
@@ -446,7 +446,7 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
     public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
         OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
         model.addAttribute("projectId", projectId);
