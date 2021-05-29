@@ -296,6 +296,7 @@ public class MainController {
     public String creatorPage(){
         return "redirect:/creator/project/list";
     }
+
     // creator project/list
     @GetMapping(value = "/creator/project/list" )
     public String getCreatorProjectList(Model model, Authentication authentication){
@@ -565,7 +566,7 @@ public class MainController {
 
     @GetMapping(value = "/creator/report")
     public String getReport(Model model){
-        return "/creator/creator-report";
+        return "/creator/report";
     }
 
     /*
@@ -573,8 +574,8 @@ public class MainController {
     * ===========================================
     admin/project/list
     admin/project/id
-    admin/project/approval
     admin/category/list
+    admin/project/approval
     admin/user/list
     admin/
      */
@@ -594,7 +595,8 @@ public class MainController {
     // category list for admin view
     @GetMapping(value = "/admin/category/list")
     public String getCategoryList(){
-        return null;
+
+        return "/admin/;
     }
 
     // get admin dashboard
