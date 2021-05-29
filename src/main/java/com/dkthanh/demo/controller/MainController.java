@@ -1,6 +1,7 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
+import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.OptionDto;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
@@ -30,6 +31,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -65,7 +67,11 @@ public class MainController {
     @Autowired
     private ResourcePath resourcePath;
 
+    @Autowired
+    private PackageService packageService;
+
     public static final String RELATIVE_PATH = "../../../";
+    public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
     /*
      *  Common function
      * ===========================================
@@ -104,6 +110,7 @@ public class MainController {
                 System.out.println("Error Write file: " + name);
             }
         }
+        System.out.println("File location = " + uploadRelativePath +  File.separator + name);
         return uploadRelativePath +  File.separator + name;
     }
 
@@ -111,7 +118,7 @@ public class MainController {
     @RequestMapping(value = { "/project/image/{project_id}" }, method = RequestMethod.GET)
     public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable("project_id") int projectId) throws IOException {
-        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath();
+        String thumbnailImagePath = projectService.getProjectEntityById(projectId).getThumbnailPath() != null ? projectService.getProjectEntityById(projectId).getThumbnailPath() : REPLACE_THUMBNAIL_PATH;
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         String s = resourcePath.getPath();
         String absolutePath = s + thumbnailImagePath;
@@ -196,6 +203,11 @@ public class MainController {
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
         List<ProjectFullInfoEntity> popularProjects = projectService.getPopularProjects();
         ProjectFullInfoEntity recommendedProject = projectService.getRecommendedProject();
+        for(int i = 0; i < popularProjects.size(); i++){
+            popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
+        }
+        
+        recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
         model.addAttribute("categories", categoryEntityList);
         model.addAttribute("popular_projects", popularProjects);
         model.addAttribute("recommended_project", recommendedProject);
@@ -219,14 +231,58 @@ public class MainController {
     @GetMapping(value = "/project/{id}")
     public String getProjectDetailPage(Model model, @PathVariable("id") Integer id){
         ProjectFullInfoEntity p = projectService.getProjectDetail(id);
+        StoryEntity story = storyService.getStoryByProjectId(id);
+        List<OptionEntity> options =  optionService.getOptionListByProjectId(id);
+        p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+        List<OptionDto> optionDtos = new ArrayList<>();
+        for(int i = 0; i < options.size(); i++){
+            OptionEntity option = options.get(i);
+            OptionDto optionDto = new OptionDto(option.getOptionId(),
+                                                option.getOptionName(),
+                                                option.getOptionDescription(),
+                                                option.getFundMin(),
+                                                option.getItems(),
+                                                option.getProject().getProjectId(),
+                                         null);
+            optionDtos.add(optionDto);
+        }
 
         model.addAttribute("project", p);
-
+        model.addAttribute("story", story);
+        model.addAttribute("options", optionDtos);
         return "project-detail";
     }
 
     /*
-     *  Sys management function
+    Fund the project
+     */
+
+    @PostMapping(value = "/project/fund-project")
+    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                 BindingResult result, final RedirectAttributes redirectAttributes){
+        Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
+        Integer optionId = dto.getOptionId();
+        Integer projectId = dto.getProjectId();
+        Long pledge = dto.getPledge();
+        Integer userId  = 2;
+        UserEntity user = userService.findUserById(userId);
+
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+
+        userChoosedPack.setProject(projectEntity);
+        userChoosedPack.setOption(optionEntity);
+        userChoosedPack.setPledged(pledge);
+        userChoosedPack.setUser(user);
+        packageService.savePackage(userChoosedPack);
+
+        // return to check out screen -> apply paypal here first, then save the package infors
+        return null;
+    }
+
+    /*
+     *  Creator management function
      * ===========================================
      * creator/project/list
      * creator/create-project
@@ -240,6 +296,7 @@ public class MainController {
     public String creatorPage(){
         return "redirect:/creator/project/list";
     }
+
     // creator project/list
     @GetMapping(value = "/creator/project/list" )
     public String getCreatorProjectList(Model model, Authentication authentication){
@@ -255,11 +312,11 @@ public class MainController {
         }
 
 //        Integer userId  = user.getId();
-        Integer userId  = 2;
+        Integer userId  = 3;
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
-        model.addAttribute("project-list", list);
+        model.addAttribute("projects", list);
         model.addAttribute("creator", userDetailEntity);
         return "/creator/creator-dashboard";
     }
@@ -271,7 +328,11 @@ public class MainController {
     public String openCreateProjectForm(Model model){
         ProjectEntity projectEntity = projectService.saveProjectEntity(new ProjectEntity());
         int projectId = projectEntity.getProjectId();
-        return "redirect:/creator/project/" + projectId;
+        ProjectDto dto = new ProjectDto();
+        dto.setProjectId(projectId);
+        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("project_dto", dto);
+        return "redirect:/creator/project/" + projectId + "/basic";
     }
 
     /*
@@ -301,8 +362,8 @@ public class MainController {
         if(projectEntity != null){
             dto.setProjectName(projectEntity.getProjectName());
             dto.setSubTitle(projectEntity.getProjectShortDes());
-            dto.setCategoryId(projectEntity.getCategory().getId());
-            dto.setThumbnailPathFile(projectEntity.getThumbnailPath());
+            dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
+            dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : REPLACE_THUMBNAIL_PATH);
             dto.setGoal(projectEntity.getGoal());
         }
 
@@ -321,7 +382,8 @@ public class MainController {
         if (result.hasErrors()) {
             return "redirect:/index";
         }
-        ProjectEntity projectEntity = new ProjectEntity();
+        // ProjectEntity projectEntity = new ProjectEntity();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
         int step = dto.getStep();
         // insert basic information
         if(step == 1){
@@ -368,17 +430,60 @@ public class MainController {
         return "/creator/project-reward";
     }
 
+    /*
+    Open create new reward modal
+     */
+
+    @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
+    public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionDto dto = new OptionDto(null, null,
+                null, null, null, projectId, null);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", null);
+        return "/creator/fragments/modal :: createReward";
+    }
+    /*
+    Open edit reward modal
+     */
+
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
     public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());
         return "/creator/fragments/modal :: editRewardModal";
     }
+
+    /*
+    Open select item modal
+     */
+
+    @PostMapping(value = "/creator/project/reward/addItemModal")
+    public String openItemSelectionModal(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                         BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer optionId = dto.getOptionId();
+        Integer projectId = dto.getProjectId();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity ;
+        if(optionId != null){
+            optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+        }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", projectEntity.getItems());
+        return "/creator/fragments/modal :: addItemModal";
+    }
+
+
+
+
     /*
     Create new reward
      */
@@ -386,27 +491,26 @@ public class MainController {
     public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto optionDto,
                                       BindingResult result, final RedirectAttributes redirectAttributes){
         Integer projectId  = optionDto.getProjectId();
-        Integer optionId = optionDto.getOptionId();
-        OptionEntity option = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        option.setOptionName(optionDto.getOptionName());
-        option.setOptionDescription(optionDto.getOptionDescription());
-        option.setFundMin(optionDto.getFundMin());
-        option.setItems(optionDto.getItems());
-        optionService.save(option);
-        return "redirect:/creator/project/" +projectId + "/reward/" ;
+        OptionEntity optionEntity = new OptionEntity();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        if(optionDto.getOptionId() == null ){
+            optionEntity.setOptionName(optionDto.getOptionName());
+            optionEntity.setOptionDescription(optionDto.getOptionDescription());
+            optionEntity.setFundMin(optionDto.getFundMin());
+            optionEntity.setItems(optionDto.getItems());
+            optionEntity.setProject(projectEntity);
+        } else {
+            optionEntity.setOptionId(optionDto.getOptionId());
+            optionEntity.setOptionName(optionDto.getOptionName());
+            optionEntity.setOptionDescription(optionDto.getOptionDescription());
+            optionEntity.setFundMin(optionDto.getFundMin());
+            optionEntity.setItems(optionDto.getItems());
+            optionEntity.setProject(projectEntity);
+        }
+        projectEntity.getOptions().add(optionEntity);
+        projectService.saveProjectEntity(projectEntity);
+        return "redirect:/creator/project/" +projectId + "/reward" ;
     }
-
-
-    /*
-    *   Save info of rewards tier and items of project
-     */
-
-//    @PostMapping(value = "/creator/save-project-reward")
-//    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
-//                                    BindingResult result, final RedirectAttributes redirectAttributes){
-//        return null;
-//    }
-
     /*
     *   Open story edit page
      */
@@ -414,7 +518,7 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/story")
     public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+//        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
@@ -460,14 +564,18 @@ public class MainController {
     }
 
 
+    @GetMapping(value = "/creator/report")
+    public String getReport(Model model){
+        return "/creator/report";
+    }
 
     /*
     *  Admin management function
     * ===========================================
     admin/project/list
     admin/project/id
-    admin/project/approval
     admin/category/list
+    admin/project/approval
     admin/user/list
     admin/
      */
@@ -487,7 +595,8 @@ public class MainController {
     // category list for admin view
     @GetMapping(value = "/admin/category/list")
     public String getCategoryList(){
-        return null;
+
+        return "/admin/;
     }
 
     // get admin dashboard

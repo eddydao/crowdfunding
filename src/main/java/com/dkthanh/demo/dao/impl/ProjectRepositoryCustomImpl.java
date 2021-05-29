@@ -32,7 +32,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  A.project_id,\n" +
                         "  A.project_name,\n" +
                         "  A.user_id,\n" +
-                        "  CONCAT(F.last_name, F.first_name) as user_full_name,\n"+
+                        "  CONCAT(F.last_name , ' ' , F.first_name) as user_full_name,\n"+
                         "  A.project_short_des,\n" +
                         "  A.start_date,\n" +
                         "  A.end_date,\n" +
@@ -40,7 +40,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  A.pledged,\n" +
                         "  A.investor_count,\n" +
                         "  A.recommended,\n" +
+                        "  A.thumbnail_path,\n" +
                         "  A.country_id,\n" +
+                        "  H.country_name,\n" +
                         "  A.status_id as status_id,\n"+
                         "  D.name as status_name,\n"+
                         "  C.id as category_id,\n" +
@@ -54,6 +56,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  LEFT JOIN story G ON A.project_id = G.project_id\n" +
                         "  LEFT JOIN user E ON A.user_id = E.id\n" +
                         "  LEFT JOIN user_detail F ON E.id = F.user_id\n"+
+                        "  LEFT JOIN country H ON A.country_id = H.country_id\n"+
                         "WHERE 1 = 1\n" );
 
         // get project detail with id
@@ -76,14 +79,18 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
 
         // group by
-        sql.append("GROUP BY A.investor_count\n" +
-                        "ORDER BY A.investor_count;"
+        sql.append("ORDER BY A.investor_count DESC \n"
         );
+
+        if(isRecommended != null){
+            sql.append("LIMIT 1\n");
+        }
         Query sqlQuery = em.createNativeQuery(sql.toString(), ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP);
         if(projectId != null ){
             sqlQuery.setParameter("id", projectId);
         }
         if(isRecommended != null){
+
             sqlQuery.setParameter("recommended", isRecommended);
         }
         if(projectStatus != null){

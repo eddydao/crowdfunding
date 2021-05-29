@@ -231,3 +231,28 @@ $(function(){
         selectnav("sys-nav-menu-blog");
     }
 });
+
+function fundTheProject(projectId, optionId){
+    var pledgeId = "pledge-input" + optionId;
+    var pledge = $("#" + pledgeId).val()
+    var data = new FormData();
+
+    data.append("projectId", projectId);
+    data.append("optionId", optionId);
+    data.append("pledge", pledge);
+    $.ajax({
+        url: "/project/fund-project",
+        ache: false,
+        contentType : false,
+        processData: false,
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log("Success");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}

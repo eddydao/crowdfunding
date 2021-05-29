@@ -1,7 +1,6 @@
 package com.dkthanh.demo.domain;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -10,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "project")
 @Data
-@ToString
 public class ProjectEntity {
     @Id
     @Column(name = "project_id", nullable = false)
@@ -26,9 +24,9 @@ public class ProjectEntity {
     @Column(name = "end_date", nullable = true)
     private OffsetDateTime endDate;
     @Column(name = "goal", nullable = true, precision = 0)
-    private Double goal;
+    private Long goal;
     @Column(name = "pledged", nullable = true, precision = 0)
-    private Double pledged;
+    private Long pledged;
     @Column(name = "investor_count", nullable = true)
     private Integer investorCount;
     @Column(name = "recommended", nullable = true)
@@ -56,7 +54,7 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project")
     private List<MaterialEntity> materials;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<OptionEntity> options;
 
     @OneToMany(mappedBy = "project")

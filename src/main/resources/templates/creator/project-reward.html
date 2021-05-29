@@ -228,10 +228,12 @@
                                                                 <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
                                                             </div>
                                                             <div class = "" style="float:right">
-                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReward">
+                                                                <button type="button" class="btn btn-primary"
+                                                                        th:onclick="'openAddRewardModal(\'' + ${project_dto.projectId} + '\');'">
                                                                     Add your reward
                                                                 </button>
                                                             </div>
+<!--                                                            <div id="createRewardModalHolder"></div>-->
                                                         </div>
                                                         <br>
                                                         <div class="row">
@@ -280,7 +282,7 @@
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                            <div id="editRewardModalHolder"></div>
+
                                                         </div>
                                                     <!-- </form> -->
                                                 </div>
@@ -322,6 +324,9 @@
                 </div>
             </div>
             <!-- createReward -->
+            <div id="createRewardModalHolder"></div>
+            <div id="editRewardModalHolder"></div>
+            <div id="addItemModalHolder"></div>
             <!-- <div class="modal fade" id="createReward" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">

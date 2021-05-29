@@ -19,11 +19,13 @@ public class ProjectFullInfoEntity implements Serializable {
     protected String projectShortDes;
     protected OffsetDateTime startDate;
     protected OffsetDateTime endDate;
-    protected Double goal;
-    protected Double pledged;
+    protected Long goal;
+    protected Long pledged;
     protected Integer investorCount;
     protected Integer recommended;
     protected Integer countryId;
+    protected String countryName;
+    protected String thumbnailPath;
     // status
     protected Integer statusId;
     protected String statusName;
@@ -54,11 +56,13 @@ public class ProjectFullInfoEntity implements Serializable {
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
-            , Double goal
-            , Double pledged
+            , Long goal
+            , Long pledged
             , Integer investorCount
             , Integer recommended
+            , String thumbnailPath
             , Integer countryId
+            , String countryName
             , Integer statusId
             , String statusName
             , Integer categoryId
@@ -76,7 +80,9 @@ public class ProjectFullInfoEntity implements Serializable {
         this.pledged = pledged;
         this.investorCount = investorCount;
         this.recommended = recommended;
+        this.thumbnailPath = thumbnailPath;
         this.countryId = countryId;
+        this.countryName = countryName;
         this.statusId = statusId;
         this.statusName = statusName;
         this.categoryId = categoryId;
@@ -93,8 +99,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , String projectShortDes
             , OffsetDateTime startDate
             , OffsetDateTime endDate
-            , Double goal
-            , Double pledged
+            , Long goal
+            , Long pledged
             , Integer investorCount
             , Integer recommended
             , Integer categoryId

@@ -16,7 +16,9 @@ public class OptionDto {
     private Integer optionId;
     private String optionName;
     private String optionDescription;
-    private Integer fundMin;
+    private Long fundMin;
     private List<ItemEntity> items;
     private Integer projectId;
+    private Long pledge;
+
 }
