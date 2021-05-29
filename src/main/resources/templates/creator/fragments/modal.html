@@ -62,10 +62,10 @@
                     <div class="row form-group">
                         <div class="col-12 col-md-3"></div>
                         <div class="col-12 col-md-9">
-                            <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"
-                                    th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\');'">
-                                Add items
-                            </button>
+<!--                            <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"-->
+<!--                                    th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\');'">-->
+<!--                                Add items-->
+<!--                            </button>-->
                         </div>
                     </div>
 
@@ -144,8 +144,13 @@ data-backdrop="static"  th:fragment="editRewardModal">
                     <div class="row form-group">
                         <div class="col-12 col-md-3"></div>
                         <div class="col-12 col-md-9">
-                            <button type="button" class="btn" data-toggle="modal" data-target="#addItem" style="width: 100%;color: white;background-color: black;">
+                            <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"
+                                    th:parameter1 = "*{projectId}" th:parameter2 = "*{optionId}" th:parameter3 ="*{items}"
+                                    onclick = "openAddItemModal(this.getAttribute('data-parameter1'), this.getAttribute('data-parameter2'), this.getAttribute('data-parameter3'));" >
+<!--                                    th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{items} +'\');'">-->
+
                                 Add items
+
                             </button>
                         </div>
                     </div>

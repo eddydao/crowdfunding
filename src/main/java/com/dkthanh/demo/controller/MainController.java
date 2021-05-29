@@ -253,6 +253,10 @@ public class MainController {
         return "project-detail";
     }
 
+    /*
+    Fund the project
+     */
+
     @PostMapping(value = "/project/fund-project")
     public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
                                  BindingResult result, final RedirectAttributes redirectAttributes){
@@ -278,7 +282,7 @@ public class MainController {
     }
 
     /*
-     *  Sys management function
+     *  Creator management function
      * ===========================================
      * creator/project/list
      * creator/create-project
@@ -506,18 +510,6 @@ public class MainController {
         projectService.saveProjectEntity(projectEntity);
         return "redirect:/creator/project/" +projectId + "/reward" ;
     }
-
-
-    /*
-    *   Save info of rewards tier and items of project
-     */
-
-//    @PostMapping(value = "/creator/save-project-reward")
-//    public String saveProjectReward(HttpServletRequest request,Model model, @ModelAttribute("project_dto") @Validated ProjectDto dto,
-//                                    BindingResult result, final RedirectAttributes redirectAttributes){
-//        return null;
-//    }
-
     /*
     *   Open story edit page
      */
@@ -525,7 +517,7 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/story")
     public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+//        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
@@ -571,6 +563,10 @@ public class MainController {
     }
 
 
+    @GetMapping(value = "/creator/report")
+    public String getReport(Model model){
+        return "/creator/creator-report";
+    }
 
     /*
     *  Admin management function
