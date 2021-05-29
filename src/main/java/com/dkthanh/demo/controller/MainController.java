@@ -566,7 +566,7 @@ public class MainController {
 
     @GetMapping(value = "/creator/report")
     public String getReport(Model model){
-        return "/creator/report";
+        return "/creator/creator-report";
     }
 
     /*
@@ -596,7 +596,7 @@ public class MainController {
     @GetMapping(value = "/admin/category/list")
     public String getCategoryList(){
 
-        return "/admin/;
+        return "/admin/category-management";
     }
 
     // get admin dashboard
