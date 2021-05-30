@@ -610,8 +610,10 @@ public class MainController {
         }else{
             redirectAttributes.addFlashAttribute("delete_success", "fail");
         }
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
 
-        return "redirect:/admin/category/list";
+        model.addAttribute("categories", categoryEntities);
+        return "admin/category-management :: category-table";
     }
 
     // get admin dashboard

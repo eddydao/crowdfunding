@@ -1,4 +1,8 @@
 // Category management region
+$( document ).ready(function() {
+
+});
+
 function openDeleteModal(categoryId){
     $.ajax({
         url: "/admin/category/del-confirmation/" + categoryId ,
@@ -25,9 +29,9 @@ function deleteCategory(categoryId){
         data: dataForm,
         type: "POST",
         success: function(data){
-            console.log("success");
-            // $("#categoryDelConfirmation").modal("hide");
-            // alert("Success");
+            console.log(data);
+            $("#categoryDelConfirmation").modal("hide");
+            $("#category-table").html(data);
         },
         error: function(data){
             console.log(data);
