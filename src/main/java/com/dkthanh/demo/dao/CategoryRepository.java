@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
-    void deleteCategoryEntityById(Integer  categoryId);
+    void deleteById(Integer  categoryId);
 }

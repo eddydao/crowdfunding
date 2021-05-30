@@ -15,13 +15,19 @@ function openDeleteModal(categoryId){
 }
 
 function deleteCategory(categoryId){
-    debugger
     var dataForm = new FormData();
-    dataForm.append("categoryId", categoryId);
+    dataForm.append("id", categoryId);
     $.ajax({
         url: "/admin/category/del",
+        ache: false,
+        contentType : false,
+        processData: false,
+        data: dataForm,
+        type: "POST",
         success: function(data){
-            console.log(data);
+            console.log("success");
+            // $("#categoryDelConfirmation").modal("hide");
+            // alert("Success");
         },
         error: function(data){
             console.log(data);
