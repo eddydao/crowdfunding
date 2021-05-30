@@ -25,4 +25,14 @@ public class CategoryService {
         }
         return null;
     }
+
+    public boolean deleteCategory(Integer categoryId){
+        categoryRepository.deleteCategoryEntityById(categoryId);
+
+        Optional<CategoryEntity> test = categoryRepository.findById(categoryId);
+        if(test.isPresent()){
+            return false;
+        }
+        return true;
+    }
 }

@@ -2,15 +2,9 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Tables</title>
+    <title>Category management</title>
 
     <!-- Fontfaces CSS-->
     <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
@@ -468,20 +462,22 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr class="tr-shadow">
-                                            <td>Lori Lynch</td>
-                                            <td class="desc">Samsung S8 Black</td>
-                                            <td>
-                                                <div class="table-data-feature">
-                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                        <i class="zmdi zmdi-edit"></i>
-                                                    </button>
-                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                        <i class="zmdi zmdi-delete"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr class="tr-shadow" th:each="category: ${categories}">
+                                                <td style="display: none" th:text="${category.id}"> </td>
+                                                <td th:text="${category.name}"></td>
+                                                <td class="desc" th:text="${category.projects.size()}" ></td>
+                                                <td>
+                                                    <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                            <i class="zmdi zmdi-edit"></i>
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete"
+                                                                th:onclick="'openDeleteModal(\'' + ${category.id} + '\');'">
+                                                            <i class="zmdi zmdi-delete"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -490,7 +486,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="card">
+                            <div class="card" id="div-create-category">
                                 <div class="card-header">
                                     <strong>Create new Category</strong>
                                 </div>
@@ -502,7 +498,34 @@
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 <input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." class="form-control">
-                                                <span class="help-block">Please enter your email</span>
+                                                <span class="help-block">Enter the category name</span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-dot-circle-o"></i> Save
+                                    </button>
+                                    <button type="reset" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-ban"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card" id="div-edit-category">
+                                <div class="card-header">
+                                    <strong>Edit Category</strong>
+                                </div>
+                                <div class="card-body card-block">
+                                    <form action="" method="post" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="hf-email" class=" form-control-label">Category name</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." class="form-control">
+                                                <span class="help-block">Enter the category name</span>
                                             </div>
                                         </div>
                                     </form>
@@ -522,7 +545,7 @@
             </div>
         </div>
     </div>
-
+    <div id="categoryDelConfirmationHolder"></div>
 </div>
 
 <!-- Jquery JS-->
@@ -548,7 +571,39 @@
 
 <!-- Main JS-->
 <script src="/admin/js/main.js"></script>
-
+<script src="/admin/js/custom.js"></script>
+<!--<script th:inline="javascript">-->
+<!--    $(document).ready(function () {-->
+<!--        var notification = /*[[${notification}]]*/ "";-->
+<!--        var action = /*[[${action}]]*/ "";-->
+<!--        if (action === 'delete') {-->
+<!--            new PNotify({-->
+<!--                title: 'Delete category',-->
+<!--                text: notification,-->
+<!--                type: 'success',-->
+<!--                styling: 'bootstrap3',-->
+<!--                delay: 3000-->
+<!--            });-->
+<!--        }-->
+<!--        else if (action === 'remove') {-->
+<!--            new PNotify({-->
+<!--                title: 'Remove contractor',-->
+<!--                text: notification,-->
+<!--                type: 'success',-->
+<!--                styling: 'bootstrap3',-->
+<!--                delay: 3000-->
+<!--            });-->
+<!--        } else if (action === 'update') {-->
+<!--            new PNotify({-->
+<!--                title: 'Edit contractor',-->
+<!--                text: notification,-->
+<!--                type: 'success',-->
+<!--                styling: 'bootstrap3',-->
+<!--                delay: 3000-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 </body>
 
 </html>

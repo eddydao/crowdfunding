@@ -580,6 +580,46 @@ public class MainController {
     admin/
      */
 
+    // category list for admin view
+    @GetMapping(value = "/admin/category/list")
+    public String getCategoryList(Model model){
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+        model.addAttribute("categories", categoryEntities);
+        return "/admin/category-management";
+    }
+
+    /*
+    Delete confirmation modal
+     */
+    @GetMapping(value = "/admin/category/del-confirmation/{categoryId}")
+    public String openDeleteConfirmationModal(Model model,  @PathVariable("categoryId") Integer categoryId){
+        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
+        model.addAttribute("category", categoryEntity);
+        return "/admin/fragments/modal :: categoryDelConfirmation";
+    }
+
+    /*
+    Delete category
+     */
+    @PostMapping(value = "/admin/category/del")
+    public String delCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity categoryEntity,
+                                   BindingResult result, final RedirectAttributes redirectAttributes){
+        boolean isDeleted = categoryService.deleteCategory(categoryEntity.getId());
+        if(isDeleted){
+            redirectAttributes.addFlashAttribute("delete_success", "success");
+        }else{
+            redirectAttributes.addFlashAttribute("delete_success", "fail");
+        }
+
+        return "redirect:/admin/category/list";
+    }
+
+    // get admin dashboard
+    @GetMapping(value = "/admin/dashboard")
+    public String getAdminDashboard(){
+        return null;
+    }
+
     // get project list
     @GetMapping(value = "/admin/project/list")
     public String getAdminProjectList(){
@@ -589,19 +629,6 @@ public class MainController {
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")
     public String getAdminPendingList(){
-        return null;
-    }
-
-    // category list for admin view
-    @GetMapping(value = "/admin/category/list")
-    public String getCategoryList(){
-
-        return "/admin/category-management";
-    }
-
-    // get admin dashboard
-    @GetMapping(value = "/admin/dashboard")
-    public String getAdminDashboard(){
         return null;
     }
 }
