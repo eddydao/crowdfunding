@@ -454,7 +454,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive table-responsive-data2" th:fragment="category-table" id="category-table">
-                                    <table class="table table-data2">
+                                    <table class="table table-data2" id="category-table-content">
                                         <thead>
                                         <tr>
                                             <th>Category Name</th>
@@ -495,7 +495,7 @@
                                     <div class="card-body card-block">
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="hf-email" class=" form-control-label">Category name</label>
+                                                    <label  class=" form-control-label">Category name</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="email" id="category-name" name="category-name" placeholder="Enter new category name..." class="form-control">
@@ -505,7 +505,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary btn-sm"
-                                        th:onclick="'saveCategory();'">
+                                        th:onclick="'saveNewCategory();'">
                                             <i class="fa fa-dot-circle-o"></i> Save
                                         </button>
                                         <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-add">
@@ -523,17 +523,18 @@
                                     <form action="" method="post" class="form-horizontal">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
-                                                <label for="hf-email" class=" form-control-label">Category name</label>
+                                                <label class=" form-control-label">Category name</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." class="form-control">
+                                                <input type="email" id="category-edit-name" name="category-edit-name" placeholder="Enter category name..." class="form-control">
+                                                <input type="email" id="category-edit-id" name="category-edit-id" style="display: none" class="form-control">
                                                 <span class="help-block">Enter the category name</span>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm" th:onclick="'saveEditCategory();'">
                                         <i class="fa fa-dot-circle-o"></i> Save
                                     </button>
                                     <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-edit">

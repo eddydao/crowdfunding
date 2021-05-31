@@ -592,10 +592,15 @@ public class MainController {
     Create new category
      */
     @PostMapping(value = "/admin/category/save")
-    public String createNewCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity categoryEntity,
+    public String createNewCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity inputCategoryEntity,
                                     BindingResult result, final RedirectAttributes redirectAttributes){
-//        categoryEntity.setProjects();
-        categoryService.save(categoryEntity);
+        Integer categoryId = inputCategoryEntity.getId();
+        CategoryEntity entity = new CategoryEntity();
+        if(categoryId != null){
+            entity = categoryService.getCategoryById(categoryId);
+        }
+        entity.setName(inputCategoryEntity.getName());
+        categoryService.save(entity);
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
         model.addAttribute("categories", categoryEntities);
         return "admin/category-management :: category-table";
