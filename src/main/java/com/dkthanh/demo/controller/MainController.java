@@ -580,6 +580,9 @@ public class MainController {
     admin/
      */
 
+
+    // CATEGORY MANAGEMENT
+    //==================================================================================================================
     // category list for admin view
     @GetMapping(value = "/admin/category/list")
     public String getCategoryList(Model model){
@@ -633,6 +636,9 @@ public class MainController {
         model.addAttribute("categories", categoryEntities);
         return "admin/category-management :: category-table";
     }
+
+    //END CATEGORY MANAGEMENT
+    //===============================================================================================
 
     // get admin dashboard
     @GetMapping(value = "/admin/dashboard")
