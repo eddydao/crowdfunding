@@ -1673,5 +1673,22 @@
 })(jQuery);
 
 $(document).ready( function () {
-    $('#project-lst-tbl').DataTable();
+  debugger
+    // $('#project-lst-tbl').DataTable();
+
+    $("#btn-create").click(function(){
+        $("#div-create-category").show();
+    });
+    $(".btn-edit").click(function(){
+        $("#div-edit-category").show();
+        var index = $(this).closest('td').parent()[0].sectionRowIndex;
+        console.log(index);
+        document.getElementById("edit-field").value = this.cell[1].innerHTML;
+    });
+    $("#btn-cancel-add").click(function(){
+        $("#div-create-category").hide();
+    });
+    $("#btn-cancel-edit").click(function(){
+        $("#div-edit-category").hide();
+    });
 } );

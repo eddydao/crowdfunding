@@ -606,9 +606,9 @@ public class MainController {
                                    BindingResult result, final RedirectAttributes redirectAttributes){
         boolean isDeleted = categoryService.deleteCategory(categoryEntity.getId());
         if(isDeleted){
-            redirectAttributes.addFlashAttribute("delete_success", "success");
+            model.addAttribute("messageSuccess", "Delete success");
         }else{
-            redirectAttributes.addFlashAttribute("delete_success", "fail");
+            model.addAttribute("messageError", "Delete fail");
         }
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
 

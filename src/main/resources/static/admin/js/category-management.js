@@ -1,7 +1,3 @@
-// Category management region
-$( document ).ready(function() {
-
-});
 
 function openDeleteModal(categoryId){
     $.ajax({
@@ -21,6 +17,7 @@ function openDeleteModal(categoryId){
 function deleteCategory(categoryId){
     var dataForm = new FormData();
     dataForm.append("id", categoryId);
+    $("#categoryDelConfirmation").modal("hide");
     $.ajax({
         url: "/admin/category/del",
         ache: false,
@@ -30,12 +27,12 @@ function deleteCategory(categoryId){
         type: "POST",
         success: function(data){
             console.log(data);
-            $("#categoryDelConfirmation").modal("hide");
             $("#category-table").html(data);
+            toastr.success('Delete success');
         },
         error: function(data){
             console.log(data);
+            toastr.warning('Delete fail');
         }
-
     })
 }
