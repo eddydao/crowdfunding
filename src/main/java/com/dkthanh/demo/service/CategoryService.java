@@ -26,6 +26,10 @@ public class CategoryService {
         return null;
     }
 
+    public CategoryEntity save(CategoryEntity categoryEntity){
+        return categoryRepository.save(categoryEntity);
+    }
+
     public boolean deleteCategory(Integer categoryId){
         categoryRepository.deleteById(categoryId);
 

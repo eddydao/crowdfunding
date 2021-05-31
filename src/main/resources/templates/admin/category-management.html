@@ -466,7 +466,7 @@
                                         <tr class="tr-shadow" th:each="category: ${categories}">
                                             <td style="display: none" th:text="${category.id}"> </td>
                                             <td th:text="${category.name}"></td>
-                                            <td class="desc" th:text="${category.projects.size()}" ></td>
+                                            <td class="desc" th:text="${category.projects == null ? 0 : category.projects.size() } " ></td>
                                             <td>
                                                 <div class="table-data-feature">
                                                     <button class="item btn-edit" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -491,27 +491,28 @@
                                 <div class="card-header">
                                     <strong>Create new Category</strong>
                                 </div>
-                                <div class="card-body card-block">
-                                    <form action="" method="post" class="form-horizontal">
-                                        <div class="row form-group">
-                                            <div class="col col-md-3">
-                                                <label for="hf-email" class=" form-control-label">Category name</label>
+<!--                                <form action="" method="post" class="form-horizontal">-->
+                                    <div class="card-body card-block">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="hf-email" class=" form-control-label">Category name</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="email" id="category-name" name="category-name" placeholder="Enter new category name..." class="form-control">
+                                                    <span class="help-block">Enter the category name</span>
+                                                </div>
                                             </div>
-                                            <div class="col-12 col-md-9">
-                                                <input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." class="form-control">
-                                                <span class="help-block">Enter the category name</span>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-dot-circle-o"></i> Save
-                                    </button>
-                                    <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-add">
-                                        <i class="fa fa-ban"></i> Cancel
-                                    </button>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                        th:onclick="'saveCategory();'">
+                                            <i class="fa fa-dot-circle-o"></i> Save
+                                        </button>
+                                        <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-add">
+                                            <i class="fa fa-ban"></i> Cancel
+                                        </button>
+                                    </div>
+<!--                                </form>-->
                             </div>
 
                             <div class="card" id="div-edit-category" style="display: none">
@@ -547,20 +548,6 @@
         </div>
     </div>
     <div id="categoryDelConfirmationHolder"></div>
-
-    <div class="toast" id="myToast" role="alert" style="position: absolute; top: 0; right: 0;">
-        <div class="toast-header">
-            <strong class="mr-auto"><i class="fa fa-grav"></i> We miss you!</strong>
-            <small>11 mins ago</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            <div>It's been a long time since you visited us. We've something special for you. <a href="#">Click here!</a></div>
-        </div>
-    </div>
-
 
 </div>
 

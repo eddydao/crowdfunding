@@ -589,6 +589,19 @@ public class MainController {
     }
 
     /*
+    Create new category
+     */
+    @PostMapping(value = "/admin/category/save")
+    public String createNewCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity categoryEntity,
+                                    BindingResult result, final RedirectAttributes redirectAttributes){
+//        categoryEntity.setProjects();
+        categoryService.save(categoryEntity);
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+        model.addAttribute("categories", categoryEntities);
+        return "admin/category-management :: category-table";
+    }
+
+    /*
     Delete confirmation modal
      */
     @GetMapping(value = "/admin/category/del-confirmation/{categoryId}")
