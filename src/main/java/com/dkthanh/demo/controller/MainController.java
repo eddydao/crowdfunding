@@ -566,7 +566,7 @@ public class MainController {
 
     @GetMapping(value = "/creator/report")
     public String getReport(Model model){
-        return "/creator/report";
+        return "/creator/creator-report";
     }
 
     /*
@@ -580,6 +580,72 @@ public class MainController {
     admin/
      */
 
+
+    // CATEGORY MANAGEMENT
+    //==================================================================================================================
+    // category list for admin view
+    @GetMapping(value = "/admin/category/list")
+    public String getCategoryList(Model model){
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+        model.addAttribute("categories", categoryEntities);
+        return "/admin/category-management";
+    }
+
+    /*
+    Create new category
+     */
+    @PostMapping(value = "/admin/category/save")
+    public String createNewCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity inputCategoryEntity,
+                                    BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer categoryId = inputCategoryEntity.getId();
+        CategoryEntity entity = new CategoryEntity();
+        if(categoryId != null){
+            entity = categoryService.getCategoryById(categoryId);
+        }
+        entity.setName(inputCategoryEntity.getName());
+        categoryService.save(entity);
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+        model.addAttribute("categories", categoryEntities);
+        return "admin/category-management :: category-table";
+    }
+
+    /*
+    Delete confirmation modal
+     */
+    @GetMapping(value = "/admin/category/del-confirmation/{categoryId}")
+    public String openDeleteConfirmationModal(Model model,  @PathVariable("categoryId") Integer categoryId){
+        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
+        model.addAttribute("category", categoryEntity);
+        return "/admin/fragments/modal :: categoryDelConfirmation";
+    }
+
+    /*
+    Delete category
+     */
+    @PostMapping(value = "/admin/category/del")
+    public String delCategory(HttpServletRequest request,Model model, @ModelAttribute("category") @Validated CategoryEntity categoryEntity,
+                                   BindingResult result, final RedirectAttributes redirectAttributes){
+        boolean isDeleted = categoryService.deleteCategory(categoryEntity.getId());
+        if(isDeleted){
+            model.addAttribute("messageSuccess", "Delete success");
+        }else{
+            model.addAttribute("messageError", "Delete fail");
+        }
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+
+        model.addAttribute("categories", categoryEntities);
+        return "admin/category-management :: category-table";
+    }
+
+    //END CATEGORY MANAGEMENT
+    //===============================================================================================
+
+    // get admin dashboard
+    @GetMapping(value = "/admin/dashboard")
+    public String getAdminDashboard(){
+        return null;
+    }
+
     // get project list
     @GetMapping(value = "/admin/project/list")
     public String getAdminProjectList(){
@@ -589,19 +655,6 @@ public class MainController {
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")
     public String getAdminPendingList(){
-        return null;
-    }
-
-    // category list for admin view
-    @GetMapping(value = "/admin/category/list")
-    public String getCategoryList(){
-
-        return "/admin/;
-    }
-
-    // get admin dashboard
-    @GetMapping(value = "/admin/dashboard")
-    public String getAdminDashboard(){
         return null;
     }
 }

@@ -25,4 +25,18 @@ public class CategoryService {
         }
         return null;
     }
+
+    public CategoryEntity save(CategoryEntity categoryEntity){
+        return categoryRepository.save(categoryEntity);
+    }
+
+    public boolean deleteCategory(Integer categoryId){
+        categoryRepository.deleteById(categoryId);
+
+        Optional<CategoryEntity> test = categoryRepository.findById(categoryId);
+        if(test.isPresent()){
+            return false;
+        }
+        return true;
+    }
 }

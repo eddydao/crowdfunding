@@ -12,4 +12,6 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
     Optional<List<ProjectEntity>> findProjectEntitiesByProjectNameContaining(String keyword);
 
     Optional<ProjectEntity> findFirstByOrderByProjectIdDesc();
+
+
 }

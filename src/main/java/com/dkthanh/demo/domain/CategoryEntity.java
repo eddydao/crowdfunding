@@ -11,6 +11,7 @@ import java.util.List;
 public class CategoryEntity {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "name", nullable = true, length = 255)
     private String name;
