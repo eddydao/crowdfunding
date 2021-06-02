@@ -232,27 +232,25 @@ $(function(){
     }
 });
 
-function fundTheProject(projectId, optionId){
+function checkFundNumber(optionId){
     var pledgeId = "pledge-input" + optionId;
-    var pledge = $("#" + pledgeId).val()
-    var data = new FormData();
+    var pledge = $("." + pledgeId).val();
+    var fundMin = $("#" + "option" + optionId).val();
+    var numberTest = /^\+?(0|[1-9]\d*)$/;
+    debugger
+    if(pledge != null && pledge != "" ) {
 
-    data.append("projectId", projectId);
-    data.append("optionId", optionId);
-    data.append("pledge", pledge);
-    $.ajax({
-        url: "/project/fund-project",
-        ache: false,
-        contentType : false,
-        processData: false,
-        data: data,
-        type: "POST",
-        success: function(data){
-            console.log("Success");
-        },
-        error: function(data){
-            console.log(data);
+
+        if (!numberTest.test(pledge) ) {
+            toastr.error('Your input is not a valid number');
+            $("." + pledgeId).val("");
+            $("." + pledgeId).focus();
+            return;
         }
-
-    })
+        if(pledge * 1  < fundMin *1 ){
+            toastr.error('Your pledge is smaller than minimal fund needed for this package');
+            $("." +pledgeId).focus();
+            return;
+        }
+    }
 }

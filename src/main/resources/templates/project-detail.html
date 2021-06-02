@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../css/ie8.css"/>
     <![endif]-->
     <link rel="stylesheet" href="../css/responsive.css"/>
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="../js/html5.js"></script>
     <![endif]-->
@@ -28,6 +29,7 @@
     <script type="text/javascript" src="../js/jquery.tweet.min.js"></script>
     <script type="text/javascript" src="../js/pie.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
+    <script src="/admin/js/toastr.min.js"></script>
 
 </head>
 <body>
@@ -149,7 +151,7 @@
                             <h3 class="rs alternate-tab accordion-label">The story</h3>
                             <div class="tab-pane active accordion-content">
                                 <div class="editor-content">
-                                    <p th:utext="${story.storyDes}"></p>
+                                    <p th:utext="${story != null ? story.storyDes : null}"></p>
                                 </div>
                             </div><!--end: .tab-pane(About) -->
                         </div>
@@ -189,11 +191,12 @@
             </div><!--end: .project-author -->
             <div class="clear clear-2col"></div>
             <div class="wrap-nav-pledge">
-                    <ul class="rs nav nav-pledge accordion" th:each="option : ${options}">
+                    <ul class="rs nav nav-pledge accordion" th:each="option : ${options}" >
                         <li>
                             <div class=" pledge-label accordion-label clearfix">
                                 <i class="icon iPlugGray"></i>
                                 <span class="pledge-amount">Pledge $<span th:text="${option.fundMin}"></span> or more</span>
+                                <input style="display: none" id="option" th:attrappend="id=${option.optionId}" th:value="${option.fundMin}">
                                 <span class="count-val">(12 of 31)</span>
                                 <!-- <p class="rs fw-b pb20">Ocupated (2 of 10)</p> -->
                             </div>
@@ -205,15 +208,15 @@
                                         <li th:text="${option.items[__${i.index}__].itemName}"></li>
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
-<!--                                    <form action="#" th:action = "@{/project/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">-->
+                                    <form action="#" th:action = "@{/project/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">
                                         <span th:value="${option.optionId}" style="display: none;"></span>
                                         <span th:value="${option.projectId}" style="display: none;"></span>
-                                        <input placeholder="Pledge" id="pledge-input" th:attrappend="id=${option.optionId}">
+                                        <input placeholder="Pledge" id="pledge" name = "pledge" class="pledge-input" th:attrappend="class=${option.optionId}"
+                                               th:onfocusout="'checkFundNumber(\''  + ${option.optionId} + '\');'" th:value="*{pledge}">
                                         <p class="rs fw-thin fc-gray pb20"></p>
-                                        <p class="rs ta-c"><button class="btn big btn-red"
-                                                                   th:onclick="'fundTheProject(\'' + ${option.projectId} + '\',\'' + ${option.optionId} + '\');'">Back this project</button></p>
-<!--                                    </form>-->
-
+                                        <p class="rs ta-c"><button class="btn big btn-red" >Back this project</button></p>
+<!--                                        th:onclick="'fundTheProject(\'' + ${option.projectId} + '\',\'' + ${option.optionId} + '\');'"-->
+                                    </form>
                                 </div>
                             </div>
                         </li><!--end: pledge-item -->
