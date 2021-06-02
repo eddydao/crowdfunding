@@ -205,7 +205,7 @@
     <!--                                        </th>-->
                                             <th>Project</th>
                                             <th>Status</th>
-                                            <th>Short description</th>
+                                            <th>Category</th>
                                             <th>Start date</th>
                                             <th>End date</th>
                                             <th>Funding goal</th>
@@ -217,7 +217,7 @@
                                         <tr class="tr-shadow" th:each="project : ${projects}">
                                             <td><a th:href="@{/creator/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></td>
                                             <td th:text="${project.statusName}"></td>
-                                            <td class="desc" th:text="${project.projectShortDes}"></td>
+                                            <td class="desc" th:text="${project.categoryName}"></td>
                                             <td th:text="${project.startDate}"></td>
                                             <td th:text="${project.endDate}"></td>
                                             <td class="text-right" th:text="${project.goal}"></td>

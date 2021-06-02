@@ -1,7 +1,6 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
-import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.OptionDto;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
@@ -11,7 +10,13 @@ import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.*;
 import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -34,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("*")
 @Controller
 public class MainController {
 
@@ -70,8 +76,20 @@ public class MainController {
     @Autowired
     private PackageService packageService;
 
+    @Autowired
+    private PaypalService paypalService;
+
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
+
+    public static final String URL_PAYPAL_SUCCESS = "pay/success";
+    public static final String URL_PAYPAL_CANCEL = "pay/cancel";
+
+    @Value("${stripe.publickey}")
+    private String publicKey;
+
+    private Logger log = LoggerFactory.getLogger(getClass());
+
     /*
      *  Common function
      * ===========================================
@@ -257,28 +275,94 @@ public class MainController {
     Fund the project
      */
 
+//    @PostMapping(value = "/project/fund-project")
+//    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+//                                 BindingResult result, final RedirectAttributes redirectAttributes){
+//        Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
+//        Integer optionId = dto.getOptionId();
+//        Integer projectId = dto.getProjectId();
+//        Long pledge = dto.getPledge();
+//        Integer userId  = 2;
+//        UserEntity user = userService.findUserById(userId);
+//
+//
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+//        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+//
+//        userChoosedPack.setProject(projectEntity);
+//        userChoosedPack.setOption(optionEntity);
+//        userChoosedPack.setPledged(pledge);
+//        userChoosedPack.setUser(user);
+//        packageService.savePackage(userChoosedPack);
+//
+//        // return to check out screen -> apply paypal here first, then save the package infors
+//        return null;
+//    }
+
     @PostMapping(value = "/project/fund-project")
-    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
-                                 BindingResult result, final RedirectAttributes redirectAttributes){
-        Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
-        Integer optionId = dto.getOptionId();
-        Integer projectId = dto.getProjectId();
-        Long pledge = dto.getPledge();
-        Integer userId  = 2;
-        UserEntity user = userService.findUserById(userId);
+    public String paymentWithPaypal(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                               BindingResult result, final RedirectAttributes redirectAttributes){
+        String cancelUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
+        String successUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+        try {
+            Payment payment = paypalService.createPayment(
+                    dto.getPledge(),
+                    "USD",
+                    Constant.PaymentMethod.PAYPAL,
+                    Constant.PaypalPaymentIntent.SALE,
+                    "payment description",
+                    cancelUrl,
+                    successUrl);
+            for(Links links : payment.getLinks()){
+                if(links.getRel().equals("approval_url")){
+                    return "redirect:" + links.getHref();
+                }
+            }
+        } catch (PayPalRESTException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/";
+    }
+//    public String paymentWithPaypal(HttpServletRequest request, Integer price){
+//        String cancelUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
+//        String successUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
+//        try {
+//            Payment payment = paypalService.createPayment(
+//                    price,
+//                    "USD",
+//                    Constant.PaymentMethod.PAYPAL,
+//                    Constant.PaypalPaymentIntent.SALE,
+//                    "payment description",
+//                    cancelUrl,
+//                    successUrl);
+//            for(Links links : payment.getLinks()){
+//                if(links.getRel().equals("approval_url")){
+//                    return "redirect:" + links.getHref();
+//                }
+//            }
+//        } catch (PayPalRESTException e) {
+//            log.error(e.getMessage());
+//        }
+//        return "redirect:/";
+//    }
+
+    @GetMapping(URL_PAYPAL_CANCEL)
+    public String cancelPay(){
+        return "403";
+    }
 
 
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-
-        userChoosedPack.setProject(projectEntity);
-        userChoosedPack.setOption(optionEntity);
-        userChoosedPack.setPledged(pledge);
-        userChoosedPack.setUser(user);
-        packageService.savePackage(userChoosedPack);
-
-        // return to check out screen -> apply paypal here first, then save the package infors
-        return null;
+    @GetMapping(URL_PAYPAL_SUCCESS)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
+        try {
+            Payment payment = paypalService.executePayment(paymentId, payerId);
+            if(payment.getState().equals("approved")){
+                return "payment-success";
+            }
+        } catch (PayPalRESTException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/";
     }
 
     /*
@@ -342,6 +426,10 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}")
     public String openProjectEditForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+        if(entity.getProjectName() != null){
+            dto.setProjectName(entity.getProjectName());
+        }
         dto.setProjectId(projectId);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
