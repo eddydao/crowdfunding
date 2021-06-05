@@ -146,12 +146,13 @@ try {
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
+                // labels: ["2021-05-17", "2011", "2012", "2013", "2014", "2015", "2016"],
+                labels: Object.keys(chartData),
                 type: 'line',
                 defaultFontFamily: 'Poppins',
                 datasets: [{
-                    data: [0, 7, 3, 5, 2, 10, 7],
-                    label: "Expense",
+                    // data: [0, 7, 3, 5, 2, 10, 7],
+                    label: "PLedge",
                     backgroundColor: 'rgba(0,103,255,.15)',
                     borderColor: 'rgba(0,103,255,0.5)',
                     borderWidth: 3.5,
@@ -159,6 +160,7 @@ try {
                     pointRadius: 5,
                     pointBorderColor: 'transparent',
                     pointBackgroundColor: 'rgba(0,103,255,0.5)',
+                    data: Object.keys(chartData).map(function(key) {return chartData[key];})
                 },]
             },
             options: {
@@ -237,26 +239,24 @@ try {
             type: 'pie',
             data: {
                 datasets: [{
-                    data: [45, 25, 20, 10],
-                    backgroundColor: [
-                        "rgba(0, 123, 255,0.9)",
-                        "rgba(0, 123, 255,0.7)",
-                        "rgba(0, 123, 255,0.5)",
-                        "rgba(0,0,0,0.07)"
-                    ],
-                    hoverBackgroundColor: [
-                        "rgba(0, 123, 255,0.9)",
-                        "rgba(0, 123, 255,0.7)",
-                        "rgba(0, 123, 255,0.5)",
-                        "rgba(0,0,0,0.07)"
-                    ]
+                    data: Object.keys(optionPercent).map(function(key) {return optionPercent[key];}),
+                    // data: [45, 25, 20, 10],
+                    backgroundColor: getBackgroundColorPieChart(Object.keys(optionPercent).length),
+                    hoverBackgroundColor: getHoverBackgroundColorPieChart(Object.keys(optionPercent).length)
+                    //     "rgba(0, 123, 255,0.9)",
+                    //     "rgba(0, 123, 255,0.7)",
+                    //     "rgba(0, 123, 255,0.5)",
+                    //     "rgba(0,0,0,0.07)"
+                    // ]
 
                 }],
-                labels: [
-                    "Green",
-                    "Green",
-                    "Green"
-                ]
+                // labels: [
+                //     "Green",
+                //     "Green",
+                //     "Green"
+                // ]
+                labels: Object.keys(optionPercent)
+
             },
             options: {
                 legend: {
@@ -274,4 +274,19 @@ try {
 
 } catch (error) {
     console.log(error);
+}
+
+function getBackgroundColorPieChart(dataLength) {
+    var colors = [];
+    for(var i =0; i < dataLength; i++){
+        colors.push("hsl(" + ( i / dataLength * 360) +" , 50%, 50%)" );
+    }
+    return colors;
+}
+function getHoverBackgroundColorPieChart(dataLength) {
+    var colors = [];
+    for(var i =0; i < dataLength; i++){
+        colors.push("hsl(" + ( i / dataLength * 360) +" , 75%, 50%)" );
+    }
+    return colors;
 }

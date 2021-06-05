@@ -1,5 +1,6 @@
-package com.dkthanh.demo.domain.dto;
+package com.dkthanh.demo.domain.mapper;
 
+import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

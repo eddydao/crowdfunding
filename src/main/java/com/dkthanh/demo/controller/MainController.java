@@ -36,8 +36,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 @CrossOrigin("*")
 @Controller
@@ -78,6 +79,9 @@ public class MainController {
 
     @Autowired
     private PaypalService paypalService;
+
+    @Autowired
+    private ReportService reportService;
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -652,13 +656,56 @@ public class MainController {
     }
 
 
-    @GetMapping(value = "/creator/report")
-    public String getReport(Model model){
+//    @GetMapping(value = "/creator/project/{projectId}/report")
+//    public String getReport(Model model){
+//        // get pledge each week
+//
+//
+//        return "/creator/creator-report";
+//    }
+
+    @GetMapping(value = "/creator/project/{projectId}/report")
+    public String getReport(Model model, @PathVariable("projectId") Integer projectId){
+        // initiate
+        Map<String, Long> pledgeByWeek = new LinkedHashMap<>();
+        // get pledge each week
+        List<PledgeReportEntity> listPLedge =  reportService.getPLedgeAmountByWeeks(projectId);
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+
+        OffsetDateTime endDate = projectEntity.getEndDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
+        for(int i = 0; i < listPLedge.size(); i++){
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.WEEK_OF_YEAR, listPLedge.get(i).getWeekNumber());
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            String date = sdf.format(cal.getTime()).toString();
+            String formatedDate = date.replace(" ", "/");
+            pledgeByWeek.put(formatedDate, listPLedge.get(i).getPledge());
+        }
+        model.addAttribute("data", pledgeByWeek);
+
+        // get option percentage
+
+        Map<String, String> optionPercentage = new LinkedHashMap<>();
+        List<PledgeReportEntity> listOptionPercentage =  reportService.getOptionPercentageByProjectId(projectId);
+        for(int i = 0; i< listOptionPercentage.size(); i++){
+            optionPercentage.put(listOptionPercentage.get(i).getOptionName(), listOptionPercentage.get(i).getOptionPercent().toString());
+        }
+        model.addAttribute("optionPercent", optionPercentage);
+        // get list of user and pledge that they donated
+
+        List<PledgeReportEntity> listPackage = packageService.getPackageInfoByProjectId(projectId);
+
+
+
+        model.addAttribute("packages", listPackage);
+
         return "/creator/creator-report";
     }
 
     /*
-    *  Admin management function
+    *  admin management function
     * ===========================================
     admin/project/list
     admin/project/id

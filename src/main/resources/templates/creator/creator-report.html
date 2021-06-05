@@ -438,14 +438,34 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-6">
+                            <div class="table-responsive table--no-card m-b-30">
+                                <table class="table table-borderless table-striped table-earning">
+                                    <thead>
+                                    <tr>
+                                        <th>date</th>
+                                        <th>user</th>
+                                        <th>option</th>
+                                        <th class="text-right">pledge</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each=" package : ${packages}">
+                                        <td th:text="${package.timestamp}"></td>
+                                        <td th:text="${package.username}"></td>
+                                        <td th:text="${package.optionName}"></td>
+                                        <td th:text="${package.pledge}" class="text-right"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                             <div class="au-card m-b-30">
                                 <div class="au-card-inner">
                                     <h3 class="title-2 m-b-40">Pledge amount by weeks</h3>
                                     <canvas id="team-chart"></canvas>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
                             <div class="au-card m-b-30">
                                 <div class="au-card-inner">
                                     <h3 class="title-2 m-b-40">Option statistics</h3>
@@ -486,7 +506,12 @@
 
 <!-- Main JS-->
 <script src="/creator/js/main.js"></script>
+<script th:inline="javascript">
+    var chartData = [[${data}]];
+    var optionPercent = [[${optionPercent}]];
+</script>
 <script src="/creator/js/custom-proj.js"></script>
+
 
 </body>
 
