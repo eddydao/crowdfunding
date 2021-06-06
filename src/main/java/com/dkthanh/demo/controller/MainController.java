@@ -693,13 +693,14 @@ public class MainController {
             optionPercentage.put(listOptionPercentage.get(i).getOptionName(), listOptionPercentage.get(i).getOptionPercent().toString());
         }
         model.addAttribute("optionPercent", optionPercentage);
+
         // get list of user and pledge that they donated
-
         List<PledgeReportEntity> listPackage = packageService.getPackageInfoByProjectId(projectId);
-
-
-
         model.addAttribute("packages", listPackage);
+
+        // overview information
+        model.addAttribute("investor_count" , projectEntity.getInvestorCount());
+        model.addAttribute("pledge", projectEntity.getPledged());
 
         return "/creator/creator-report";
     }

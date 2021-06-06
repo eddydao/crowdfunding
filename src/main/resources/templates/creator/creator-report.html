@@ -436,29 +436,46 @@
         <div class="main-content">
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="table-responsive table--no-card m-b-30">
-                                <table class="table table-borderless table-striped table-earning">
-                                    <thead>
-                                    <tr>
-                                        <th>date</th>
-                                        <th>user</th>
-                                        <th>option</th>
-                                        <th class="text-right">pledge</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each=" package : ${packages}">
-                                        <td th:text="${package.timestamp}"></td>
-                                        <td th:text="${package.username}"></td>
-                                        <td th:text="${package.optionName}"></td>
-                                        <td th:text="${package.pledge}" class="text-right"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <div class="row m-t-25">
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="overview-item overview-item--c1">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-account-o"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2 th:text="${investor_count}"></h2>
+                                            <span>donators</span>
+                                        </div>
+                                    </div>
+                                    <div class="overview-chart">
+                                        <canvas id="widgetChart1"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6 col-lg-6">
+                            <div class="overview-item overview-item--c4">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-money"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>$<span th:text="${pledge}"></span></h2>
+                                            <span>total earnings</span>
+                                        </div>
+                                    </div>
+                                    <div class="overview-chart">
+                                        <canvas id="widgetChart4"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="au-card m-b-30">
                                 <div class="au-card-inner">
@@ -466,12 +483,36 @@
                                     <canvas id="team-chart"></canvas>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-lg-6">
                             <div class="au-card m-b-30">
                                 <div class="au-card-inner">
                                     <h3 class="title-2 m-b-40">Option statistics</h3>
                                     <canvas id="pieChart"></canvas>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive table--no-card m-b-30">
+                            <table class="table table-borderless table-striped table-earning">
+                                <thead>
+                                <tr>
+                                    <th>date</th>
+                                    <th>user</th>
+                                    <th>option</th>
+                                    <th class="text-right">pledge</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each=" package : ${packages}">
+                                    <td th:text="${package.timestamp}"></td>
+                                    <td th:text="${package.username}"></td>
+                                    <td th:text="${package.optionName}"></td>
+                                    <td class="text-right">$<span th:text="${package.pledge}"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
