@@ -221,7 +221,7 @@
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
           datasets: [
             {
-              label: "My First dataset",
+              // label: "My First dataset",
               data: [78, 81, 80, 65, 58, 75, 60, 75, 65, 60, 60, 75],
               borderColor: "transparent",
               borderWidth: "0",

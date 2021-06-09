@@ -216,5 +216,34 @@ public final class Constant {
         private PROJECT_KEY(){}
     }
 
+    public enum Currency {
+        USD(1, "USD");
+
+        private Integer id;
+        private String name;
+
+        Currency(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static Currency getFormStepById(Integer id){
+            for (Currency e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
 
 }

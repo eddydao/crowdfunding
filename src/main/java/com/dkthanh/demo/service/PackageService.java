@@ -3,6 +3,7 @@ package com.dkthanh.demo.service;
 import com.dkthanh.demo.dao.PackageRepository;
 import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.PledgeReportEntity;
+import com.dkthanh.demo.domain.dto.PackageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,15 @@ public class PackageService {
             list.get(i).setTimestamp(list.get(i).getTimestampOffset().format(formatter));
         }
         return list;
+    }
+
+    public int customSavePackage(PackageDto packageDto){
+        return packageRepository.customSavePackage(packageDto);
+
+//        if(rowCount > 0 ){
+////            Package pack = new Package();
+////            packageRepository.g
+//        }
+//        return null;
     }
 }

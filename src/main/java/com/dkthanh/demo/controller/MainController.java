@@ -1,18 +1,13 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
+import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.*;
-import com.dkthanh.demo.domain.dto.OptionDto;
-import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
-import com.dkthanh.demo.domain.dto.StoryDto;
-import com.dkthanh.demo.domain.dto.UploadFormDto;
+import com.dkthanh.demo.domain.dto.*;
 import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.service.*;
 import com.dkthanh.demo.util.Constant;
 import com.dkthanh.demo.util.WebUtil;
-import com.paypal.api.payments.Links;
-import com.paypal.api.payments.Payment;
-import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +32,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -77,11 +74,14 @@ public class MainController {
     @Autowired
     private PackageService packageService;
 
-    @Autowired
-    private PaypalService paypalService;
+//    @Autowired
+//    private PaypalService paypalService;
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private StripeService stripeService;
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -89,8 +89,13 @@ public class MainController {
     public static final String URL_PAYPAL_SUCCESS = "pay/success";
     public static final String URL_PAYPAL_CANCEL = "pay/cancel";
 
+    public static final Integer CENT_TRANSFER = 100;
+
     @Value("${stripe.publickey}")
     private String publicKey;
+
+//    @Value("${stripe.secretkey}")
+//    private String secretKey;
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -278,95 +283,75 @@ public class MainController {
     /*
     Fund the project
      */
-
-//    @PostMapping(value = "/project/fund-project")
-//    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
-//                                 BindingResult result, final RedirectAttributes redirectAttributes){
-//        Package userChoosedPack =  new com.dkthanh.demo.domain.Package();
-//        Integer optionId = dto.getOptionId();
-//        Integer projectId = dto.getProjectId();
-//        Long pledge = dto.getPledge();
-//        Integer userId  = 2;
-//        UserEntity user = userService.findUserById(userId);
-//
-//
-//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-//        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-//
-//        userChoosedPack.setProject(projectEntity);
-//        userChoosedPack.setOption(optionEntity);
-//        userChoosedPack.setPledged(pledge);
-//        userChoosedPack.setUser(user);
-//        packageService.savePackage(userChoosedPack);
-//
-//        // return to check out screen -> apply paypal here first, then save the package infors
-//        return null;
-//    }
-
     @PostMapping(value = "/project/fund-project")
-    public String paymentWithPaypal(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
-                                               BindingResult result, final RedirectAttributes redirectAttributes){
-        String cancelUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-        String successUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
-        try {
-            Payment payment = paypalService.createPayment(
-                    dto.getPledge(),
-                    "USD",
-                    Constant.PaymentMethod.PAYPAL,
-                    Constant.PaypalPaymentIntent.SALE,
-                    "payment description",
-                    cancelUrl,
-                    successUrl);
-            for(Links links : payment.getLinks()){
-                if(links.getRel().equals("approval_url")){
-                    return "redirect:" + links.getHref();
-                }
-            }
-        } catch (PayPalRESTException e) {
-            log.error(e.getMessage());
-        }
-        return "redirect:/";
+    public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                               BindingResult result, final RedirectAttributes redirectAttributes) {
+
+        model.addAttribute("stripePublicKey" , publicKey);
+        Integer projectId = dto.getProjectId();
+//        Integer optionId = dto.getOptionId();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("project", projectEntity);
+        return "checkout";
     }
-//    public String paymentWithPaypal(HttpServletRequest request, Integer price){
-//        String cancelUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_CANCEL;
-//        String successUrl = WebUtil.getBaseURL(request) + "/" + URL_PAYPAL_SUCCESS;
-//        try {
-//            Payment payment = paypalService.createPayment(
-//                    price,
-//                    "USD",
-//                    Constant.PaymentMethod.PAYPAL,
-//                    Constant.PaypalPaymentIntent.SALE,
-//                    "payment description",
-//                    cancelUrl,
-//                    successUrl);
-//            for(Links links : payment.getLinks()){
-//                if(links.getRel().equals("approval_url")){
-//                    return "redirect:" + links.getHref();
-//                }
-//            }
-//        } catch (PayPalRESTException e) {
-//            log.error(e.getMessage());
+
+    @PostMapping(value = "/create-charge")
+    public @ResponseBody ChargeRequestEntity createCharge(String email, String token, String optionId, String projectId, Integer pledge){
+        //validate data
+        if (token == null) {
+            return new ChargeRequestEntity(false, "Stripe payment token is missing. Please, try again later.");
+        }
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        UserEntity user = null;
+
+        // in real run, uncomment this block
+//        if(authentication != null) {
+//
+//            username = ((UserDetails) authentication.getPrincipal()).getUsername();
 //        }
-//        return "redirect:/";
-//    }
-
-    @GetMapping(URL_PAYPAL_CANCEL)
-    public String cancelPay(){
-        return "403";
-    }
-
-
-    @GetMapping(URL_PAYPAL_SUCCESS)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId){
-        try {
-            Payment payment = paypalService.executePayment(paymentId, payerId);
-            if(payment.getState().equals("approved")){
-                return "payment-success";
-            }
-        } catch (PayPalRESTException e) {
-            log.error(e.getMessage());
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
         }
-        return "redirect:/";
+
+//        Integer userId  = user.getId();
+        Integer userId  = 3;
+
+        // update info of project
+        ProjectEntity projectEntity = projectService.getProjectEntityById(Integer.parseInt(projectId));
+        projectEntity.setPledged(projectEntity.getPledged() != null ? projectEntity.getPledged() + pledge : pledge);
+
+        int count = 0;
+        List<Package> listExistPack = packageService.getAllPackageByProjectId(Integer.parseInt(projectId));
+        for(int i = 0; i< listExistPack.size(); i++){
+            if(listExistPack.get(i).getUser().getUsername() == username){
+                count++;
+            }
+        }
+
+        if(count == 0){
+            projectEntity.setInvestorCount(projectEntity.getInvestorCount() + 1);
+        }
+
+//        Package packageEntity = new Package();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        PackageDto dto = new PackageDto(userId, Integer.parseInt(projectId), Integer.parseInt(optionId), new Long(pledge),timestamp);
+
+        int rowCount = packageService.customSavePackage(dto);
+        System.out.println("ROWCOUNT..........." + rowCount);
+
+        String chargeId = stripeService.createCharge(email, token, pledge * CENT_TRANSFER);
+        if (chargeId == null) {
+            return new ChargeRequestEntity(false, "An error occurred while trying to create a charge.");
+        }
+        //
+
+        // You may want to store charge id along with order information
+
+        return new ChargeRequestEntity(true, "Success! Your charge id is " + chargeId);
     }
 
     /*

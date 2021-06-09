@@ -2,6 +2,7 @@ package com.dkthanh.demo.dao.impl;
 
 import com.dkthanh.demo.dao.PackageRepositoryCustom;
 import com.dkthanh.demo.domain.PledgeReportEntity;
+import com.dkthanh.demo.domain.dto.PackageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -73,5 +74,22 @@ public class PackageRepositoryImpl implements PackageRepositoryCustom {
         Query sqlQuery = em.createNativeQuery(sb.toString(), PledgeReportEntity.TABLE_REPORT);
         sqlQuery.setParameter("id", projectId);
         return sqlQuery.getResultList();
+    }
+
+    @Override
+    public int customSavePackage(PackageDto dto) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(
+                "INSERT INTO package(user_id, project_id, option_id, pledged, timestamp)" +
+                "VALUES (:userId, :projectId, :optionId, :pledged, :timestamp)"
+        );
+
+        Query sql = em.createNativeQuery(sb.toString());
+        sql.setParameter("userId", dto.getUserId());
+        sql.setParameter("projectId", dto.getProjectId());
+        sql.setParameter("optionId", dto.getOptionId());
+        sql.setParameter("pledged", dto.getPledge());
+        sql.setParameter("timestamp", dto.getTimestamp());
+        return sql.executeUpdate();
     }
 }

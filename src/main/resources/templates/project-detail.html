@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../css/ie8.css"/>
     <![endif]-->
     <link rel="stylesheet" href="../css/responsive.css"/>
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
     <link href="/admin/css/toastr.css" rel="stylesheet"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="../js/html5.js"></script>
@@ -28,8 +29,11 @@
     <script type="text/javascript" src="../js/jquery.sidr.min.js"></script>
     <script type="text/javascript" src="../js/jquery.tweet.min.js"></script>
     <script type="text/javascript" src="../js/pie.js"></script>
-    <script type="text/javascript" src="../js/script.js"></script>
+    <script src="/admin/js/jquery.toast.min.js"></script>
     <script src="/admin/js/toastr.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+
+
 
 </head>
 <body>
@@ -209,8 +213,9 @@
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
                                     <form action="#" th:action = "@{/project/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">
-                                        <span th:value="${option.optionId}" style="display: none;"></span>
-                                        <span th:value="${option.projectId}" style="display: none;"></span>
+                                        <input id="optionId" name = "optionId" th:value="*{optionId}" style="display: none;"></input>
+                                        <input id="optionName" name = "optionName" th:value="*{optionName}" style="display: none;"></input>
+                                        <input id="projectId" name = "projectId" th:value="*{projectId}" style="display: none;"></input>
                                         <input placeholder="Pledge" id="pledge" name = "pledge" class="pledge-input" th:attrappend="class=${option.optionId}"
                                                th:onfocusout="'checkFundNumber(\''  + ${option.optionId} + '\');'" th:value="*{pledge}">
                                         <p class="rs fw-thin fc-gray pb20"></p>
