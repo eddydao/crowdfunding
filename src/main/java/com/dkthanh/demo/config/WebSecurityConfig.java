@@ -45,20 +45,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.cors().and().authorizeRequests().antMatchers("/**").permitAll();
+//        http.cors().and().authorizeRequests().antMatchers("/**").permitAll();
 
-//        http.authorizeRequests().antMatchers("/","/index", "/logout", "/css/**", "/js/**"
-//                , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register").permitAll()
-//                .antMatchers("/creator/**").hasAnyRole("CREATOR", "ADMIN")
-//                .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
-//        .and().formLogin()
-//                .loginProcessingUrl("/j_spring_security_check") // Submit URL
-//                .loginPage("/signin")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/register")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
-//        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests().antMatchers("/","/index", "/logout", "/css/**", "/js/**"
+                , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register", "/login-assets/**").permitAll()
+                .antMatchers("/creator/**").hasAnyRole("CREATOR", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
+        .and().formLogin()
+                .loginProcessingUrl("/j_spring_security_check") // Submit URL
+                .loginPage("/signin")
+                .defaultSuccessUrl("/")
+                .failureUrl("/register")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
     }
 }
