@@ -1672,26 +1672,25 @@
 
 })(jQuery);
 
-$(document).ready( function () {
-    debugger
-    $("#btn-create").click(function(){
-        $("#div-create-category").show();
-        $("#category-name").focus();
-        // $('html, body').animate({ scrollTop: 0 }, 'fast');
-    });
-    $(".btn-edit").click(function(){
-        $("#div-edit-category").show();
-        // $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-        var row = $(this).closest('td').parent()[0];
-        document.getElementById("category-edit-name").value = row.cells[1].innerText;
-        document.getElementById("category-edit-id").value = row.cells[0].innerText;
-        $("#category-edit-name").focus();
-    });
-    $("#btn-cancel-add").click(function(){
-      $("#div-create-category").fadeOut(1000);
-    });
-    $("#btn-cancel-edit").click(function(){
-      $("#div-edit-category").fadeOut(1000);
-    });
-} );
+// $(document).ready( function () {
+//     $("#btn-create").click(function(){
+//         $("#div-create-category").show();
+//         $("#category-name").focus();
+//         // $('html, body').animate({ scrollTop: 0 }, 'fast');
+//     });
+//     $(".btn-edit").click(function(){
+//         $("#div-edit-category").show();
+//         // $('html, body').animate({ scrollTop: 0 }, 'fast');
+//
+//         var row = $(this).closest('td').parent()[0];
+//         document.getElementById("category-edit-name").value = row.cells[1].innerText;
+//         document.getElementById("category-edit-id").value = row.cells[0].innerText;
+//         $("#category-edit-name").focus();
+//     });
+//     $("#btn-cancel-add").click(function(){
+//       $("#div-create-category").fadeOut(1000);
+//     });
+//     $("#btn-cancel-edit").click(function(){
+//       $("#div-edit-category").fadeOut(1000);
+//     });
+// } );

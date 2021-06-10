@@ -49,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/","/index", "/logout", "/css/**", "/js/**"
                 , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register", "/login-assets/**").permitAll()
+                .antMatchers("/fund-project").authenticated()
+                .antMatchers("/create-charge").authenticated()
                 .antMatchers("/creator/**").hasAnyRole("CREATOR", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
         .and().formLogin()

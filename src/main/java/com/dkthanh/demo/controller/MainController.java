@@ -283,7 +283,7 @@ public class MainController {
     /*
     Fund the project
      */
-    @PostMapping(value = "/project/fund-project")
+    @PostMapping(value = "/fund-project")
     public String fundTheProject(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
                                                BindingResult result, final RedirectAttributes redirectAttributes) {
 
@@ -309,16 +309,16 @@ public class MainController {
         UserEntity user = null;
 
         // in real run, uncomment this block
-//        if(authentication != null) {
-//
-//            username = ((UserDetails) authentication.getPrincipal()).getUsername();
-//        }
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
         if(!"".equals(username)){
             user = userService.findUserByUsername(username);
         }
 
-//        Integer userId  = user.getId();
-        Integer userId  = 3;
+        Integer userId  = user.getId();
+//        Integer userId  = 3;
 
         // update info of project
         ProjectEntity projectEntity = projectService.getProjectEntityById(Integer.parseInt(projectId));
@@ -327,7 +327,7 @@ public class MainController {
         int count = 0;
         List<Package> listExistPack = packageService.getAllPackageByProjectId(Integer.parseInt(projectId));
         for(int i = 0; i< listExistPack.size(); i++){
-            if(listExistPack.get(i).getUser().getUsername() == username){
+            if(username.equals(listExistPack.get(i).getUser().getUsername()) ){
                 count++;
             }
         }

@@ -212,7 +212,7 @@
                                         <li th:text="${option.items[__${i.index}__].itemName}"></li>
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
-                                    <form action="#" th:action = "@{/project/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">
+                                    <form action="#" th:action = "@{/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">
                                         <input id="optionId" name = "optionId" th:value="*{optionId}" style="display: none;"></input>
                                         <input id="optionName" name = "optionName" th:value="*{optionName}" style="display: none;"></input>
                                         <input id="projectId" name = "projectId" th:value="*{projectId}" style="display: none;"></input>

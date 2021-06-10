@@ -7,6 +7,7 @@ import lombok.ToString;
 @ToString
 public class NewUserDTO {
     private String username;
+    private String email;
     private String password;
     private String confirmPassword;
 }
