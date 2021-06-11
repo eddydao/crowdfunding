@@ -196,9 +196,9 @@ public class MainController {
             return "client/search_result";
         }
         model.addAttribute("result", 1);
-        model.addAttribute("search_results", projectService.searchProjectByNameContaining(keyword));
+        model.addAttribute("projects", projectService.searchProjectByNameContaining(keyword));
         model.addAttribute("tags", categoryService.getAllCategory());
-        return "/search_result";
+        return "/list-project";
     }
 
     public String modifiedResourceRelativePath(String content, boolean isMerge){

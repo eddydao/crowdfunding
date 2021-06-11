@@ -211,6 +211,7 @@ public final class Constant {
         public static final String IS_RECOMMENDED = "isRecommended";
         public static final String PROJECT_STATUS = "projectStatus";
         public static final String USER_ID = "userId";
+        public static final String KEYWORD = "KEYWORD";
 
 
         private PROJECT_KEY(){}

@@ -24,6 +24,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         Integer isRecommended = (Integer) map.get(Constant.PROJECT_KEY.IS_RECOMMENDED);
         Integer projectStatus = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
         Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
+        String keyword = (String) map.get(Constant.PROJECT_KEY.KEYWORD);
 
 
         StringBuilder sql = new StringBuilder();
@@ -75,6 +76,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         if(userId != null){
             sql.append("  AND E.id = :user_id\n" );
         }
+        if(keyword != null){
+            sql.append("  AND A.project_name LIKE %:keyword%\n" );
+        }
 
 
 
@@ -98,6 +102,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
         if(userId != null){
             sqlQuery.setParameter("user_id", userId);
+        }
+        if(keyword != null){
+            sqlQuery.setParameter("keyword", keyword);
         }
 
         return sqlQuery.getResultList();

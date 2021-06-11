@@ -143,9 +143,9 @@
 
             <div class="left-list-category">
                 <h4 class="rs title-nav">Category</h4>
-                <ul class="rs nav nav-category" th:each="tag: ${tags}">
+                <ul class="rs nav nav-category" th:each="category: ${categories}">
                     <li>
-                        <a th:href="@{/client/tag/} + ${tag.tag}" th:text="${tag.tag}">
+                        <a th:href="@{/category/} + ${category.id}" th:text="${category.name}">
                         </a>
                     </li>
                 </ul>
