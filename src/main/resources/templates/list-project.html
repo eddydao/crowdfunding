@@ -73,7 +73,7 @@
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
@@ -102,12 +102,12 @@
                         <div class="top-project-info">
                             <div class="content-info-short clearfix">
                                 <a href="../#" class="thumb-img">
-                                    <img th:src="@{/project/image/} + ${project.projId}" alt="$TITLE">
+                                    <img th:src="${project.thumbnailPath}" alt="Project-image">
                                 </a>
                                 <div class="wrap-short-detail">
-                                    <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/client/project/} + ${project.projId}" th:text="${project.projName}"></a></h3>
-                                    <p class="rs tiny-desc">by <span href="../#" class="fw-b fc-gray be-fc-orange"th:text="${project.firstName} +' '+ ${project.lastName}" ></span></p>
-                                    <p class="rs title-description" th:text= "${project.description}"></p>
+                                    <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/client/project/} + ${project.projectId}" th:text="${project.projectName}"></a></h3>
+                                    <p class="rs tiny-desc">by <span href="../#" class="fw-b fc-gray be-fc-orange"th:text="${project.userFullName}" ></span></p>
+                                    <p class="rs title-description" th:text= "${project.projectShortDes}"></p>
 
                                 </div>
                             </div>

@@ -197,8 +197,8 @@ public class MainController {
         }
         model.addAttribute("result", 1);
         model.addAttribute("projects", projectService.searchProjectByNameContaining(keyword));
-        model.addAttribute("tags", categoryService.getAllCategory());
-        return "/list-project";
+        model.addAttribute("categories", categoryService.getAllCategory());
+        return "list-project";
     }
 
     public String modifiedResourceRelativePath(String content, boolean isMerge){
@@ -280,6 +280,17 @@ public class MainController {
         return "project-detail";
     }
 
+    @GetMapping(value = "/category/{id}")
+    public String getListProjectById(Model model, @PathVariable("id") Integer id){
+        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryId(id);
+        for (ProjectFullInfoEntity p: list) {
+            p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+        }
+        model.addAttribute("projects", list);
+        model.addAttribute("categories", categoryService.getAllCategory());
+        return "list-project";
+    }
+
     /*
     Fund the project
      */
@@ -289,7 +300,6 @@ public class MainController {
 
         model.addAttribute("stripePublicKey" , publicKey);
         Integer projectId = dto.getProjectId();
-//        Integer optionId = dto.getOptionId();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         model.addAttribute("option", dto);
         model.addAttribute("project", projectEntity);
@@ -318,7 +328,6 @@ public class MainController {
         }
 
         Integer userId  = user.getId();
-//        Integer userId  = 3;
 
         // update info of project
         ProjectEntity projectEntity = projectService.getProjectEntityById(Integer.parseInt(projectId));
@@ -336,7 +345,6 @@ public class MainController {
             projectEntity.setInvestorCount(projectEntity.getInvestorCount() + 1);
         }
 
-//        Package packageEntity = new Package();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         PackageDto dto = new PackageDto(userId, Integer.parseInt(projectId), Integer.parseInt(optionId), new Long(pledge),timestamp);
 
@@ -347,10 +355,6 @@ public class MainController {
         if (chargeId == null) {
             return new ChargeRequestEntity(false, "An error occurred while trying to create a charge.");
         }
-        //
-
-        // You may want to store charge id along with order information
-
         return new ChargeRequestEntity(true, "Success! Your charge id is " + chargeId);
     }
 

@@ -25,6 +25,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         Integer projectStatus = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
         Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
         String keyword = (String) map.get(Constant.PROJECT_KEY.KEYWORD);
+        Integer category = (Integer) map.get(Constant.PROJECT_KEY.CATEGORY);
 
 
         StringBuilder sql = new StringBuilder();
@@ -77,7 +78,10 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
             sql.append("  AND E.id = :user_id\n" );
         }
         if(keyword != null){
-            sql.append("  AND A.project_name LIKE %:keyword%\n" );
+            sql.append("  AND A.project_name LIKE :keyword\n" );
+        }
+        if(category != null){
+            sql.append("  AND A.category_id = :category\n" );
         }
 
 
@@ -105,6 +109,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
         if(keyword != null){
             sqlQuery.setParameter("keyword", keyword);
+        }
+        if(category != null){
+            sqlQuery.setParameter("category", category);
         }
 
         return sqlQuery.getResultList();

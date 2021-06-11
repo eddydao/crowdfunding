@@ -1,7 +1,6 @@
 package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.ProjectRepository;
-import com.dkthanh.demo.domain.MaterialEntity;
 import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
@@ -10,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -79,21 +81,18 @@ public class ProjectService {
     }
 
     // get project thumbnail path
-    public String getProjectThumbnailPath(int projectId){
-        return null;
-    }
+//    public String getProjectThumbnailPath(int projectId){
+//        return null;
+//    }
 
     //search project by name
     public List<ProjectFullInfoEntity> searchProjectByNameContaining(String keyword){
         Map<String, Object> map = new HashMap<>();
-//        map.put(Constant.PROJECT_KEY.IS_RECOMMENDED, 1);
         map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+        keyword = "%" + keyword + "%";
         map.put(Constant.PROJECT_KEY.KEYWORD, keyword);
 
         List<ProjectFullInfoEntity> projects = projectRepository.getProjectListWithDetail(map);
-//        if(project != null && project.size() == 1){
-//            return project.get(0);
-//        }
         return projects;
     }
 
@@ -110,16 +109,31 @@ public class ProjectService {
     }
 
 
+    // get project list by category
+    public List<ProjectFullInfoEntity> getProjectListByCategoryId(Integer categoryId){
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
+
     // save project entity
     public ProjectEntity saveProjectEntity(ProjectEntity entity){
         return projectRepository.save(entity);
     }
 
-    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
-        ProjectEntity entity = new ProjectEntity();
-        MaterialEntity materialEntity = new MaterialEntity();
 
 
+//    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
+//        ProjectEntity entity = new ProjectEntity();
+//        MaterialEntity materialEntity = new MaterialEntity();
+//
+//
 //        if(dto != null){
 //            entity.setProjectId(dto.getProjectId());
 //            entity.setProjectName(dto.getProjectName());
@@ -130,10 +144,10 @@ public class ProjectService {
 //            projectRepository.save(entity);
 //            materialService.saveImage(materialEntity);
 //        }
-
-
-        return 0;
-    }
+//
+//
+//        return 0;
+//    }
 
 
 }
