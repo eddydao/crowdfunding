@@ -45,6 +45,9 @@ public class MainController {
     private UserService userService;
 
     @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -193,7 +196,7 @@ public class MainController {
         if (StringUtils.isEmpty(keyword)) {
             model.addAttribute("result", 0);
             model.addAttribute("infor", new String("We can't find any result with your keyword"));
-            return "client/search_result";
+            return "list-project";
         }
         model.addAttribute("result", 1);
         model.addAttribute("projects", projectService.searchProjectByNameContaining(keyword));
@@ -288,6 +291,18 @@ public class MainController {
         }
         model.addAttribute("projects", list);
         model.addAttribute("categories", categoryService.getAllCategory());
+        return "list-project";
+    }
+
+
+    @GetMapping(value = "/project/all")
+    public String getAllProject(Model model){
+        List<ProjectFullInfoEntity> list = projectService.getAllProjectFullEntity();
+        for (ProjectFullInfoEntity p: list) {
+            p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+        }
+
+        model.addAttribute("projects", list);
         return "list-project";
     }
 
@@ -532,7 +547,6 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
     public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
-//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
         OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
         model.addAttribute("projectId", projectId);
@@ -540,6 +554,8 @@ public class MainController {
         model.addAttribute("items", optionEntity.getItems());
         return "/creator/fragments/modal :: editRewardModal";
     }
+
+
 
     /*
     Open select item modal
@@ -599,7 +615,6 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/story")
     public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
-//        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
@@ -643,15 +658,6 @@ public class MainController {
         storyService.save(storyEntity);
         return "redirect:/creator/project/"+ projectId;
     }
-
-
-//    @GetMapping(value = "/creator/project/{projectId}/report")
-//    public String getReport(Model model){
-//        // get pledge each week
-//
-//
-//        return "/creator/creator-report";
-//    }
 
     @GetMapping(value = "/creator/project/{projectId}/report")
     public String getReport(Model model, @PathVariable("projectId") Integer projectId){
@@ -767,8 +773,19 @@ public class MainController {
 
     // get admin dashboard
     @GetMapping(value = "/admin/dashboard")
-    public String getAdminDashboard(){
-        return null;
+    public String getAdminDashboard(Model model){
+        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
+
+        List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
+
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+
+        model.addAttribute("categories", categoryEntities);
+        model.addAttribute("pending_projects", listPendingProject);
+        model.addAttribute("pending_project_count", listPendingProject != null ? listPendingProject.size() : null);
+        model.addAttribute("running_project_count", listRunningProject != null ? listRunningProject.size() : null);
+        model.addAttribute("creator_count", userRoleService.countUserByRole(Constant.Roles.CREATOR.getId()));
+        return "admin/admin-dashboard";
     }
 
     // get project list

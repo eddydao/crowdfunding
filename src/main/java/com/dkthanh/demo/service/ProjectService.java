@@ -122,10 +122,33 @@ public class ProjectService {
         return null;
     }
 
+    public List<ProjectFullInfoEntity> getAllProjectFullEntity(){
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
+
     // save project entity
     public ProjectEntity saveProjectEntity(ProjectEntity entity){
         return projectRepository.save(entity);
     }
+
+    public List<ProjectFullInfoEntity> getProjectListByStatus(Integer statusId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
+
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
+
 
 
 

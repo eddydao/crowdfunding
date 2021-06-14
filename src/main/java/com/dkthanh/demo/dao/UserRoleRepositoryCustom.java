@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserRoleRepositoryCustom {
     public List<RoleEntity> findRoleByUid(Integer uid);
+
+    int countUserByRole(Integer roleId);
 }

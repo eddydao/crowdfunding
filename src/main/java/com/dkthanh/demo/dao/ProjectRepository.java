@@ -13,5 +13,4 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
 
     Optional<ProjectEntity> findFirstByOrderByProjectIdDesc();
 
-
 }

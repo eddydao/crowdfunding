@@ -35,4 +35,14 @@ public class UserRoleRepositoryCustomImpl implements UserRoleRepositoryCustom {
         }
         return roles;
     }
+
+    @Override
+    public int countUserByRole(Integer roleId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select count(user_id) from user_role where role_id = :role");
+        Query sql = em.createNativeQuery(sb.toString(), Tuple.class);
+        sql.setParameter("role", roleId);
+        List<Tuple> listTuple = sql.getResultList();
+        return listTuple.size();
+    }
 }
