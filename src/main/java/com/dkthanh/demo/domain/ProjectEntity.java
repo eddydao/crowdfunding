@@ -33,6 +33,8 @@ public class ProjectEntity {
     private Integer recommended;
     @Column(name = "thumbnail_path", nullable = true)
     private String thumbnailPath;
+    @Column(name="submit_date", nullable = true)
+    private String submitDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

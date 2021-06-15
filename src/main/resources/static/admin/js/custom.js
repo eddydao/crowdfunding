@@ -1,22 +1,25 @@
 function btn_Filter_onclick(){
     var e = document.getElementById("category");
-    var category = e.value;
+    var category = {"categoryId": e.value};
+
+    // var dataForm = new FormData();
+    // dataForm.append("category", category);
 
     $.ajax({
-        url: "/admin/category/save",
-        ache: false,
-        contentType : false,
-        processData: false,
-        data: dataForm,
-        type: "POST",
+        url: "/admin/project/filter",
+        // cache: false,
+        // contentType : false,
+        // processData: false,
+        data:   category,
+        type: "GET",
         success: function(data){
             console.log(data);
-            $("#category-table").html(data);
-            toastr.success('Save success');
+            $("#pending-project-table").html(data);
+            // toastr.success('Save success');
         },
         error: function(data){
             console.log(data);
-            toastr.warning('Save fail');
+            // toastr.warning('Save fail');
         }
     })
 }

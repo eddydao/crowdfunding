@@ -26,6 +26,7 @@ public class ProjectFullInfoEntity implements Serializable {
     protected Integer countryId;
     protected String countryName;
     protected String thumbnailPath;
+    protected OffsetDateTime submitDate;
     // status
     protected Integer statusId;
     protected String statusName;
@@ -68,7 +69,8 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer categoryId
             , String categoryName
             , Double percentPledged
-            , Integer dayLeft) {
+            , Integer dayLeft
+            , OffsetDateTime submitDate) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -89,6 +91,7 @@ public class ProjectFullInfoEntity implements Serializable {
         this.categoryName = categoryName;
         this.percentPledged = percentPledged;
         this.dayLeft = dayLeft;
+        this.submitDate = submitDate;
     }
 
     // mapping basic info for jpa

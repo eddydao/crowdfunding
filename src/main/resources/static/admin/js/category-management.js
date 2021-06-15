@@ -27,7 +27,7 @@ function saveEditCategory(){
 
     $.ajax({
         url: "/admin/category/save",
-        ache: false,
+        cache: false,
         contentType : false,
         processData: false,
         data: dataForm,
@@ -53,7 +53,7 @@ function saveNewCategory(){
 
     $.ajax({
         url: "/admin/category/save",
-        ache: false,
+        cache: false,
         contentType : false,
         processData: false,
         data: dataForm,
@@ -76,7 +76,7 @@ function deleteCategory(categoryId){
     $("#categoryDelConfirmation").modal("hide");
     $.ajax({
         url: "/admin/category/del",
-        ache: false,
+        cache: false,
         contentType : false,
         processData: false,
         data: dataForm,

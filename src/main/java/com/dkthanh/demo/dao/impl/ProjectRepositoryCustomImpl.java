@@ -50,7 +50,8 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  C.id as category_id,\n" +
                         "  C.name as category_name,\n" +
                         "  0.0 as percent_pledged,\n"+
-                        "  0 as day_left\n"+
+                        "  0 as day_left,\n"+
+                        "  A.submit_date as submit_date\n"+
                         "FROM\n" +
                         "  project A \n" +
                         "  LEFT JOIN category C ON A.category_id = C.id\n" +

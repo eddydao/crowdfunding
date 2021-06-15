@@ -771,11 +771,16 @@ public class MainController {
     //END CATEGORY MANAGEMENT
     //===============================================================================================
 
+    @GetMapping(value = "/admin")
+    public String getAdminIndex(Model model){
+        return "redirect:/admin/dashboard";
+    }
+
     // get admin dashboard
     @GetMapping(value = "/admin/dashboard")
     public String getAdminDashboard(Model model){
-        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
-
+//        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
+        List<ProjectFullInfoEntity> listPendingProject = projectService.getAllProjectFullEntity();
         List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
 
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
@@ -786,6 +791,16 @@ public class MainController {
         model.addAttribute("running_project_count", listRunningProject != null ? listRunningProject.size() : null);
         model.addAttribute("creator_count", userRoleService.countUserByRole(Constant.Roles.CREATOR.getId()));
         return "admin/admin-dashboard";
+    }
+
+    @GetMapping(value = "/admin/project/filter")
+    public String getAdminProjectFilter(Model model, FormInput category,RedirectAttributes redirectAttributes ){
+        Integer categoryId = Integer.parseInt(category.getCategoryId());
+
+//        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.WAITING.getId());
+        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.RUNNING.getId()); // testing- delete and use line 800 instead
+        model.addAttribute("pending_projects", list);
+        return "admin/admin-dashboard::pending-project-table";
     }
 
     // get project list

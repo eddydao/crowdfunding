@@ -35,7 +35,8 @@ import java.time.OffsetDateTime;
                         @ColumnResult(name = "category_id", type = Integer.class),
                         @ColumnResult(name = "category_name", type = String.class),
                         @ColumnResult(name = "percent_pledged", type = Double.class),
-                        @ColumnResult(name = "day_left", type = Integer.class)
+                        @ColumnResult(name = "day_left", type = Integer.class),
+                        @ColumnResult(name = "submit_date", type = OffsetDateTime.class)
             })
         }
     )

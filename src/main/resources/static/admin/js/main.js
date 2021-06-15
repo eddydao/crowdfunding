@@ -1673,7 +1673,6 @@
 })(jQuery);
 
 $(document).ready( function () {
-    debugger
     $("#btn-create").click(function(){
         $("#div-create-category").show();
         $("#category-name").focus();
