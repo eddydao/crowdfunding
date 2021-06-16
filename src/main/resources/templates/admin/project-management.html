@@ -269,12 +269,12 @@
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
                     <div class="header-wrap">
-                        <form class="form-header" action="" method="POST">
-                            <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                            <button class="au-btn--submit" type="submit">
-                                <i class="zmdi zmdi-search"></i>
-                            </button>
-                        </form>
+                        <div class="form-header" >
+<!--                            <input class="au-input au-input&#45;&#45;xl" type="text" name="search_input" id="search_input" placeholder="Search for projects..." />-->
+<!--                            <button class="au-btn&#45;&#45;submit" id="btn_search" th:onclick="'btn_search_onclick()'">-->
+<!--                                <i class="zmdi zmdi-search"></i>-->
+<!--                            </button>-->
+                        </div>
                         <div class="header-button">
                             <div class="noti-wrap">
                                 <div class="noti__item js-item-menu">
@@ -466,7 +466,10 @@
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
-                                    <button class="au-btn-filter" th:onclick="'btn_FilterProjects_onclick()'">
+                                    <div class="rs-select2--light rs-select2--md">
+                                        <input class="au-input au-input--sm" type="text" name="search_input" id="search_input" placeholder="Search for projects..." />
+                                    </div>
+                                    <button class="au-btn-filter" th:onclick="'btn_FilterProjects_onclick()'" style="margin-left: 30px">
                                         <i class="zmdi zmdi-filter-list"></i>filters</button>
                                 </div>
                             </div>
@@ -534,7 +537,7 @@
 
 <!-- Main JS-->
 <script src="/admin/js/main.js"></script>
-<script src="/admin/js/custom.js"></script>
+<script src="/admin/js/project-management-custom.js"></script>
 </body>
 
 </html>

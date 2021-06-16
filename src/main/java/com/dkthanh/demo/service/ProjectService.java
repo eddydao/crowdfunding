@@ -123,14 +123,7 @@ public class ProjectService {
     }
 
     // get project list by category
-    public List<ProjectFullInfoEntity> getProjectListByCategoryIdAndStatusId(Integer categoryId, Integer statusId){
-        Map<String, Object> map = new HashMap<>();
-        if(categoryId != -1){
-            map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
-        }
-        if(statusId != -1) {
-            map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
-        }
+    public List<ProjectFullInfoEntity> filterProjectByConditions(Map<String, Object> map){
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;

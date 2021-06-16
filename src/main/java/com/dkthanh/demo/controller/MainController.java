@@ -798,9 +798,25 @@ public class MainController {
 
     @GetMapping(value = "/admin/project/filter")
     public String getAdminProjectFilter(Model model, FormInput formInput,RedirectAttributes redirectAttributes ){
-        Integer categoryId = Integer.parseInt(formInput.getCategoryId());
-        Integer statusId = Integer.parseInt(formInput.getStatusId());
-        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, statusId);
+        Integer categoryId = formInput.getCategoryId() != null ? Integer.parseInt(formInput.getCategoryId()) : null;
+        Integer statusId = formInput.getStatusId() != null ? Integer.parseInt(formInput.getStatusId()) : null;
+        String searchInput = formInput.getSearchInput();
+
+
+        Map<String, Object> map = new HashMap<>();
+        if(categoryId != null && -1 != categoryId ){
+            map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
+        }
+        if( statusId != null && -1 != statusId ) {
+            map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
+        }
+
+        if( null != searchInput && !searchInput.isEmpty()){
+            String keyword = "%" + searchInput + "%";
+            map.put(Constant.PROJECT_KEY.KEYWORD, keyword);
+        }
+
+        List<ProjectFullInfoEntity> list = projectService.filterProjectByConditions(map);
 //        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.RUNNING.getId()); // code for testing- delete and use line 800 instead
         model.addAttribute("pending_projects", list);
         return "admin/admin-dashboard::pending-project-table";

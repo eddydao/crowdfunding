@@ -6,4 +6,5 @@ import lombok.Data;
 public class FormInput {
     private String categoryId;
     private String statusId;
+    private String searchInput;
 }
