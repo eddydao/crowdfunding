@@ -44,11 +44,11 @@ public final class Constant {
 
     public enum ProjectStatus{
         WAITING(1, "WAITING"),
-        APPROVED(2, "APPROVED"),
-        RUNNING(3, "RUNNING"),
-        PAUSE(4, "PAUSE"),
-        COMPLETE(5, "COMPLETE"),
-        REJECT(6, "REJECT"),
+        APPROVED(2, "APPROVED"),// approve
+        RUNNING(3, "RUNNING"),// process
+        STOP(4, "STOP"),//denied
+        COMPLETE(5, "COMPLETE"),//
+        REJECT(6, "REJECT"),//denied
         EDITING(7, "EDITING")
         ;
 

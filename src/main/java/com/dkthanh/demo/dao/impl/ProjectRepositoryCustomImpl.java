@@ -22,10 +22,13 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
         Integer projectId = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_ID);
         Integer isRecommended = (Integer) map.get(Constant.PROJECT_KEY.IS_RECOMMENDED);
-        Integer projectStatus = (Integer) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
+
         Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
         String keyword = (String) map.get(Constant.PROJECT_KEY.KEYWORD);
         Integer category = (Integer) map.get(Constant.PROJECT_KEY.CATEGORY);
+
+        // param
+        List<Integer> projectStatus = (List<Integer>) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
 
 
         StringBuilder sql = new StringBuilder();
@@ -72,7 +75,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
         //get project list with specific status
         if(projectStatus != null){
-            sql.append("  AND D.status_id = :status\n" );
+            sql.append("  AND D.status_id IN (:status)\n" );
         }
         //get project list with team id
         if(userId != null){

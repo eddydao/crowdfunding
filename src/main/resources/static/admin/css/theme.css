@@ -4738,6 +4738,10 @@ section {
     color: #fa4251;
 }
 
+.table-data3 tbody td.approve {
+    color: #1852ed;
+}
+
 /* ----- Footer ----- */
 .copyright {
     text-align: center;

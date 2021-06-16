@@ -300,7 +300,7 @@ public class MainController {
 
     @GetMapping(value = "/project/all")
     public String getAllProject(Model model){
-        List<ProjectFullInfoEntity> list = projectService.getAllProjectFullEntity();
+        List<ProjectFullInfoEntity> list = projectService.getAllRunningProjectFullEntity();
         for (ProjectFullInfoEntity p: list) {
             p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
         }
@@ -421,7 +421,11 @@ public class MainController {
      */
     @GetMapping(value = "/creator/create-project")
     public String openCreateProjectForm(Model model){
-        ProjectEntity projectEntity = projectService.saveProjectEntity(new ProjectEntity());
+        ProjectEntity p = new ProjectEntity();
+        StatusEntity st = statusService.getStatusById(Constant.ProjectStatus.EDITING.getId());
+
+        p.setProjectStatus(st);
+        ProjectEntity projectEntity = projectService.saveProjectEntity(p);
         int projectId = projectEntity.getProjectId();
         ProjectDto dto = new ProjectDto();
         dto.setProjectId(projectId);
@@ -783,7 +787,7 @@ public class MainController {
     @GetMapping(value = "/admin/dashboard")
     public String getAdminDashboard(Model model){
 //        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
-        List<ProjectFullInfoEntity> listPendingProject = projectService.getAllProjectFullEntity();
+        List<ProjectFullInfoEntity> listPendingProject = projectService.getAllRunningProjectFullEntity();
         List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
 
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
@@ -825,7 +829,8 @@ public class MainController {
     // get project list
     @GetMapping(value = "/admin/project/list")
     public String getAdminProjectList(Model model){
-        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntity();
+        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntityNotWaitingOrEditing(); // remove editting and waiting project
+
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
         List<StatusEntity> statusEntities = statusService.getAllStatus();
 
@@ -835,6 +840,10 @@ public class MainController {
             if(Constant.ProjectStatus.EDITING.getName().equals(i)){
                 it.remove();
             }
+
+            if(Constant.ProjectStatus.WAITING.getName().equals(i)){
+                it.remove();
+            }
         }
 
         model.addAttribute("categories", categoryEntities);
@@ -842,6 +851,14 @@ public class MainController {
         model.addAttribute("projects", listProject);
         return "/admin/project-management";
     }
+
+    @GetMapping
+    public String getProjectInfo(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        Integer statusId = projectEntity.getProjectStatus().getStatusId();
+        return null;
+    }
+
 
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")

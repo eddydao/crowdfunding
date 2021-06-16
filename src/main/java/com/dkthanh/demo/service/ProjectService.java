@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -37,7 +34,9 @@ public class ProjectService {
     // get popular project
     public List<ProjectFullInfoEntity> getPopularProjects(){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, Constant.ProjectStatus.RUNNING.getId());
+        List<Integer> status = new ArrayList<>();
+        status.add(Constant.ProjectStatus.RUNNING.getId());
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
         List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;
@@ -49,7 +48,11 @@ public class ProjectService {
     public ProjectFullInfoEntity getRecommendedProject(){
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.IS_RECOMMENDED, 1);
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<Integer> status = new ArrayList<>();
+        status.add(Constant.ProjectStatus.RUNNING.getId());
+
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
         List<ProjectFullInfoEntity> project = projectRepository.getProjectListWithDetail(map);
         if(project != null && project.size() == 1){
             return project.get(0);
@@ -88,7 +91,11 @@ public class ProjectService {
     //search project by name
     public List<ProjectFullInfoEntity> searchProjectByNameContaining(String keyword){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<Integer> status = new ArrayList<>();
+        status.add(Constant.ProjectStatus.RUNNING.getId());
+
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
         keyword = "%" + keyword + "%";
         map.put(Constant.PROJECT_KEY.KEYWORD, keyword);
 
@@ -113,7 +120,10 @@ public class ProjectService {
     public List<ProjectFullInfoEntity> getProjectListByCategoryId(Integer categoryId){
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<Integer> status = new ArrayList<>();
+        status.add(Constant.ProjectStatus.RUNNING.getId());
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
 
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
@@ -131,9 +141,30 @@ public class ProjectService {
         return null;
     }
 
-    public List<ProjectFullInfoEntity> getAllProjectFullEntity(){
+    public List<ProjectFullInfoEntity> getAllRunningProjectFullEntity(){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, 3);
+
+        List<Integer> status = new ArrayList<>();
+        status.add(Constant.ProjectStatus.RUNNING.getId());
+
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
+
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
+
+    public List<ProjectFullInfoEntity> getAllProjectFullEntityNotWaitingOrEditing(){
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> listStatus = new ArrayList<>();
+        listStatus.add(Constant.ProjectStatus.APPROVED.getId());
+        listStatus.add(Constant.ProjectStatus.RUNNING.getId());
+        listStatus.add(Constant.ProjectStatus.STOP.getId());
+        listStatus.add(Constant.ProjectStatus.COMPLETE.getId());
+        listStatus.add(Constant.ProjectStatus.REJECT.getId());
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, listStatus);
 
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
@@ -149,7 +180,10 @@ public class ProjectService {
 
     public List<ProjectFullInfoEntity> getProjectListByStatus(Integer statusId) {
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
+        List<Integer> status = new ArrayList<>();
+        status.add(statusId);
+
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
 
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){

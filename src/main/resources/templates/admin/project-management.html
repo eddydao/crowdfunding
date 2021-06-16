@@ -467,7 +467,7 @@
                                         <div class="dropDownSelect2"></div>
                                     </div>
                                     <div class="rs-select2--light rs-select2--md">
-                                        <input class="au-input au-input--sm" type="text" name="search_input" id="search_input" placeholder="Search for projects..." />
+                                        <input class="au-input au-input--sm" type="text" name="search_input" id="search_input" placeholder="Project name..." />
                                     </div>
                                     <button class="au-btn-filter" th:onclick="'btn_FilterProjects_onclick()'" style="margin-left: 30px">
                                         <i class="zmdi zmdi-filter-list"></i>filters</button>
@@ -487,11 +487,16 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="project: ${projects}">
-                                        <td th:text="${project.projectName}"></td>
+                                        <td>
+                                            <a th:href="@{/admin/project/} + ${project.projectId} + @{/report}" th:text="${project.projectName}"></a>
+                                        </td>
                                         <td th:text="${project.categoryName}"></td>
                                         <td th:text="${project.projectShortDes}"></td>
                                         <td th:text="${project.userFullName}"></td>
-                                        <td th:text="${project.statusName}"></td>
+                                        <td th:if="${project.statusId == 2}" class="approve" th:text="${project.statusName}"></td>
+                                        <td th:if="${project.statusId == 3}" class="process" th:text="${project.statusName}"></td>
+                                        <td th:if="${project.statusId == 4}" class="denied" th:text="${project.statusName}"></td>
+                                        <td th:if="${project.statusId == 6}" class="denied" th:text="${project.statusName}"></td>
                                         <td></td>
                                     </tr>
 <!--                                    <tr>-->
