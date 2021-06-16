@@ -125,9 +125,12 @@ public class ProjectService {
     // get project list by category
     public List<ProjectFullInfoEntity> getProjectListByCategoryIdAndStatusId(Integer categoryId, Integer statusId){
         Map<String, Object> map = new HashMap<>();
-        map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
-        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
-
+        if(categoryId != -1){
+            map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
+        }
+        if(statusId != -1) {
+            map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
+        }
         List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;

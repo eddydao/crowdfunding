@@ -2,9 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>Tables</title>
 
     <!-- Fontfaces CSS-->
     <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
@@ -158,7 +164,7 @@
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-                    <li class="active has-sub">
+                    <li class="has-sub">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -180,7 +186,7 @@
                         <a href="chart.html">
                             <i class="fas fa-chart-bar"></i>Charts</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="table.html">
                             <i class="fas fa-table"></i>Tables</a>
                     </li>
@@ -430,7 +436,7 @@
                 </div>
             </div>
         </header>
-        <!-- HEADER DESKTOP-->
+        <!-- END HEADER DESKTOP-->
 
         <!-- MAIN CONTENT-->
         <div class="main-content">
@@ -438,91 +444,8 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="overview-wrap">
-                                <h2 class="title-1">overview</h2>
-                                <button class="au-btn au-btn-icon au-btn--blue">
-                                    <i class="zmdi zmdi-plus"></i>add item</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row m-t-25">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="overview-item overview-item--c1">
-                                <div class="overview__inner">
-                                    <div class="overview-box clearfix">
-                                        <div class="icon">
-                                            <i class="zmdi zmdi-account-o"></i>
-                                        </div>
-                                        <div class="text">
-                                            <h2>10368</h2>
-                                            <span>members online</span>
-                                        </div>
-                                    </div>
-                                    <div class="overview-chart">
-                                        <canvas id="widgetChart1"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="overview-item overview-item--c2">
-                                <div class="overview__inner">
-                                    <div class="overview-box clearfix">
-                                        <div class="icon">
-                                            <i class="zmdi zmdi-shopping-cart"></i>
-                                        </div>
-                                        <div class="text">
-                                            <h2>388,688</h2>
-                                            <span>items solid</span>
-                                        </div>
-                                    </div>
-                                    <div class="overview-chart">
-                                        <canvas id="widgetChart2"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="overview-item overview-item--c3">
-                                <div class="overview__inner">
-                                    <div class="overview-box clearfix">
-                                        <div class="icon">
-                                            <i class="zmdi zmdi-calendar-note"></i>
-                                        </div>
-                                        <div class="text">
-                                            <h2>1,086</h2>
-                                            <span>this week</span>
-                                        </div>
-                                    </div>
-                                    <div class="overview-chart">
-                                        <canvas id="widgetChart3"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="overview-item overview-item--c4">
-                                <div class="overview__inner">
-                                    <div class="overview-box clearfix">
-                                        <div class="icon">
-                                            <i class="zmdi zmdi-money"></i>
-                                        </div>
-                                        <div class="text">
-                                            <h2>$1,060,386</h2>
-                                            <span>total earnings</span>
-                                        </div>
-                                    </div>
-                                    <div class="overview-chart">
-                                        <canvas id="widgetChart4"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
                             <!-- DATA TABLE -->
-                            <h3 class="title-5 m-b-35">Pending approve project</h3>
+                            <h3 class="title-5 m-b-35">Project management</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-left">
                                     <div class="rs-select2--light rs-select2--md">
@@ -531,15 +454,23 @@
                                             <option th:each="category: ${categories}"
                                                     th:value="${category.id}"
                                                     th:text="${category.name}"></option>
-<!--                                            <option value="">Option 2</option>-->
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
-                                    <button class="au-btn-filter" th:onclick="'btn_Filter_pendingProject_onclick()'">
+                                    <div class="rs-select2--light rs-select2--md">
+                                        <select class="js-select2" name="status" id="status">
+                                            <option value="-1">All status</option>
+                                            <option th:each="status: ${status_list}"
+                                                    th:value="${status.statusId}"
+                                                    th:text="${status.name}"></option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                    <button class="au-btn-filter" th:onclick="'btn_FilterProjects_onclick()'">
                                         <i class="zmdi zmdi-filter-list"></i>filters</button>
                                 </div>
                             </div>
-                            <div class="table-responsive m-b-40" th:fragment="pending-project-table" id="pending-project-table">
+                            <div class="table-responsive m-b-40"  th:fragment="project-table" id="project-table">
                                 <table class="table table-borderless table-data3">
                                     <thead>
                                     <tr>
@@ -547,20 +478,27 @@
                                         <th>category</th>
                                         <th>short description</th>
                                         <th>creator</th>
-                                        <th>Submit date</th>
+                                        <th>status</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="project: ${pending_projects}">
+                                    <tr th:each="project: ${projects}">
                                         <td th:text="${project.projectName}"></td>
                                         <td th:text="${project.categoryName}"></td>
                                         <td th:text="${project.projectShortDes}"></td>
                                         <td th:text="${project.userFullName}"></td>
-                                        <td th:text="${project.submitDate}"></td>
+                                        <td th:text="${project.statusName}"></td>
                                         <td></td>
                                     </tr>
-
+<!--                                    <tr>-->
+<!--                                        <td>Game</td>-->
+<!--                                        <td>Game Console Controller</td>-->
+<!--                                        <td>Short des</td>-->
+<!--                                        <td>Creator name here</td>-->
+<!--                                        <td class="denied">Denied</td>class="process"-->
+<!--                                        <td></td>-->
+<!--                                    </tr>-->
                                     </tbody>
                                 </table>
                             </div>
@@ -569,8 +507,6 @@
                 </div>
             </div>
         </div>
-        <!-- END MAIN CONTENT-->
-        <!-- END PAGE CONTAINER-->
     </div>
 
 </div>
@@ -599,7 +535,6 @@
 <!-- Main JS-->
 <script src="/admin/js/main.js"></script>
 <script src="/admin/js/custom.js"></script>
-
 </body>
 
 </html>

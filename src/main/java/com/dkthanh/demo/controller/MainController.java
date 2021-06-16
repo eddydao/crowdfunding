@@ -86,6 +86,9 @@ public class MainController {
     @Autowired
     private StripeService stripeService;
 
+    @Autowired
+    private StatusService statusService;
+
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
 
@@ -794,19 +797,34 @@ public class MainController {
     }
 
     @GetMapping(value = "/admin/project/filter")
-    public String getAdminProjectFilter(Model model, FormInput category,RedirectAttributes redirectAttributes ){
-        Integer categoryId = Integer.parseInt(category.getCategoryId());
-
-//        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.WAITING.getId());
-        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.RUNNING.getId()); // testing- delete and use line 800 instead
+    public String getAdminProjectFilter(Model model, FormInput formInput,RedirectAttributes redirectAttributes ){
+        Integer categoryId = Integer.parseInt(formInput.getCategoryId());
+        Integer statusId = Integer.parseInt(formInput.getStatusId());
+        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, statusId);
+//        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.RUNNING.getId()); // code for testing- delete and use line 800 instead
         model.addAttribute("pending_projects", list);
         return "admin/admin-dashboard::pending-project-table";
     }
 
     // get project list
     @GetMapping(value = "/admin/project/list")
-    public String getAdminProjectList(){
-        return null;
+    public String getAdminProjectList(Model model){
+        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntity();
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+        List<StatusEntity> statusEntities = statusService.getAllStatus();
+
+        Iterator<StatusEntity> it = statusEntities.iterator();
+        while(it.hasNext()){
+            String i = it.next().getName();
+            if(Constant.ProjectStatus.EDITING.getName().equals(i)){
+                it.remove();
+            }
+        }
+
+        model.addAttribute("categories", categoryEntities);
+        model.addAttribute("status_list", statusEntities);
+        model.addAttribute("projects", listProject);
+        return "/admin/project-management";
     }
 
     // get pending list of project that need approval
