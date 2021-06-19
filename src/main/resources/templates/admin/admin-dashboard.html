@@ -440,8 +440,6 @@
                         <div class="col-md-12">
                             <div class="overview-wrap">
                                 <h2 class="title-1">overview</h2>
-                                <button class="au-btn au-btn-icon au-btn--blue">
-                                    <i class="zmdi zmdi-plus"></i>add item</button>
                             </div>
                         </div>
                     </div>
@@ -454,8 +452,8 @@
                                             <i class="zmdi zmdi-account-o"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>10368</h2>
-                                            <span>members online</span>
+                                            <h2 th:text="${creator_count} ?: '0'"></h2>
+                                            <span>Creator</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -469,11 +467,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-shopping-cart"></i>
+                                            <i class="zmdi zmdi-calendar-case-check"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>388,688</h2>
-                                            <span>items solid</span>
+                                            <h2 th:text="${running_project_count} ?: '0'"></h2>
+                                            <span>running projects</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -487,11 +485,11 @@
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">
-                                            <i class="zmdi zmdi-calendar-note"></i>
+                                            <i class="zmdi zmdi-calendar-case"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>1,086</h2>
-                                            <span>this week</span>
+                                            <h2 th:text="${pending_project_count} ?: '0'"></h2>
+                                            <span>pending approval project</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -500,24 +498,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="overview-item overview-item--c4">
-                                <div class="overview__inner">
-                                    <div class="overview-box clearfix">
-                                        <div class="icon">
-                                            <i class="zmdi zmdi-money"></i>
-                                        </div>
-                                        <div class="text">
-                                            <h2>$1,060,386</h2>
-                                            <span>total earnings</span>
-                                        </div>
-                                    </div>
-                                    <div class="overview-chart">
-                                        <canvas id="widgetChart4"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="col-sm-6 col-lg-3">-->
+<!--                            <div class="overview-item overview-item&#45;&#45;c4">-->
+<!--                                <div class="overview__inner">-->
+<!--                                    <div class="overview-box clearfix">-->
+<!--                                        <div class="icon">-->
+<!--                                            <i class="zmdi zmdi-money"></i>-->
+<!--                                        </div>-->
+<!--                                        <div class="text">-->
+<!--                                            <h2>$1,060,386</h2>-->
+<!--                                            <span>total earnings</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="overview-chart">-->
+<!--                                        <canvas id="widgetChart4"></canvas>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -531,15 +529,26 @@
                                             <option th:each="category: ${categories}"
                                                     th:value="${category.id}"
                                                     th:text="${category.name}"></option>
-<!--                                            <option value="">Option 2</option>-->
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
-                                    <button class="au-btn-filter" th:onclick="'btn_Filter_pendingProject_onclick()'">
+                                    <div class="rs-select2--light rs-select2--md">
+                                        <select class="js-select2" name="status" id="status">
+                                            <option value="-1">All status</option>
+                                            <option th:each="status: ${status_list}"
+                                                    th:value="${status.statusId}"
+                                                    th:text="${status.name}"></option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                    <div class="rs-select2--light rs-select2--md">
+                                        <input class="au-input au-input--sm" type="text" name="search_input" id="search_input" placeholder="Project name..." />
+                                    </div>
+                                    <button class="au-btn-filter" th:onclick="'btn_FilterProjects_onclick()'" style="margin-left: 30px">
                                         <i class="zmdi zmdi-filter-list"></i>filters</button>
                                 </div>
                             </div>
-                            <div class="table-responsive m-b-40" th:fragment="pending-project-table" id="pending-project-table">
+                            <div class="table-responsive m-b-40"  th:fragment="project-table" id="project-table">
                                 <table class="table table-borderless table-data3">
                                     <thead>
                                     <tr>
@@ -547,20 +556,24 @@
                                         <th>category</th>
                                         <th>short description</th>
                                         <th>creator</th>
-                                        <th>Submit date</th>
+                                        <th>status</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="project: ${pending_projects}">
-                                        <td th:text="${project.projectName}"></td>
-                                        <td th:text="${project.categoryName}"></td>
-                                        <td th:text="${project.projectShortDes}"></td>
-                                        <td th:text="${project.userFullName}"></td>
-                                        <td th:text="${project.submitDate}"></td>
-                                        <td></td>
-                                    </tr>
-
+                                        <tr th:each="project: ${projects}">
+                                            <td th:text="${project.projectName}">
+<!--                                                <a th:href="@{/admin/project/} + ${project.projectId} + @{/report}" th:text="${project.projectName}"></a>-->
+                                            </td>
+                                            <td th:text="${project.categoryName}"></td>
+                                            <td th:text="${project.projectShortDes}"></td>
+                                            <td th:text="${project.userFullName}"></td>
+                                            <td th:if="${project.statusId == 2}" class="approve" th:text="${project.statusName}"></td>
+                                            <td th:if="${project.statusId == 3}" class="process" th:text="${project.statusName}"></td>
+                                            <td th:if="${project.statusId == 4}" class="denied" th:text="${project.statusName}"></td>
+                                            <td th:if="${project.statusId == 6}" class="denied" th:text="${project.statusName}"></td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

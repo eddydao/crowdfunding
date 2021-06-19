@@ -1,14 +1,21 @@
-function btn_Filter_pendingProject_onclick(){
-    var e = document.getElementById("category");
-    var category = {"categoryId": e.value};
+function btn_FilterProjects_onclick(){
+    var categoryEle = document.getElementById("category");
+    var statusEle = document.getElementById("status");
+    var searchInput = document.getElementById("search_input").value;
+    var data = {
+        "categoryId": categoryEle.value,
+        "statusId": statusEle.value,
+        "searchInput": searchInput
+    };
+
 
     $.ajax({
         url: "/admin/project/filter",
-        data:   category,
+        data:   data,
         type: "GET",
         success: function(data){
             console.log(data);
-            $("#pending-project-table").html(data);
+            $("#project-table").html(data);
         },
         error: function(data){
             console.log(data);

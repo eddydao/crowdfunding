@@ -74,7 +74,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
             sql.append("  AND A.recommended = :recommended");
         }
         //get project list with specific status
-        if(projectStatus != null){
+        if(projectStatus != null && !projectStatus.isEmpty()){
             sql.append("  AND D.status_id IN (:status)\n" );
         }
         //get project list with team id
@@ -105,7 +105,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
             sqlQuery.setParameter("recommended", isRecommended);
         }
-        if(projectStatus != null){
+        if(projectStatus != null && !projectStatus.isEmpty()){
             sqlQuery.setParameter("status", projectStatus);
         }
         if(userId != null){

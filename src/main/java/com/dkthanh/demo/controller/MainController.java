@@ -775,7 +775,7 @@ public class MainController {
         return "admin/category-management :: category-table";
     }
 
-    //END CATEGORY MANAGEMENT
+    //PROJECT MANAGEMENT
     //===============================================================================================
 
     @GetMapping(value = "/admin")
@@ -786,50 +786,7 @@ public class MainController {
     // get admin dashboard
     @GetMapping(value = "/admin/dashboard")
     public String getAdminDashboard(Model model){
-//        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
-        List<ProjectFullInfoEntity> listPendingProject = projectService.getAllRunningProjectFullEntity();
-        List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
-
-        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
-
-        model.addAttribute("categories", categoryEntities);
-        model.addAttribute("pending_projects", listPendingProject);
-        model.addAttribute("pending_project_count", listPendingProject != null ? listPendingProject.size() : null);
-        model.addAttribute("running_project_count", listRunningProject != null ? listRunningProject.size() : null);
-        model.addAttribute("creator_count", userRoleService.countUserByRole(Constant.Roles.CREATOR.getId()));
-        return "admin/admin-dashboard";
-    }
-
-    @GetMapping(value = "/admin/project/filter")
-    public String getAdminProjectFilter(Model model, FormInput formInput,RedirectAttributes redirectAttributes ){
-        Integer categoryId = formInput.getCategoryId() != null ? Integer.parseInt(formInput.getCategoryId()) : null;
-        Integer statusId = formInput.getStatusId() != null ? Integer.parseInt(formInput.getStatusId()) : null;
-        String searchInput = formInput.getSearchInput();
-
-
-        Map<String, Object> map = new HashMap<>();
-        if(categoryId != null && -1 != categoryId ){
-            map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
-        }
-        if( statusId != null && -1 != statusId ) {
-            map.put(Constant.PROJECT_KEY.PROJECT_STATUS, statusId);
-        }
-
-        if( null != searchInput && !searchInput.isEmpty()){
-            String keyword = "%" + searchInput + "%";
-            map.put(Constant.PROJECT_KEY.KEYWORD, keyword);
-        }
-
-        List<ProjectFullInfoEntity> list = projectService.filterProjectByConditions(map);
-//        List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryIdAndStatusId(categoryId, Constant.ProjectStatus.RUNNING.getId()); // code for testing- delete and use line 800 instead
-        model.addAttribute("pending_projects", list);
-        return "admin/admin-dashboard::pending-project-table";
-    }
-
-    // get project list
-    @GetMapping(value = "/admin/project/list")
-    public String getAdminProjectList(Model model){
-        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntityNotWaitingOrEditing(); // remove editting and waiting project
+        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntityNotWaitingOrEditing();
 
         List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
         List<StatusEntity> statusEntities = statusService.getAllStatus();
@@ -849,8 +806,72 @@ public class MainController {
         model.addAttribute("categories", categoryEntities);
         model.addAttribute("status_list", statusEntities);
         model.addAttribute("projects", listProject);
-        return "/admin/project-management";
+
+
+
+        List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
+        List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
+
+
+        model.addAttribute("pending_project_count", listPendingProject != null ? listPendingProject.size() : null);
+        model.addAttribute("running_project_count", listRunningProject != null ? listRunningProject.size() : null);
+        model.addAttribute("creator_count", userRoleService.countUserByRole(Constant.Roles.CREATOR.getId()));
+        return "admin/admin-dashboard";
     }
+
+    @GetMapping(value = "/admin/project/filter")
+    public String getAdminProjectFilter(Model model, FormInput formInput ){
+        Integer categoryId = formInput.getCategoryId() != null ? Integer.parseInt(formInput.getCategoryId()) : null;
+        Integer statusId = formInput.getStatusId() != null ? Integer.parseInt(formInput.getStatusId()) : null;
+        String searchInput = formInput.getSearchInput();
+        List<Integer> listStatus = new ArrayList<>();
+
+        Map<String, Object> map = new HashMap<>();
+        if(categoryId != null && -1 != categoryId ){
+            map.put(Constant.PROJECT_KEY.CATEGORY, categoryId);
+        }
+        if( statusId != null && -1 != statusId ) {
+            listStatus.add(statusId);
+
+        }
+
+        if( null != searchInput && !searchInput.isEmpty()){
+            String keyword = "%" + searchInput + "%";
+            map.put(Constant.PROJECT_KEY.KEYWORD, keyword);
+        }
+
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, listStatus);
+
+        List<ProjectFullInfoEntity> list = projectService.filterProjectByConditions(map);
+        model.addAttribute("projects", list);
+        return "admin/admin-dashboard::project-table";
+    }
+
+    // get project list
+//    @GetMapping(value = "/admin/project/list")
+//    public String getAdminProjectList(Model model){
+//        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntityNotWaitingOrEditing();
+//
+//        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+//        List<StatusEntity> statusEntities = statusService.getAllStatus();
+//
+//        Iterator<StatusEntity> it = statusEntities.iterator();
+//        while(it.hasNext()){
+//            String i = it.next().getName();
+//            if(Constant.ProjectStatus.EDITING.getName().equals(i)){
+//                it.remove();
+//            }
+//
+//            if(Constant.ProjectStatus.WAITING.getName().equals(i)){
+//                it.remove();
+//            }
+//        }
+//
+//        model.addAttribute("categories", categoryEntities);
+//        model.addAttribute("status_list", statusEntities);
+//        model.addAttribute("projects", listProject);
+//        return "/admin/project-management";
+//    }
 
     @GetMapping
     public String getProjectInfo(Model model, @PathVariable("projectId") Integer projectId){
@@ -863,6 +884,15 @@ public class MainController {
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")
     public String getAdminPendingList(){
+        return null;
+    }
+
+    // USER MANAGEMENT
+    //==================================================================================================================
+
+    @GetMapping(value = "/admin/user/list")
+    public String getUserList(Model model){
+        
         return null;
     }
 }
