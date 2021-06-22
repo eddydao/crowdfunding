@@ -1,3 +1,10 @@
+$(document).ready( function () {
+    $('#project-table-content').DataTable({
+        lengthChange: false
+    });
+} );
+
+
 function btn_FilterProjects_onclick(){
     var categoryEle = document.getElementById("category");
     var statusEle = document.getElementById("status");

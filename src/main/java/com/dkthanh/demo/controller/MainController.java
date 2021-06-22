@@ -847,31 +847,6 @@ public class MainController {
         return "admin/admin-dashboard::project-table";
     }
 
-    // get project list
-//    @GetMapping(value = "/admin/project/list")
-//    public String getAdminProjectList(Model model){
-//        List<ProjectFullInfoEntity> listProject = projectService.getAllProjectFullEntityNotWaitingOrEditing();
-//
-//        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
-//        List<StatusEntity> statusEntities = statusService.getAllStatus();
-//
-//        Iterator<StatusEntity> it = statusEntities.iterator();
-//        while(it.hasNext()){
-//            String i = it.next().getName();
-//            if(Constant.ProjectStatus.EDITING.getName().equals(i)){
-//                it.remove();
-//            }
-//
-//            if(Constant.ProjectStatus.WAITING.getName().equals(i)){
-//                it.remove();
-//            }
-//        }
-//
-//        model.addAttribute("categories", categoryEntities);
-//        model.addAttribute("status_list", statusEntities);
-//        model.addAttribute("projects", listProject);
-//        return "/admin/project-management";
-//    }
 
     @GetMapping
     public String getProjectInfo(Model model, @PathVariable("projectId") Integer projectId){
@@ -880,10 +855,21 @@ public class MainController {
         return null;
     }
 
-
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")
-    public String getAdminPendingList(){
+    public String getAdminPendingList(Model model){
+        List<ProjectFullInfoEntity> listProject = projectService.getAllPendingApproveProject();
+        List<CategoryEntity>  categoryEntities = categoryService.getAllCategory();
+
+        model.addAttribute("categories", categoryEntities);
+        model.addAttribute("projects", listProject);
+        return "/admin/pending-approve-project";
+    }
+
+    @GetMapping(value = "/admin/project/{id}/detail")
+    public String getAdminProjectDetail(Model model, @PathVariable("id") Integer projectId){
+        ProjectFullInfoEntity projectFullInfoEntity = projectService.getProjectDetail(projectId);
+        
         return null;
     }
 
@@ -892,7 +878,7 @@ public class MainController {
 
     @GetMapping(value = "/admin/user/list")
     public String getUserList(Model model){
-        
+
         return null;
     }
 }

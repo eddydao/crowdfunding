@@ -192,6 +192,18 @@ public class ProjectService {
         return null;
     }
 
+    public List<ProjectFullInfoEntity> getAllPendingApproveProject(){
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> listStatus = new ArrayList<>();
+        listStatus.add(Constant.ProjectStatus.WAITING.getId());
+        map.put(Constant.PROJECT_KEY.PROJECT_STATUS, listStatus);
+
+        List<ProjectFullInfoEntity> list =  projectRepository.getProjectListWithDetail(map);
+        if(list != null && list.size() > 0){
+            return list;
+        }
+        return null;
+    }
 
 
 
