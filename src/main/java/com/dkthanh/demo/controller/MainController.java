@@ -778,6 +778,7 @@ public class MainController {
     //PROJECT MANAGEMENT
     //===============================================================================================
 
+    // get admin dashboard
     @GetMapping(value = "/admin")
     public String getAdminIndex(Model model){
         return "redirect:/admin/dashboard";
@@ -819,6 +820,8 @@ public class MainController {
         return "admin/admin-dashboard";
     }
 
+    // search
+
     @GetMapping(value = "/admin/project/filter")
     public String getAdminProjectFilter(Model model, FormInput formInput ){
         Integer categoryId = formInput.getCategoryId() != null ? Integer.parseInt(formInput.getCategoryId()) : null;
@@ -847,14 +850,6 @@ public class MainController {
         return "admin/admin-dashboard::project-table";
     }
 
-
-    @GetMapping
-    public String getProjectInfo(Model model, @PathVariable("projectId") Integer projectId){
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        Integer statusId = projectEntity.getProjectStatus().getStatusId();
-        return null;
-    }
-
     // get pending list of project that need approval
     @GetMapping(value = "/admin/project/pending-list")
     public String getAdminPendingList(Model model){
@@ -866,11 +861,29 @@ public class MainController {
         return "/admin/pending-approve-project";
     }
 
+    // get pending approve project detail
     @GetMapping(value = "/admin/project/{id}/detail")
-    public String getAdminProjectDetail(Model model, @PathVariable("id") Integer projectId){
+    public String getAdminPendingProjectDetail(Model model, @PathVariable("id") Integer projectId){
         ProjectFullInfoEntity projectFullInfoEntity = projectService.getProjectDetail(projectId);
-        
-        return null;
+        projectFullInfoEntity.setThumbnailPath(RELATIVE_PATH+ projectFullInfoEntity.getThumbnailPath());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
+        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
+            itemList= itemService.getItemsOfProject(projectId);
+        }
+        StoryEntity story = storyService.getStoryByProjectId(projectId);
+
+        model.addAttribute("options", optionList);
+        model.addAttribute("items", itemList);
+        model.addAttribute("project", projectFullInfoEntity);
+        model.addAttribute("story", story);
+
+
+        return "/admin/pending-project-detail";
     }
 
     // USER MANAGEMENT

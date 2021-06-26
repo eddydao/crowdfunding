@@ -2,13 +2,20 @@
 <html lang="en">
 
 <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
     <!-- Title Page-->
-    <title>Tables</title>
+    <title>Forms</title>
 
     <!-- Fontfaces CSS-->
     <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
-    <link href="/admin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="/admin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="/admin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
@@ -22,13 +29,13 @@
     <link href="/admin/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="/admin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="/admin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-    <link href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <!-- Main CSS-->
     <link href="/admin/css/theme.css" rel="stylesheet" media="all">
 
 </head>
 
-<body class="animsition">
+<body class="animsition" >
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -36,7 +43,7 @@
             <div class="container-fluid">
                 <div class="header-mobile-inner">
                     <a class="logo" href="index.html">
-                        <img src="images/icon/logo.png" alt="CoolAdmin" />
+                        <img src="/admin/images/icon/logo.png" alt="CoolAdmin" />
                     </a>
                     <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -179,11 +186,11 @@
                         <a href="chart.html">
                             <i class="fas fa-chart-bar"></i>Charts</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="table.html">
                             <i class="fas fa-table"></i>Tables</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="form.html">
                             <i class="far fa-check-square"></i>Forms</a>
                     </li>
@@ -256,7 +263,7 @@
     <!-- END MENU SIDEBAR-->
 
     <!-- PAGE CONTAINER-->
-    <div class="page-container">
+    <div class="page-container" >
         <!-- HEADER DESKTOP-->
         <header class="header-desktop">
             <div class="section__content section__content--p30">
@@ -429,40 +436,183 @@
                 </div>
             </div>
         </header>
-        <!-- END HEADER DESKTOP-->
+        <!-- HEADER DESKTOP-->
 
         <!-- MAIN CONTENT-->
-        <div class="main-content">
+        <div class="main-content" style="background-color: white;">
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <!-- TOP CAMPAIGN-->
-                            <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">Pending approve project list</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-top-campaign" id="pending-project-table">
-                                        <thead>
-                                        <tr>
-                                            <th>Project name</th>
-                                            <th>Category</th>
-                                            <th>Short description</th>
-                                            <th>Creator</th>
-                                            <th>Goal</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="project: ${projects}">
-                                            <td >
-                                                <a th:href="@{/admin/project/} + ${project.projectId} + @{/detail}" th:text="${project.projectName}"></a>
-                                            </td>
-                                            <td th:text="${project.categoryName}"></td>
-                                            <td th:text="${project.projectShortDes}"></td>
-                                            <td th:text="${project.userFullName}"></td>
-                                            <td>$<span th:text="${#numbers.formatDecimal(project.goal, 0, 'COMMA', 2, 'POINT')}"></span></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="default-tab">
+                                        <nav>
+                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="nav-basic-info-tab" data-toggle="tab" href="#nav-basic-info" role="tab" aria-controls="nav-basic-info"
+                                                   aria-selected="false">Basic information</a>
+                                                <a class="nav-item nav-link" id="nav-reward-tab" data-toggle="tab" href="#nav-reward" role="tab" aria-controls="nav-reward"
+                                                   aria-selected="false">Rewards</a>
+                                                <a class="nav-item nav-link" id="nav-story-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-story"
+                                                   aria-selected="false">Story</a>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-basic-info" role="tabpanel" aria-labelledby="nav-basic-info-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project thumbnail</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <img class="card-img-top" th:src="${project.thumbnailPath}" alt="project image cap" style="width: 540px; height: 300px">
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project title</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.projectName}">
+                                                                    </div>
+                                                                </div>
+<!--                                                                <div class="row form-group">-->
+<!--                                                                    <div class="col col-md-3">-->
+<!--                                                                        <label for="text-input" class=" form-control-label">Project subtitle</label>-->
+<!--                                                                    </div>-->
+<!--                                                                    <div class="col-12 col-md-9">-->
+<!--                                                                        <input type="text" readonly class="form-control" style="background-color: white;" >-->
+<!--                                                                    </div>-->
+<!--                                                                </div>-->
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project subtitle</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white;" th:value="${project.projectShortDes}"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Funding goal</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#numbers.formatDecimal(project.goal, 0, 'COMMA', 2, 'POINT')}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Target launch date</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.startDate}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Duration</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.endDate}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-reward" role="tabpanel" aria-labelledby="nav-reward-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-3">
+                                                                        <span>Pledge amount</span>
+                                                                        </section>
+                                                                    </div>
+                                                                    <div class="col-lg-5">
+                                                                        <span>Details</span>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <span>Includes</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card" th:each="option : ${options}">
+                                                                    <div class="card-body">
+                                                                        <div class="mx-auto d-block">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-3">
+                                                                                    <span th:text="${option.fundMin}"></span>
+                                                                                    <!-- </section> -->
+                                                                                </div>
+                                                                                <div class="col-lg-5">
+                                                                                    <span th:text="${option.optionName}"></span>
+                                                                                    <div th:text="${option.optionDescription}">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-4">
+                                                                                    <div>
+                                                                                        <ul th:each="item : ${option.items}">
+                                                                                            <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-story" role="tabpanel" aria-labelledby="nav-story-tab">
+                                                <p th:utext="${story != null ? story.storyDes : null}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <div class="form-group">
+
+                                        <div class="col col-md-3">
+                                            <label for="select" class=" form-control-label">Select tab </label> <span style="color: red">*</span>
+                                        </div>
+                                        <div class="col-12 col-md-12">
+                                            <select name="select" id="select" class="form-control">
+                                                <option value="-1">Please select</option>
+                                                <option value="1">Basic information</option>
+                                                <option value="2">Rewards</option>
+                                                <option value="3">Story</option>
+                                                <option value="4">Creator information</option>
+                                            </select>
+                                        </div>
+                                        <br>
+                                        <div class="col col-md-3">
+                                            <label for="select" class=" form-control-label">Comment</label>
+                                        </div>
+                                        <div class="col-12 col-md-12">
+                                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-dot-circle-o"></i> Submit
+                                    </button>
+                                    <button type="reset" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-ban"></i> Cancel
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -494,11 +644,10 @@
 <script src="/admin/vendor/chartjs/Chart.bundle.min.js"></script>
 <script src="/admin/vendor/select2/select2.min.js">
 </script>
-<script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <!-- Main JS-->
 <script src="/admin/js/main.js"></script>
-<script src="/admin/js/pending-approve-project.js"></script>
+
 </body>
 
 </html>
