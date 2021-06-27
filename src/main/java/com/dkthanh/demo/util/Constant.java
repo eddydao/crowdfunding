@@ -247,5 +247,66 @@ public final class Constant {
         }
     }
 
+    public enum CommentSection {
+        BASIC(1, "BASIC"),
+        REWARDS(2, "REWARDS"),
+        COMMENT(3, "COMMENT");
+
+        private Integer id;
+        private String name;
+
+        CommentSection(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static CommentSection getCommentSectionById(Integer id){
+            for (CommentSection e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+    public enum ClosedComment {
+        OPEN(0, "OPEN"),
+        CLOSE(1, "CLOSE");
+
+        private Integer id;
+        private String name;
+
+        ClosedComment(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static ClosedComment getCommentSectionById(Integer id){
+            for (ClosedComment e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
+
 
 }

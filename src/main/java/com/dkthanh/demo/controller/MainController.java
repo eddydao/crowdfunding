@@ -89,6 +89,8 @@ public class MainController {
     @Autowired
     private StatusService statusService;
 
+    @Autowired CommentService commentService;
+
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
 
@@ -884,6 +886,41 @@ public class MainController {
 
 
         return "/admin/pending-project-detail";
+    }
+
+    // save explaination of reject action
+    @PostMapping(value = "/admin/project/save-comment")
+    public ResponseEntity<?> saveExplaination(Model model,  FormInput formInput){
+        Integer section = formInput.getSection() != null ? Integer.parseInt(formInput.getSection()) : null;
+        String comment = formInput.getComment() != null ? formInput.getStatusId() : null;
+        Integer projectId = formInput.getProjectId();
+        CommentEntity commentEntity = commentService.getCommentByProjectIdAndSectionId(projectId, section);
+        if(commentEntity != null ){
+            commentEntity.setCommentText(comment);
+            commentEntity.setIsClose(Constant.ClosedComment.OPEN.getId());
+        }
+
+        try{
+            commentService.saveComment(commentEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<String>("Error on save comment" , HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("Save success", HttpStatus.OK);
+    }
+
+    // Complete review- close comment
+    @PostMapping(value = "/admin/project/close-comment")
+    public ResponseEntity<?> closeComment(Model model, FormInput formInput){
+        Integer projectId = formInput.getProjectId();
+        List<CommentEntity> listComment = commentService.getAllCommentsByProjectId(projectId);
+
+        for (CommentEntity comment : listComment
+             ) {
+            comment.setIsClose(Constant.ClosedComment.CLOSE.getId());
+        }
+
+        return new ResponseEntity<String>("Closed", HttpStatus.OK);
     }
 
     // USER MANAGEMENT

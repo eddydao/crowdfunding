@@ -32,6 +32,7 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <!-- Main CSS-->
     <link href="/admin/css/theme.css" rel="stylesheet" media="all">
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
 
 </head>
 
@@ -480,14 +481,6 @@
                                                                         <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.projectName}">
                                                                     </div>
                                                                 </div>
-<!--                                                                <div class="row form-group">-->
-<!--                                                                    <div class="col col-md-3">-->
-<!--                                                                        <label for="text-input" class=" form-control-label">Project subtitle</label>-->
-<!--                                                                    </div>-->
-<!--                                                                    <div class="col-12 col-md-9">-->
-<!--                                                                        <input type="text" readonly class="form-control" style="background-color: white;" >-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
                                                                 <div class="row form-group">
                                                                     <div class="col col-md-3">
                                                                         <label for="text-input" class=" form-control-label">Project subtitle</label>
@@ -584,34 +577,49 @@
                             <div class="card">
                                 <div class="card-body card-block">
                                     <div class="form-group">
-
-                                        <div class="col col-md-3">
-                                            <label for="select" class=" form-control-label">Select tab </label> <span style="color: red">*</span>
+                                        <div id="comment-div">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">Comment</label>
+                                            </div>
+                                            <div class="col-12 col-md-12">
+                                                <textarea name="textarea-input" id="comment-input" rows="9" placeholder="Comment..." class="form-control"></textarea>
+                                            </div>
+                                            <br>
+                                            <div class="col-12 col-md-12">
+                                                <button type="button" class="btn btn-primary btn-sm" id="btn-saveCommetn" th:onclick="submitReviewForSection()" >
+                                                    <i class="fa fa-save"></i> Save comment
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-12 col-md-12">
-                                            <select name="select" id="select" class="form-control">
-                                                <option value="-1">Please select</option>
-                                                <option value="1">Basic information</option>
-                                                <option value="2">Rewards</option>
-                                                <option value="3">Story</option>
-                                                <option value="4">Creator information</option>
-                                            </select>
-                                        </div>
-                                        <br>
-                                        <div class="col col-md-3">
-                                            <label for="select" class=" form-control-label">Comment</label>
-                                        </div>
-                                        <div class="col-12 col-md-12">
-                                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-footer" id="card-footer">
+                                    <button type="button" class="btn btn-primary btn-sm" th:onclick="completeReview()">
+                                        <i class="fa fa-dot-circle-o"></i> Complete review
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card" id="approve-card-div" style="display: none">
+                                <div class="card-body card-block">
+                                    <div class="form-group">
+                                        <div>
+                                            <div class="col col-md-12">
+                                                <label>Is the project qualified?&nbsp;</label><span style="color: red">*</span>
+                                            </div>
+                                            <div class="col-12 col-md-12">
+                                                <select name="select" id="select-approve" class="form-control">
+                                                    <option value="-1">- Please select -</option>
+                                                    <option value="1">APPROVE</option>
+                                                    <option value="2">REJECT</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
+                                    <button type="button" class="btn btn-primary btn-sm" th:onclick="()">
                                         <i class="fa fa-dot-circle-o"></i> Submit
-                                    </button>
-                                    <button type="reset" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-ban"></i> Cancel
                                     </button>
                                 </div>
                             </div>
@@ -645,9 +653,16 @@
 <script src="/admin/vendor/select2/select2.min.js">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
+<script src="/admin/js/jquery.toast.min.js"></script>
+<script src="/admin/js/toastr.min.js"></script>
 <!-- Main JS-->
 <script src="/admin/js/main.js"></script>
-
+<script src="/admin/js/pending-project-detail.js"></script>
+<script th:inline="javascript">
+    var projectId = [[${project.projectId}]];
+</script>
 </body>
 
 </html>
