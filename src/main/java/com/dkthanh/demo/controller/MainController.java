@@ -878,12 +878,26 @@ public class MainController {
             itemList= itemService.getItemsOfProject(projectId);
         }
         StoryEntity story = storyService.getStoryByProjectId(projectId);
+        List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
+        Map<String, String> commentMap = new HashMap<>();
+        for(int i = 0 ; i< listCom.size(); i++){
+//            commentMap.put(listCom.get(i).getSectionId().toString(), listCom.get(i).getCommentText());
+            if(listCom.get(i).getSectionId() == 1){
+                commentMap.put("basicTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 2){
+                commentMap.put("rewardTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 3){
+                commentMap.put("storyTab", listCom.get(i).getCommentText());
+            }
+        }
+
+
 
         model.addAttribute("options", optionList);
         model.addAttribute("items", itemList);
         model.addAttribute("project", projectFullInfoEntity);
         model.addAttribute("story", story);
-
+        model.addAllAttributes(commentMap);
 
         return "/admin/pending-project-detail";
     }
@@ -892,7 +906,7 @@ public class MainController {
     @PostMapping(value = "/admin/project/save-comment")
     public ResponseEntity<?> saveExplaination(Model model,  FormInput formInput){
         Integer section = formInput.getSection() != null ? Integer.parseInt(formInput.getSection()) : null;
-        String comment = formInput.getComment() != null ? formInput.getStatusId() : null;
+        String comment = formInput.getComment() != null ? formInput.getComment() : null;
         Integer projectId = formInput.getProjectId();
         CommentEntity commentEntity = commentService.getCommentByProjectIdAndSectionId(projectId, section);
         if(commentEntity != null ){

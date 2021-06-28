@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, CommentEntityPK> {
 
-    List<CommentEntity> findByProjectIdAndSectionId(Integer projectId, Integer sectionId);
+    List<CommentEntity> findAllByProjectIdAndSectionId(Integer projectId, Integer sectionId);
 
     List<CommentEntity> findAllByProjectId(Integer projectId);
 }

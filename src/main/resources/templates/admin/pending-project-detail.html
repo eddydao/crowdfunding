@@ -30,6 +30,7 @@
     <link href="/admin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="/admin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
     <!-- Main CSS-->
     <link href="/admin/css/theme.css" rel="stylesheet" media="all">
     <link href="/admin/css/toastr.css" rel="stylesheet"/>
@@ -582,12 +583,12 @@
                                                 <label class=" form-control-label">Comment</label>
                                             </div>
                                             <div class="col-12 col-md-12">
-                                                <textarea name="textarea-input" id="comment-input" rows="9" placeholder="Comment..." class="form-control"></textarea>
+                                                <textarea name="textarea-input" id="comment-input" rows="9" placeholder="Comment..." class="form-control" th:text="${basicTab}"></textarea>
                                             </div>
                                             <br>
                                             <div class="col-12 col-md-12">
                                                 <button type="button" class="btn btn-primary btn-sm" id="btn-saveCommetn" th:onclick="submitReviewForSection()" >
-                                                    <i class="fa fa-save"></i> Save comment
+                                                    <i class="fa fa-save"></i> Add comment
                                                 </button>
                                             </div>
                                         </div>
@@ -662,6 +663,9 @@
 <script src="/admin/js/pending-project-detail.js"></script>
 <script th:inline="javascript">
     var projectId = [[${project.projectId}]];
+    var basicTabComment = [[${basicTab}]];
+    var rewardTabComment = [[${rewardTab}]];
+    var storyTabComment = [[${storyTab}]];
 </script>
 </body>
 

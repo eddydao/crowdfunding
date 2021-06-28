@@ -15,7 +15,11 @@ public class CommentService {
 
 
     public CommentEntity getCommentByProjectIdAndSectionId(Integer projectId, Integer sectionId){
-        return commentRepository.findByProjectIdAndSectionId(projectId, sectionId).get(0);
+        List<CommentEntity> list = commentRepository.findAllByProjectIdAndSectionId(projectId, sectionId);
+        if(list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return new CommentEntity(projectId, sectionId);
     }
 
     public CommentEntity saveComment(CommentEntity commentEntity){
