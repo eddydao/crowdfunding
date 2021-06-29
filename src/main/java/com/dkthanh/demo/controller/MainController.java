@@ -879,9 +879,13 @@ public class MainController {
         }
         StoryEntity story = storyService.getStoryByProjectId(projectId);
         List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
+        int count = 0;
         Map<String, String> commentMap = new HashMap<>();
         for(int i = 0 ; i< listCom.size(); i++){
-//            commentMap.put(listCom.get(i).getSectionId().toString(), listCom.get(i).getCommentText());
+            if(listCom.get(i).getIsClose() == Constant.ClosedComment.CLOSE.getId()){
+                count++;
+            }
+
             if(listCom.get(i).getSectionId() == 1){
                 commentMap.put("basicTab", listCom.get(i).getCommentText());
             }else if(listCom.get(i).getSectionId() == 2){
@@ -890,6 +894,14 @@ public class MainController {
                 commentMap.put("storyTab", listCom.get(i).getCommentText());
             }
         }
+
+        if(count > 0 ){
+            commentMap.put("isClosed", "1");
+        }else{
+            commentMap.put("isClosed", "0");
+        }
+
+
 
 
 
@@ -929,10 +941,12 @@ public class MainController {
         Integer projectId = formInput.getProjectId();
         List<CommentEntity> listComment = commentService.getAllCommentsByProjectId(projectId);
 
-        for (CommentEntity comment : listComment
-             ) {
+        for (CommentEntity comment : listComment) {
             comment.setIsClose(Constant.ClosedComment.CLOSE.getId());
+            commentService.saveComment(comment);
         }
+
+
 
         return new ResponseEntity<String>("Closed", HttpStatus.OK);
     }

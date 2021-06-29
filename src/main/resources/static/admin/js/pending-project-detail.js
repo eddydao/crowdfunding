@@ -1,5 +1,12 @@
 var tabId = '';
 $(document).ready( function () {
+    debugger
+    if(isClosed == '1'){
+        $("#comment-input").attr("readonly", true);
+        $("#btn-saveCommetn").attr("readonly", true);
+        $("#btn-closeReview").attr("readonly", true);
+    }
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr("id") // activated tab
 
@@ -58,6 +65,7 @@ debugger
 
 }
 
+// complete review after comment
 function completeReview(){
     var result = confirm("Are you sure to complete the review about this project? \n This can not be revert.");
     if(result){
@@ -72,13 +80,13 @@ function completeReview(){
 debugger
     $.ajax({
         url: "/admin/project/close-comment",
-        cache: false,
-        contentType : false,
-        processData: false,
         data: data,
         type: "POST",
         success: function(msg) {
             console.log(msg);
+            $("#comment-input").attr("readonly", true);
+            $("#btn-saveCommetn").attr("readonly", true);
+            $("#btn-closeReview").attr("readonly", true);
         },
         error: function(msg) {
             console.log(msg);

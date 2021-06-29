@@ -583,7 +583,7 @@
                                                 <label class=" form-control-label">Comment</label>
                                             </div>
                                             <div class="col-12 col-md-12">
-                                                <textarea name="textarea-input" id="comment-input" rows="9" placeholder="Comment..." class="form-control" th:text="${basicTab}"></textarea>
+                                                <textarea name="textarea-input" id="comment-input" rows="18" placeholder="Comment..." class="form-control" th:text="${basicTab}"></textarea>
                                             </div>
                                             <br>
                                             <div class="col-12 col-md-12">
@@ -595,7 +595,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer" id="card-footer">
-                                    <button type="button" class="btn btn-primary btn-sm" th:onclick="completeReview()">
+                                    <button type="button" id="btn-closeReview" class="btn btn-primary btn-sm" th:onclick="completeReview()">
                                         <i class="fa fa-dot-circle-o"></i> Complete review
                                     </button>
                                 </div>
@@ -666,6 +666,7 @@
     var basicTabComment = [[${basicTab}]];
     var rewardTabComment = [[${rewardTab}]];
     var storyTabComment = [[${storyTab}]];
+    var isClosed = [[${isClosed}]];
 </script>
 </body>
 
