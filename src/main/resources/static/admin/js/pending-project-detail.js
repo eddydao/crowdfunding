@@ -1,10 +1,10 @@
 var tabId = '';
 $(document).ready( function () {
-    debugger
     if(isClosed == '1'){
         $("#comment-input").attr("readonly", true);
-        $("#btn-saveCommetn").attr("readonly", true);
-        $("#btn-closeReview").attr("readonly", true);
+        $("#btn-saveComment").attr("disabled", true);
+        $("#btn-closeReview").attr("disabled", true);
+        document.getElementById("approve-card-div").style.display = 'block';
     }
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -26,7 +26,7 @@ function submitReviewForSection(){
     let reviewComment = document.getElementById("comment-input").value;
 
     if(reviewComment == ""){
-        toastr.info('You need to enter the comment below to explain');
+        toastr.error('You need to enter the comment below to explain');
         document.getElementById("comment-input").focus();
         return;
     }
@@ -48,7 +48,6 @@ function submitReviewForSection(){
         "section": tabNumber,
         "comment": comment
     };
-debugger
     $.ajax({
         url: "/admin/project/save-comment",
         data: data,
@@ -59,7 +58,7 @@ debugger
         },
         error: function(msg) {
             console.log(msg);
-            toastr.success('Add comment fail');
+            toastr.error('Add comment fail');
         }
     })
 
@@ -77,7 +76,6 @@ function completeReview(){
         "projectId": projectId,
         "isClose": "1",
     };
-debugger
     $.ajax({
         url: "/admin/project/close-comment",
         data: data,
@@ -85,15 +83,51 @@ debugger
         success: function(msg) {
             console.log(msg);
             $("#comment-input").attr("readonly", true);
-            $("#btn-saveCommetn").attr("readonly", true);
-            $("#btn-closeReview").attr("readonly", true);
+            $("#btn-saveComment").attr("disabled", true);
+            $("#btn-closeReview").attr("disabled", true);
         },
         error: function(msg) {
             console.log(msg);
         }
     })
+}
 
-    return;
+function btn_submitReviewResult_onclick(){
+    let qualifiedResult = document.getElementById("select-approve").value;
+    console.log(qualifiedResult);
+
+    if(qualifiedResult == '-1'){
+        toastr.error("Please select the result to continue");
+        document.getElementById("select-approve").focus();
+        return;
+    }
+
+    var data = {
+        "projectId": projectId,
+        "reviewResult": qualifiedResult,
+    };
+
+    $.ajax({
+        url: "/admin/project/submit-review-result",
+        data: data,
+        type: "POST",
+        success: function(msg) {
+            toastr.success("Save success");
+            setTimeout(function () {
+                toastr.success("Redirect you to pending project page after 3 seconds");
+            }, 2000)
+
+            console.log(msg);
+            setTimeout(function(){
+                window.location.href = "/admin/project/pending-list"
+            },3000)
+        },
+        error: function(msg) {
+            console.log(msg);
+            toastr.error("Save fail");
+        }
+    })
+
 }
 
 

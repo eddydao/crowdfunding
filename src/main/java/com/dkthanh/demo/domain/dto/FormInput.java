@@ -11,7 +11,7 @@ public class FormInput {
     // project review section
     private String section;
     private String comment;
-    private String qualifiedResult;
+    private Integer reviewResult;
     private Integer isClose;
     private Integer projectId;
 

@@ -408,8 +408,8 @@ public class MainController {
             user = userService.findUserByUsername(username);
         }
 
-//        Integer userId  = user.getId();
-        Integer userId  = 3;
+        Integer userId  = user.getId();
+//        Integer userId  = 3;
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
@@ -867,6 +867,10 @@ public class MainController {
     @GetMapping(value = "/admin/project/{id}/detail")
     public String getAdminPendingProjectDetail(Model model, @PathVariable("id") Integer projectId){
         ProjectFullInfoEntity projectFullInfoEntity = projectService.getProjectDetail(projectId);
+
+        if(projectFullInfoEntity.getStatusId() != Constant.ProjectStatus.WAITING.getId()){
+            return "404";
+        }
         projectFullInfoEntity.setThumbnailPath(RELATIVE_PATH+ projectFullInfoEntity.getThumbnailPath());
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
@@ -900,10 +904,6 @@ public class MainController {
         }else{
             commentMap.put("isClosed", "0");
         }
-
-
-
-
 
         model.addAttribute("options", optionList);
         model.addAttribute("items", itemList);
@@ -950,6 +950,27 @@ public class MainController {
 
         return new ResponseEntity<String>("Closed", HttpStatus.OK);
     }
+
+    // Complete review- close comment
+    @PostMapping(value = "/admin/project/submit-review-result")
+    public ResponseEntity<?> saveReviewResult(Model model, FormInput formInput){
+        ProjectEntity projectEntity =  projectService.getProjectEntityById(formInput.getProjectId());
+        Integer reviewResult = formInput.getReviewResult();
+        StatusEntity st = null;
+        if(reviewResult == 1){              // Approve result
+            st = statusService.getStatusById(Constant.ProjectStatus.APPROVED.getId());
+            projectEntity.setProjectStatus(st);
+            projectService.saveProjectEntity(projectEntity);
+        }else if(reviewResult == 2){        // reject
+            st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
+            projectEntity.setProjectStatus(st);
+            projectService.saveProjectEntity(projectEntity);
+        }
+
+        return new ResponseEntity<String>("Processed", HttpStatus.OK);
+    }
+
+
 
     // USER MANAGEMENT
     //==================================================================================================================
