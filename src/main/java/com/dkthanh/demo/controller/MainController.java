@@ -238,11 +238,17 @@ public class MainController {
         List<CategoryEntity> categoryEntityList = categoryService.getAllCategory();
         List<ProjectFullInfoEntity> popularProjects = projectService.getPopularProjects();
         ProjectFullInfoEntity recommendedProject = projectService.getRecommendedProject();
-        for(int i = 0; i < popularProjects.size(); i++){
-            popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
+        if(popularProjects != null && !popularProjects.isEmpty()){
+            for(int i = 0; i < popularProjects.size(); i++){
+                popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
+            }
+
+
         }
-        
-        recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
+        if(recommendedProject != null ){
+            recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
+        }
+
         model.addAttribute("categories", categoryEntityList);
         model.addAttribute("popular_projects", popularProjects);
         model.addAttribute("recommended_project", recommendedProject);
@@ -409,7 +415,6 @@ public class MainController {
         }
 
         Integer userId  = user.getId();
-//        Integer userId  = 3;
         userDetailEntity = userDetailService.getUserDetailByUserId(userId);
 
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
@@ -709,18 +714,6 @@ public class MainController {
         return "/creator/creator-report";
     }
 
-    /*
-    *  admin management function
-    * ===========================================
-    admin/project/list
-    admin/project/id
-    admin/category/list
-    admin/project/approval
-    admin/user/list
-    admin/
-     */
-
-
     // CATEGORY MANAGEMENT
     //==================================================================================================================
     // category list for admin view
@@ -802,6 +795,10 @@ public class MainController {
             }
 
             if(Constant.ProjectStatus.WAITING.getName().equals(i)){
+                it.remove();
+            }
+
+            if(Constant.ProjectStatus.REJECT.getName().equals(i)){
                 it.remove();
             }
         }
@@ -886,7 +883,7 @@ public class MainController {
         int count = 0;
         Map<String, String> commentMap = new HashMap<>();
         for(int i = 0 ; i< listCom.size(); i++){
-            if(listCom.get(i).getIsClose() == Constant.ClosedComment.CLOSE.getId()){
+            if(listCom.get(i).getIsClose() == Constant.IS_CLOSED.CLOSE.getId()){
                 count++;
             }
 
@@ -923,7 +920,7 @@ public class MainController {
         CommentEntity commentEntity = commentService.getCommentByProjectIdAndSectionId(projectId, section);
         if(commentEntity != null ){
             commentEntity.setCommentText(comment);
-            commentEntity.setIsClose(Constant.ClosedComment.OPEN.getId());
+            commentEntity.setIsClose(Constant.IS_CLOSED.OPEN.getId());
         }
 
         try{
@@ -942,7 +939,7 @@ public class MainController {
         List<CommentEntity> listComment = commentService.getAllCommentsByProjectId(projectId);
 
         for (CommentEntity comment : listComment) {
-            comment.setIsClose(Constant.ClosedComment.CLOSE.getId());
+            comment.setIsClose(Constant.IS_CLOSED.CLOSE.getId());
             commentService.saveComment(comment);
         }
 
@@ -957,13 +954,16 @@ public class MainController {
         ProjectEntity projectEntity =  projectService.getProjectEntityById(formInput.getProjectId());
         Integer reviewResult = formInput.getReviewResult();
         StatusEntity st = null;
+
         if(reviewResult == 1){              // Approve result
             st = statusService.getStatusById(Constant.ProjectStatus.APPROVED.getId());
             projectEntity.setProjectStatus(st);
+            projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
             projectService.saveProjectEntity(projectEntity);
         }else if(reviewResult == 2){        // reject
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
             projectEntity.setProjectStatus(st);
+            projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
             projectService.saveProjectEntity(projectEntity);
         }
 

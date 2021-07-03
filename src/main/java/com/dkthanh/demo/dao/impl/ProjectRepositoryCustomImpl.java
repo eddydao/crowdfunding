@@ -54,7 +54,9 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  C.name as category_name,\n" +
                         "  0.0 as percent_pledged,\n"+
                         "  0 as day_left,\n"+
-                        "  A.submit_date as submit_date\n"+
+                        "  A.submit_date as submit_date,\n"+
+                        "  A.is_editable as is_editable,\n"+
+                        "  A.is_choosed as is_editable\n"+
                         "FROM\n" +
                         "  project A \n" +
                         "  LEFT JOIN category C ON A.category_id = C.id\n" +

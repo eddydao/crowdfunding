@@ -277,14 +277,14 @@ public final class Constant {
             return null;
         }
     }
-    public enum ClosedComment {
+    public enum IS_CLOSED {
         OPEN(0, "OPEN"),
         CLOSE(1, "CLOSE");
 
         private Integer id;
         private String name;
 
-        ClosedComment(Integer id, String name) {
+        IS_CLOSED(Integer id, String name) {
             this.id = id;
             this.name = name;
         }
@@ -297,8 +297,8 @@ public final class Constant {
             return name;
         }
 
-        public static ClosedComment getCommentSectionById(Integer id){
-            for (ClosedComment e : values()) {
+        public static IS_CLOSED getCommentSectionById(Integer id){
+            for (IS_CLOSED e : values()) {
                 if (e.getId().equals(id)) {
                     return e;
                 }
@@ -306,7 +306,5 @@ public final class Constant {
             return null;
         }
     }
-
-
 
 }

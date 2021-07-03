@@ -27,13 +27,11 @@
     <link href="/creator/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="/creator/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="/creator/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
+    <link href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
 <!--    <link href="/creator/css/theme.css" rel="stylesheet" media="all">-->
     <link href="../css/custom-style.css" rel="stylesheet" media="all">
-    <!-- Datatable -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 
 
 </head>
@@ -180,11 +178,9 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="card">
+                            <div class="top-campaign">
 <!--                                <h2 class="m-b-25" style="font-weight: 400; font-size: 30px;">Project list</h2>-->
-                                <div class="card-header">
-                                    <strong>Project Overview</strong>
-                                </div>
+                                <h3 class="title-3 m-b-30">Project Overview</h3>
 <!--                                <div class="table-data__tool" >-->
 <!--                                    <div class="table-data__tool-right" >-->
                                 <div>
@@ -193,16 +189,10 @@
                                 </div>
 <!--                                    </div>-->
 <!--                                </div>-->
-                                <div class="table-responsive table-responsive-data2">
-                                    <table class="table table-data2" id="project-lst-tbl">
+                                <div class="table-responsive">
+                                    <table class="table table-top-campaign" id="project-lst-tbl">
                                         <thead>
                                         <tr>
-    <!--                                        <th>-->
-    <!--                                            <label class="au-checkbox">-->
-    <!--                                                <input type="checkbox">-->
-    <!--                                                <span class="au-checkmark"></span>-->
-    <!--                                            </label>-->
-    <!--                                        </th>-->
                                             <th>Project</th>
                                             <th>Status</th>
                                             <th>Category</th>
@@ -211,6 +201,7 @@
                                             <th>Funding goal</th>
                                             <th>Pledge</th>
                                             <th>Percentage of funding</th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -272,7 +263,7 @@
 
 <!-- Datatable -->
 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
 <!-- Main JS-->
 <script src="/creator/js/creator-proj-lst-tbl.js"></script>

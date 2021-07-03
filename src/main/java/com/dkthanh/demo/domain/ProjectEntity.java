@@ -35,6 +35,11 @@ public class ProjectEntity {
     private String thumbnailPath;
     @Column(name="submit_date", nullable = true)
     private String submitDate;
+    @Column(name="is_editable", nullable = true)
+    private Integer isEditable;
+    @Column(name="is_choosed", nullable = true)
+    private Integer isChoosed;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")
