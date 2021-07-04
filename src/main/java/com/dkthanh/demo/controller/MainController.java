@@ -598,20 +598,25 @@ public class MainController {
         return "/creator/fragments/modal :: addItemModal";
     }
 
-    @PostMapping(value = "creator/project/reward/addItemToList")
-    public String addItemToList(HttpServletRequest request, Model model, @ModelAttribute("option") @Validated OptionDto dto, BindingResult result, final RedirectAttributes redirectAttributes){
+
+
+    @GetMapping(value = "creator/project/reward/addItemToList")
+    public String addItemToList( Model model, OptionDto dto){
         Integer projectId = dto.getProjectId();
         Integer itemId = dto.getNewItemId();
-        List<ItemEntity> listItem  = new ArrayList<>();
+        Integer optionId = dto.getOptionId();
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
 
         ItemEntity item = itemService.findItemByItemId(itemId);
+        optionEntity.getItems().add(item);
+        optionEntity = optionService.save(optionEntity);
 
-        listItem.add(item);
 
         model.addAttribute("projectId", projectId);
-        model.addAttribute("option", dto);
-        model.addAttribute("items", null);
-        return "/creator/project-reward :: edit-reward";
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardArea";
     }
 
 
