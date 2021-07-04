@@ -229,7 +229,8 @@
                                                             </div>
                                                             <div class = "" style="float:right">
                                                                 <button type="button" class="btn btn-primary"
-                                                                        th:onclick="'openAddRewardModal(\'' + ${project_dto.projectId} + '\');'">
+                                                                        th:onclick="showCreateProjectRewardArea()">
+<!--                                                                        th:onclick="'openAddRewardModal(\'' + ${project_dto.projectId} + '\');'">-->
                                                                     Add your reward
                                                                 </button>
                                                             </div>
@@ -254,7 +255,6 @@
                                                                     <div class="row">
                                                                         <div class="col-lg-3">
                                                                             <span th:text="${option.fundMin}"></span>
-                                                                        <!-- </section> -->
                                                                         </div>
                                                                         <div class="col-lg-5">
                                                                             <span th:text="${option.optionName}"></span>
@@ -262,19 +262,19 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-lg-4">
-                                                                            <div>
-                                                                                <ul th:each="item : ${option.items}">
-                                                                                    <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
-                                                                                </ul>
-                                                                            </div>
+                                                                        <div>
+                                                                            <ul th:each="item : ${option.items}">
+                                                                                <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                            </ul>
                                                                         </div>
+                                                                    </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div style="float:right">
                                                                     <button type="button" style="margin-right: 30px" 
-                                                                        th:onclick="'openEditRewardModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
+                                                                        th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
                                                                         Edit
                                                                     </button>
                                                                     <button type="button" data-toggle="modal" data-target="#deleteRewardModal" style="margin-right: 30px" th:attrappend="data-target=${option.optionId}">
@@ -320,294 +320,96 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="row" id="edit-reward" style="display: none;" th:fragment="add-reward">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Add a rewards</strong>
+                                        <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>
+                                    </div>
+                                    <div class="card-body card-block custom-col">
+                                        <form action="" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                            <div class="row form-group" style="display: none;">
+                                                <input type="text" id="input-option-id" name="text-input" placeholder="Title" class="form-control" th:field="*{optionId}">
+                                                <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">
+                                            </div>
+                                            <!-- Project title and subtitle -->
+                                            <div class="row form-group">
+                                                <div class="col col-md-5">
+                                                    <label class=" form-control-label"><b>Title</b></label>
+                                                </div>
+                                                <div class="col-12 col-md-7">
+                                                    <input type="text" id="title-inp" name="text-input" placeholder="Title" class="form-control" th:field="*{optionName}">
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-5">
+                                                    <label class=" form-control-label"><b>Amount</b></label>
+                                                </div>
+                                                <div class="col-12 col-md-7">
+                                                    <input type="text" id="amount-inp" name="text-input" class="form-control" th:field="*{fundMin}">
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-5">
+                                                    <label class=" form-control-label"><b>Description</b></label>
+                                                </div>
+                                                <div class="col-12 col-md-7">
+                                                    <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-5">
+                                                    <label  class=" form-control-label"><b>Item</b></label>
+                                                </div>
+                                                <div class="col-12 col-md-7" >
+                                                    <div class="row" th:each="item,i : ${option.items}">
+                                                        <div style="display: none;">
+                                                            <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemId}">
+                                                        </div>
+                                                        <div class="col-12 col-md-7">
+                                                            <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemName}">
+                                                        </div>
+                                                        <div class="col-12 col-md-3">
+                                                            <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}">
+                                                        </div>
+                                                        <div class="col-12 col-md-2">
+                                                            <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">
+                                                                remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-12 col-md-5"></div>
+                                                <div class="col-12 col-md-7">
+                                                    <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"
+                                                            th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\');'">
+                                                        Add items
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="custom-modal-button-container">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="editRewardHolder"></div>
                     </div>
                 </div>
             </div>
             <!-- createReward -->
             <div id="createRewardModalHolder"></div>
-            <div id="editRewardModalHolder"></div>
-            <div id="addItemModalHolder"></div>
-            <!-- <div class="modal fade" id="createReward" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="smallmodalLabel">Add a reward</h5>
-                                <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label"><b>Title</b></label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="text" id="input-reward-title" name="text-input" placeholder="Title" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label"><b>Amount</b></label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="text" id="input-reward-amount" name="text-input" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label"><b>Description</b></label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <textarea name="textarea-input" id="input-reward-description" rows="9" placeholder="Content..." class="form-control"></textarea>
-                                    </div>
-                                </div>
-                                <div class="row form-group" >
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label"><b>Item</b></label>
-                                    </div>
-                                    <div class="col-12 col-md-5">
-                                            <input type="text" placeholder="Item" id="input-reward-item" name="text-input" class="form-control">
-                                    </div>
-                                    <div class="col-12 col-md-2">
-                                        <input type="text" id="input-item-quantity" placeholder="Quantity" name="text-input" class="form-control">
-                                    </div>
-                                    <div class="col-12 col-md-2">
-                                        <button type="button" class="btn" data-toggle="modal">
-                                            remove
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-12 col-md-3"></div>
-                                    <div class="col-12 col-md-9">
-                                        <button type="button" class="btn" data-toggle="modal" data-target="#addItem" style="width: 100%;color: white;background-color: black;">
-                                            Add items
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary">Save</button>
-                                </div>
-                            </div>
-                        </form>
-					</div>
-				</div>
-			</div> -->
-            <!-- edit reward -->
-            
-            <!-- <div class="card" th:each="option : ${options}">
-                <div class="modal fade" id="editRewardModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
-                data-backdrop="static"  th:attrappend="id=${option.optionId}">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="smallmodalLabel">Edit reward</h5>
-                                    <small class="form-text text-muted">Make sure your rewards are just right. After a backer has selected a reward, you can't edit it.</small>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label"><b>Title</b></label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <input type="text" id="text-input" name="text-input" placeholder="Title" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label"><b>Amount</b></label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <input type="text" id="text-input" name="text-input" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label"><b>Description</b></label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label"><b>Item</b></label>
-                                        </div>
-                                        <div class="col-12 col-md-5">
-                                                <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control">
-                                        </div>
-                                        <div class="col-12 col-md-2">
-                                            <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control">
-                                        </div>
-                                        <div class="col-12 col-md-2">
-                                            <button type="button" class="btn" data-toggle="modal">
-                                                remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-12 col-md-3"></div>
-                                        <div class="col-12 col-md-9">
-                                            <button type="button" class="btn" data-toggle="modal" data-target="#addItem" style="width: 100%;color: white;background-color: black;">
-                                                Add items
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-primary">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- add item -->
-            <div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-md" role="document">
-					<div class="modal-content">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edit your item</h5>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row form-group">
-                                    <div class="col col-md-12">
-                                        <label class=" form-control-label"><b>Choose one</b></label>
-                                        <select name=""  class="form-control">
-                                            <option value="0">Please select</option>
-                                            <option value="1">Option #1</option>
-                                            <option value="2">Option #2</option>
-                                            <option value="3">Option #3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <!-- <small class="form-text text-muted">Or</small>
-                                <div class="row form-group">
-                                    <div class="col-12 col-md-12">
-                                        <label for="text-input" class=" form-control-label"><b>Create one</b></label>
-                                        <input type="text" id="text-input" name="text-input" placeholder="Title" class="form-control">
-                                    </div>
-                                </div> -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary">Save</button>
-                                </div>
-                            </div>
-                        </form>
-					</div>
-				</div>
-			</div>
-            
-            <!-- delete reward -->
-            <!-- <div class="card" th:each="option : ${options}"> -->
-                <!-- <div class="modal fade" id="deleteRewardModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
-                data-backdrop="static" th:attrappend="id=${option.optionId}">
-                    <div class="modal-dialog modal-md" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" >Delete reward</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    Are you sure to delete this reward?
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            <!-- </div> -->
 
-            <!-- item region  -->
-            <!-- <div class="modal fade" id="addNewItem" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                            <div class="modal-header">
-                                <h5 class="modal-title" >Add new item</h5>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row form-group">
-                                    <div class="col col-md-5">
-                                        <label for="text-input" class=" form-control-label"><b>Item title</b></label>
-                                        <small class="form-text text-muted">Add a title that quickly and clearly describes this item</small>
-                                    </div>
-                                    <div class="col-12 col-md-7">
-                                        <input type="text" id="input-item-title" name="text-input" placeholder="Title" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="mnodel-footer">
-                                    <button type="button" class="btn btn-primary">Save</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                </div>
-                            </div>
-                        </form>
-					</div>
-				</div>
-			</div> -->
-            <!-- <div class="card" th:each="item : ${items}"> -->
-                <!-- <div class="modal fade" id="editItem" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
-                data-backdrop="static" th:attrappend="id=${item.itemId}">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" >Edit item</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row form-group">
-                                    <div class="col col-md-5">
-                                        <label for="text-input" class=" form-control-label"><b>Item title</b></label>
-                                        <small class="form-text text-muted">Add a title that quickly and clearly describes this item</small>
-                                    </div>
-                                    <div class="col-12 col-md-7">
-                                        <input type="text" id="inp-modal-item-title" name="text-input" placeholder="Title" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Confirm</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            <!-- </div> -->
-            <!-- <div class="card" th:each="item : ${items}"> -->
-                <!-- <div class="modal fade" id="deleteItem" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
-                data-backdrop="static" th:attrappend="id=${item.itemId}">
-                    <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticModalLabel">Delete item</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    This is a static modal, backdrop click will not close it.
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            <!-- </div> -->
+            <div id="addItemModalHolder"></div>
         </div>
     </div>
 
@@ -635,6 +437,7 @@
     <!-- Main JS-->
     <script src="../../js/main.js"></script>
     <script src="../../js/custom-proj.js"></script>
+    <script src="../../js/project-reward.js"></script>
 </body>
 
 </html>

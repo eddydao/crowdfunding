@@ -20,11 +20,6 @@ $( document ).ready(function() {
             }
         }
     });
-    // debugger
-    // var thumbnailImg = document.getElementById("preview-img").src;
-    // if(thumbnailImg == null){
-    //     $('#preview-img').attr('src', '../../images/bg-title-01.jpg');
-    // }
 });
 
 function uploadImage(image, projectId){
@@ -87,8 +82,9 @@ function openAddRewardModal(projectId){
         url: "/creator/project/" + projectId + "/create-reward-form",
         success: function(data){
             console.log(data);
-            $("#createRewardModalHolder").html(data);
-            $("#createRewardModal").modal("show");
+            // $("#createRewardModalHolder").html(data);
+            // $("#createRewardModal").modal("show");
+
         },
         error: function(data){
             console.log(data);
@@ -135,6 +131,10 @@ function openAddItemModal(projectId, optionId, items){
         }
     })
 }
+
+
+
+
 
 
 try {

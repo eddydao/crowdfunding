@@ -511,7 +511,7 @@ public class MainController {
         projectService.saveProjectEntity(projectEntity);
         return "redirect:/creator/project/"+ dto.getProjectId();
     }
-
+    //==================================================================================================================
     /*
     * Return reward information of project
      */
@@ -533,10 +533,16 @@ public class MainController {
             itemList= itemService.getItemsOfProject(projectId);
         }
 
+        OptionDto optionDto = new OptionDto(null, null,
+                null, null, null, projectId, null);
+
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("options", optionList);
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", null);
+        model.addAttribute("projectId", projectId);
         return "/creator/project-reward";
     }
 
@@ -552,7 +558,7 @@ public class MainController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", null);
-        return "/creator/fragments/modal :: createReward";
+        return "/creator/project-reward :: edit-reward";
     }
     /*
     Open edit reward modal
@@ -566,7 +572,7 @@ public class MainController {
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());
-        return "/creator/fragments/modal :: editRewardModal";
+        return "/creator/fragments/modal :: editRewardArea";
     }
 
 
@@ -592,13 +598,28 @@ public class MainController {
         return "/creator/fragments/modal :: addItemModal";
     }
 
+    @PostMapping(value = "creator/project/reward/addItemToList")
+    public String addItemToList(HttpServletRequest request, Model model, @ModelAttribute("option") @Validated OptionDto dto, BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getNewItemId();
+        List<ItemEntity> listItem  = new ArrayList<>();
+
+        ItemEntity item = itemService.findItemByItemId(itemId);
+
+        listItem.add(item);
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", null);
+        return "/creator/project-reward :: edit-reward";
+    }
 
 
 
     /*
     Create new reward
      */
-    @PostMapping(value = "/creator/save-reward", params = "action=save")
+    @PostMapping(value = "/creator/save-reward")
     public String createProjectReward(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto optionDto,
                                       BindingResult result, final RedirectAttributes redirectAttributes){
         Integer projectId  = optionDto.getProjectId();
@@ -622,6 +643,8 @@ public class MainController {
         projectService.saveProjectEntity(projectEntity);
         return "redirect:/creator/project/" +projectId + "/reward" ;
     }
+
+
     /*
     *   Open story edit page
      */

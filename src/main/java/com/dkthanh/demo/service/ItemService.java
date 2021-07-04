@@ -17,4 +17,8 @@ public class ItemService {
         return itemRepository.findItemEntitiesByProjectProjectId(projectId);
     }
 
+    public ItemEntity findItemByItemId(Integer itemId){
+        return itemRepository.findById(itemId).get();
+    }
+
 }

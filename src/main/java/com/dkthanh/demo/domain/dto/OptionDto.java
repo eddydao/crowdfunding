@@ -20,5 +20,15 @@ public class OptionDto {
     private List<ItemEntity> items;
     private Integer projectId;
     private Long pledge;
+    private Integer newItemId;
 
+    public OptionDto(Integer optionId, String optionName, String optionDescription, Long fundMin, List<ItemEntity> items, Integer projectId, Long pledge) {
+        this.optionId = optionId;
+        this.optionName = optionName;
+        this.optionDescription = optionDescription;
+        this.fundMin = fundMin;
+        this.items = items;
+        this.projectId = projectId;
+        this.pledge = pledge;
+    }
 }
