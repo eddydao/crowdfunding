@@ -31,6 +31,6 @@ public class OptionEntity {
     @OneToMany(mappedBy = "option")
     private List<Package> packages;
 
-    @OneToMany(mappedBy = "option")
-    private List<ItemEntity> items;
+    @OneToMany(mappedBy = "item")
+    private List<OptionItemEntity> items;
 }

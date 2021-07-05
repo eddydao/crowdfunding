@@ -207,9 +207,9 @@
                             <div class=" pledge-content accordion-content">
                                 <div class="pledge-detail">
                                     <p class="rs pledge-description" th:text="${option.optionDescription}"></p>
-                                    <ul th:each="item,i : ${option.items}">
+                                    <ul th:each="item,i : ${option.itemDtoEntitiess}">
 <!--                                        <li th:value="${items[__${i.index}__].itemId}"></li>-->
-                                        <li th:text="${option.items[__${i.index}__].itemName}"></li>
+                                        <li th:text="${option.itemDtoEntitiess[__${i.index}__].itemName}"></li>
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
                                     <form action="#" th:action = "@{/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">

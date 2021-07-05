@@ -89,7 +89,11 @@ public class MainController {
     @Autowired
     private StatusService statusService;
 
-    @Autowired CommentService commentService;
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private OptionItemService optionItemService;
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -274,15 +278,19 @@ public class MainController {
         ProjectFullInfoEntity p = projectService.getProjectDetail(id);
         StoryEntity story = storyService.getStoryByProjectId(id);
         List<OptionEntity> options =  optionService.getOptionListByProjectId(id);
+
         p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
         List<OptionDto> optionDtos = new ArrayList<>();
+
         for(int i = 0; i < options.size(); i++){
             OptionEntity option = options.get(i);
+
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(id, option.getOptionId());
             OptionDto optionDto = new OptionDto(option.getOptionId(),
                                                 option.getOptionName(),
                                                 option.getOptionDescription(),
                                                 option.getFundMin(),
-                                                option.getItems(),
+                                                listItem,
                                                 option.getProject().getProjectId(),
                                          null);
             optionDtos.add(optionDto);
@@ -568,7 +576,8 @@ public class MainController {
     public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", optionEntity.getItems());
@@ -590,7 +599,8 @@ public class MainController {
         OptionEntity optionEntity ;
         if(optionId != null){
             optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
         }
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
@@ -606,12 +616,13 @@ public class MainController {
         Integer itemId = dto.getNewItemId();
         Integer optionId = dto.getOptionId();
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
 
         ItemEntity item = itemService.findItemByItemId(itemId);
 
 //        item.setOption(optionEntity);
-        optionEntity.getItems().add(item);
+//        optionEntity.getItems().add(item);
         optionEntity = optionService.save(optionEntity);
 
 
@@ -656,18 +667,19 @@ public class MainController {
         Integer projectId  = optionDto.getProjectId();
         OptionEntity optionEntity = new OptionEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionDto.getOptionId());
         if(optionDto.getOptionId() == null ){
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-            optionEntity.setItems(optionDto.getItems());
+//            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         } else {
             optionEntity.setOptionId(optionDto.getOptionId());
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-            optionEntity.setItems(optionDto.getItems());
+//            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         }
         projectEntity.getOptions().add(optionEntity);

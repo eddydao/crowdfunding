@@ -213,6 +213,8 @@ public final class Constant {
         public static final String USER_ID = "userId";
         public static final String KEYWORD = "KEYWORD";
         public static final String CATEGORY = "category";
+        public static final String ITEM_ID = "itemId";
+        public static final String OPTION_ID = "optionId";
 
 
         private PROJECT_KEY(){}

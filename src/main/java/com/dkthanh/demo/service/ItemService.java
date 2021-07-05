@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
+
     public List<ItemEntity> getItemsOfProject(Integer projectId){
         return itemRepository.findItemEntitiesByProjectProjectId(projectId);
     }
@@ -20,5 +21,4 @@ public class ItemService {
     public ItemEntity findItemByItemId(Integer itemId){
         return itemRepository.findById(itemId).get();
     }
-
 }
