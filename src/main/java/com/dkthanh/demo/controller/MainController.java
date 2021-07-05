@@ -609,6 +609,8 @@ public class MainController {
         OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
 
         ItemEntity item = itemService.findItemByItemId(itemId);
+
+//        item.setOption(optionEntity);
         optionEntity.getItems().add(item);
         optionEntity = optionService.save(optionEntity);
 
@@ -618,6 +620,30 @@ public class MainController {
         model.addAttribute("items", optionEntity.getItems());
         return "/creator/fragments/modal :: editRewardArea";
     }
+
+    @GetMapping(value = "/creator/project/confirm-remove-item/")
+    public String confirmRemoveItemFromList(Model model, OptionDto dto){
+
+        return "/creator/fragments/modal :: removeItemModal";
+    }
+
+//    @GetMapping(value = "/creator/project/remove-item/")
+//    public String removeItemFromList(Model model, OptionDto dto){
+//        Integer projectId = dto.getProjectId();
+//        Integer itemId = dto.getNewItemId();
+//        Integer optionId = dto.getOptionId();
+//        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+//        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+//
+//        ItemEntity item = itemService.findItemByItemId(itemId);
+//        optionEntity.getItems().remove(item);
+//        optionEntity = optionService.save(optionEntity);
+//
+//        model.addAttribute("projectId", projectId);
+//        model.addAttribute("option", optionDto);
+//        model.addAttribute("items", optionEntity.getItems());
+//        return "/creator/fragments/modal :: editRewardArea";
+//    }
 
 
 

@@ -136,7 +136,8 @@
                                     <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}">
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">
+                                    <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;"
+                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{items[__${i.index}__].itemId} + '\');'">
                                         remove
                                     </button>
                                 </div>
@@ -183,8 +184,31 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-<!--                        <button type="button" class="btn btn-primary" th:onclick="'javascript:addToItemList(\'' + ${items.size()}  + '\',\'' +  '\');'">Choose this</button>-->
                         <button type="button" class="btn btn-primary" th:onclick="'javascript:addToItemList();'">Choose this</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- remove item modal -->
+<div class="modal fade" id="removeItemModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="removeItemModal">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title" id="smallmodalLabel">Remove item</h5>
+                </div> -->
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <label for="text-input" class=" form-control-label"><b>Are you sure to remove this item from the reward?</b></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" th:onclick="'javascript:removeFromItemList();'">Confirm</button>
                     </div>
                 </div>
             </form>

@@ -14,5 +14,7 @@ public class FormInput {
     private Integer reviewResult;
     private Integer isClose;
     private Integer projectId;
+    private Integer optionId;
+    private Integer itemId;
 
 }

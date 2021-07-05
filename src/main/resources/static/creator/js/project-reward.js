@@ -48,6 +48,54 @@ function openAddItemModal(projectId, optionId, items){
 }
 
 function addToItemList(){
+    debugger
+    var itemId = $("#itemListInput option:selected").val();
+    var optionId = $("#input-option-id").val();
+    var projectId = $("#input-project-id").val();
+    var data  = {
+        "projectId": projectId,
+        "newItemId": itemId,
+        "optionId" : optionId
+    }
+    $("#addItemModal").modal("hide");
+    $("#editRewardHolder").html("");
+    $.ajax({
+        url: "/creator/project/reward/addItemToList",
+        data: data,
+        success: function(data){
+            debugger
+            console.log(data);
+            $("#editRewardHolder").html(data);
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function openRemoveItemModal(projectId, optionId, itemId){
+    debugger
+    var data = {
+        "projectId" : projectId,
+        "optionId" : optionId,
+        "newItemId" : itemId
+    }
+    $.ajax({
+        url: "/creator/project/confirm-remove-item/",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#removeItemModalHolder").html(data);
+            $("#removeItemModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
+function removeFromItemList(){
     var itemId = $("#itemListInput option:selected").val();
     var optionId = $("#input-option-id").val();
     var projectId = $("#input-project-id").val();
@@ -70,6 +118,5 @@ function addToItemList(){
         }
     })
 }
-
 
 function saveNewProjectReward(){}

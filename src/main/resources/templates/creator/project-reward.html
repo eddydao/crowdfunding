@@ -282,126 +282,15 @@
                                                                     </button>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     <!-- </form> -->
                                                 </div>
-                                                <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                                    <div>
-                                                        <div class="" style="display: inline-block;">
-                                                            <span>We recommend you list your items below before creating your reward tiers <br>and add-ons in the other tabs. Items are optional, reusable building blocks for your reward tiers <br>to help clearly present what you’re offering.</span>
-                                                        </div>
-                                                        <div class = "" style="float:right">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewItem" >
-                                                                Add new Item
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="card border  border-secondary">
-                                                        <div class="card-header" th:each="item : ${items}">
-                                                            <div class1="fl" style="float:left">
-                                                                <strong class="card-title" th:text="${item.itemName}"></strong>
-                                                            </div>
-                                                            <div class="fr" style="float: right;">
-                                                                <button type="button" class="btn" data-toggle="modal" data-target="#editItem" th:attrappend="data-target=${item.itemId}">
-                                                                    Edit
-                                                                </button>
-                                                                <button type="button" class="btn" data-toggle="modal" data-target="#deleteItem" th:attrappend="data-target=${item.itemId}">
-                                                                    Delete
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-<!--                        <div class="row" id="edit-reward" style="display: none;" th:fragment="add-reward">-->
-<!--                            <div class="col-lg-12">-->
-<!--                                <div class="card">-->
-<!--                                    <div class="card-header">-->
-<!--                                        <strong>Add a rewards</strong>-->
-<!--                                        <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>-->
-<!--                                    </div>-->
-<!--                                    <div class="card-body card-block custom-col">-->
-<!--                                        <form action="" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">-->
-<!--                                            <div class="row form-group" style="display: none;">-->
-<!--                                                <input type="text" id="input-option-id" name="text-input" placeholder="Title" class="form-control" th:field="*{optionId}">-->
-<!--                                                <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">-->
-<!--                                            </div>-->
-<!--                                            &lt;!&ndash; Project title and subtitle &ndash;&gt;-->
-<!--                                            <div class="row form-group">-->
-<!--                                                <div class="col col-md-5">-->
-<!--                                                    <label class=" form-control-label"><b>Title</b></label>-->
-<!--                                                </div>-->
-<!--                                                <div class="col-12 col-md-7">-->
-<!--                                                    <input type="text" id="title-inp" name="text-input" placeholder="Title" class="form-control" th:field="*{optionName}">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="row form-group">-->
-<!--                                                <div class="col col-md-5">-->
-<!--                                                    <label class=" form-control-label"><b>Amount</b></label>-->
-<!--                                                </div>-->
-<!--                                                <div class="col-12 col-md-7">-->
-<!--                                                    <input type="text" id="amount-inp" name="text-input" class="form-control" th:field="*{fundMin}">-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="row form-group">-->
-<!--                                                <div class="col col-md-5">-->
-<!--                                                    <label class=" form-control-label"><b>Description</b></label>-->
-<!--                                                </div>-->
-<!--                                                <div class="col-12 col-md-7">-->
-<!--                                                    <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="row form-group">-->
-<!--                                                <div class="col col-md-5">-->
-<!--                                                    <label  class=" form-control-label"><b>Item</b></label>-->
-<!--                                                </div>-->
-<!--                                                <div class="col-12 col-md-7" >-->
-<!--                                                    <div class="row" th:each="item,i : ${option.items}">-->
-<!--                                                        <div style="display: none;">-->
-<!--                                                            <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemId}">-->
-<!--                                                        </div>-->
-<!--                                                        <div class="col-12 col-md-7">-->
-<!--                                                            <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemName}">-->
-<!--                                                        </div>-->
-<!--                                                        <div class="col-12 col-md-3">-->
-<!--                                                            <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}">-->
-<!--                                                        </div>-->
-<!--                                                        <div class="col-12 col-md-2">-->
-<!--                                                            <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">-->
-<!--                                                                remove-->
-<!--                                                            </button>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="row form-group">-->
-<!--                                                <div class="col-12 col-md-5"></div>-->
-<!--                                                <div class="col-12 col-md-7">-->
-<!--                                                    <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"-->
-<!--                                                            th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\');'">-->
-<!--                                                        Add items-->
-<!--                                                    </button>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="custom-modal-button-container">-->
-<!--                                                <button type="submit" class="btn btn-primary">Save</button>-->
-<!--                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>-->
-<!--                                            </div>-->
-<!--                                        </form>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
                         <div id="editRewardHolder"></div>
                     </div>
                 </div>
@@ -410,6 +299,7 @@
             <div id="createRewardModalHolder"></div>
 
             <div id="addItemModalHolder"></div>
+            <div id="removeItemModalHolder"></div>
         </div>
     </div>
 
