@@ -29,10 +29,12 @@
     <link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
 
     <!-- Main CSS-->
     <!-- <link href="../../css/theme.css" rel="stylesheet" media="all"> -->
     <link href="../../css/custom-style.css" rel="stylesheet" media="all">
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
 </head>
 
 <body class="animsition">
@@ -222,68 +224,63 @@
                                             </nav>
                                             <div class="tab-content pl-3 pt-2" id="nav-tabContent">
                                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                                    <!-- <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal" th:action="@{/creator/save-reward}" th:object="${option}"> -->
-                                                        <div>
-                                                            <div class="" style="display: inline-block;">
-                                                                <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
+                                                    <div>
+                                                        <div class="" style="display: inline-block;">
+                                                            <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
+                                                        </div>
+                                                        <div class = "" style="float:right">
+                                                            <button type="button" class="btn btn-primary"
+                                                                    th:onclick="'showCreateRewardArea(\'' + ${project_dto.projectId} +  '\');'">
+                                                                Add your reward
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <span>Pledge amount</span>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <span>Details</span>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <span>Includes</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card" th:each="option : ${options}">
+                                                        <div class="card-body">
+                                                            <div class="mx-auto d-block">
+                                                                <div class="row">
+                                                                    <div class="col-lg-3">
+                                                                        <span th:text="${option.fundMin}"></span>
+                                                                    </div>
+                                                                    <div class="col-lg-5">
+                                                                        <span th:text="${option.optionName}"></span>
+                                                                        <div th:text="${option.optionDescription}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                    <div>
+                                                                        <ul th:each="item : ${option.itemDtoEntitiess}">
+                                                                            <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
                                                             </div>
-                                                            <div class = "" style="float:right">
-                                                                <button type="button" class="btn btn-primary"
-                                                                        th:onclick="showCreateProjectRewardArea()">
-<!--                                                                        th:onclick="'openAddRewardModal(\'' + ${project_dto.projectId} + '\');'">-->
-                                                                    Add your reward
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <div style="float:right">
+                                                                <button type="button" style="margin-right: 30px" 
+                                                                    th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
+                                                                    Edit
+                                                                </button>
+                                                                <button type="button" data-toggle="modal" data-target="#deleteRewardModal" style="margin-right: 30px" th:attrappend="data-target=${option.optionId}">
+                                                                    Delete
                                                                 </button>
                                                             </div>
-<!--                                                            <div id="createRewardModalHolder"></div>-->
                                                         </div>
-                                                        <br>
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <span>Pledge amount</span>
-                                                            <!-- </section> -->
-                                                            </div>
-                                                            <div class="col-lg-5">
-                                                                <span>Details</span>
-                                                            </div>
-                                                            <div class="col-lg-4">
-                                                                <span>Includes</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card" th:each="option : ${options}">
-                                                            <div class="card-body">
-                                                                <div class="mx-auto d-block">
-                                                                    <div class="row">
-                                                                        <div class="col-lg-3">
-                                                                            <span th:text="${option.fundMin}"></span>
-                                                                        </div>
-                                                                        <div class="col-lg-5">
-                                                                            <span th:text="${option.optionName}"></span>
-                                                                            <div th:text="${option.optionDescription}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-lg-4">
-                                                                        <div>
-                                                                            <ul th:each="item : ${option.items}">
-                                                                                <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                <div style="float:right">
-                                                                    <button type="button" style="margin-right: 30px" 
-                                                                        th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
-                                                                        Edit
-                                                                    </button>
-                                                                    <button type="button" data-toggle="modal" data-target="#deleteRewardModal" style="margin-right: 30px" th:attrappend="data-target=${option.optionId}">
-                                                                        Delete
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <!-- </form> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -291,6 +288,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="createRewardHolder"></div>
                         <div id="editRewardHolder"></div>
                     </div>
                 </div>
@@ -323,6 +321,8 @@
     <script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="../../vendor/select2/select2.min.js">
     </script>
+    <script src="/admin/js/jquery.toast.min.js"></script>
+    <script src="/admin/js/toastr.min.js"></script>
 
     <!-- Main JS-->
     <script src="../../js/main.js"></script>

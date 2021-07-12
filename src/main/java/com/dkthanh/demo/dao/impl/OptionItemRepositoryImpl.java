@@ -4,12 +4,14 @@ import com.dkthanh.demo.dao.OptionItemRepositoryCustom;
 import com.dkthanh.demo.domain.dto.ItemDtoEntity;
 import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
     @Autowired
     private EntityManager em;
@@ -56,4 +58,33 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
         }
         return sqlQuery.getResultList();
     }
+
+    @Override
+    public int saveNewOptionItem(Map<String, Object> map) {
+        int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
+        int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO option_item(option_id, item_id)" +
+                "VALUES(:option_id, :item_id)");
+        Query sqlQuery = em.createNativeQuery(sb.toString());
+        sqlQuery.setParameter("option_id", optionId);
+        sqlQuery.setParameter("item_id", itemId);
+        return sqlQuery.executeUpdate();
+    }
+
+    @Override
+    public int deleteByOptionIdAndItemId(Map<String, Object> map) {
+        int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
+        int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM option_item " +
+                "WHERE option_id = :option_id AND item_id = :item_id");
+        Query sqlQuery = em.createNativeQuery(sb.toString());
+        sqlQuery.setParameter("option_id", optionId);
+        sqlQuery.setParameter("item_id", itemId);
+
+        return sqlQuery.executeUpdate();
+    }
+
+
 }

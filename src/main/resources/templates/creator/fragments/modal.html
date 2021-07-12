@@ -1,5 +1,5 @@
 <!-- createReward -->
-<div class="modal fade" id="createRewardModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="createReward">
+<!-- <div class="modal fade" id="createRewardArea" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="createRewardArea">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="#" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -41,15 +41,15 @@
                             <label for="text-input" class=" form-control-label"><b>Item</b></label>
                         </div>
                         <div class="col-12 col-md-9" >
-                            <div class="row" th:each="item,i : ${option.items}">
+                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
                                 <div style="display: none;">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemId}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemName}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}">
+                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
                                 </div>
                                 <div class="col-12 col-md-2">
                                     <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">
@@ -75,6 +75,86 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</div> -->
+<!-- add option modal  -->
+<div class="row" id="createRewardArea" th:fragment="createRewardArea">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>Add a rewards</strong>
+                <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>
+            </div>
+            <div class="card-body card-block custom-col">
+                <form action="" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="row form-group" style="display: none;">
+                        <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">
+                    </div>
+                    <!-- Project title and subtitle -->
+                    <div class="row form-group">
+                        <div class="col col-md-5">
+                            <label class=" form-control-label"><b>Title</b></label>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <input type="text" id="title-inp" name="text-input" placeholder="Title" class="form-control" th:field="*{optionName}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-5">
+                            <label class=" form-control-label"><b>Amount</b></label>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <input type="text" id="amount-inp" name="text-input" class="form-control" th:field="*{fundMin}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-5">
+                            <label class=" form-control-label"><b>Description</b></label>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-5">
+                            <label  class=" form-control-label"><b>Item</b></label>
+                        </div>
+                        <div class="col-12 col-md-7" >
+                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
+                                <div style="display: none;">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;"
+                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntitiess[__${i.index}__].itemId} + '\');'">
+                                        remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-12 col-md-5"></div>
+                        <div class="col-12 col-md-7">
+                            <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"
+                                    th:onclick="'openNewOptionAddItemModal(\'' + *{projectId} + '\');'">
+                                Add items
+                            </button>
+                        </div>
+                    </div>
+                    <div class="custom-modal-button-container">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -125,19 +205,19 @@
                             <label  class=" form-control-label"><b>Item</b></label>
                         </div>
                         <div class="col-12 col-md-7" >
-                            <div class="row" th:each="item,i : ${option.items}">
+                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
                                 <div style="display: none;">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemId}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{items[__${i.index}__].itemName}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{items[__${i.index}__].quantity}">
+                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
                                 </div>
                                 <div class="col-12 col-md-2">
                                     <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;"
-                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{items[__${i.index}__].itemId} + '\');'">
+                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntitiess[__${i.index}__].itemId} + '\');'">
                                         remove
                                     </button>
                                 </div>
@@ -196,12 +276,18 @@
 <div class="modal fade" id="removeItemModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="removeItemModal">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title" id="smallmodalLabel">Remove item</h5>
-                </div> -->
+            <form action=""  method="post" enctype="multipart/form-data" class="form-horizontal">
                 <div class="modal-body">
                     <div class="row form-group">
+                        <div style="display: none">
+                            <input id="project_id_input" type="text" th:value="${dto.projectId}">
+                        </div>
+                        <div style="display: none">
+                            <input id="option_id_input" type="text" th:value="${dto.optionId}">
+                        </div>
+                        <div style="display: none">
+                            <input id="item_id_input" type="text" th:value="${dto.newItemId}">
+                        </div>
                         <div class="col col-md-12">
                             <label for="text-input" class=" form-control-label"><b>Are you sure to remove this item from the reward?</b></label>
                         </div>

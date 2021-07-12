@@ -21,7 +21,7 @@ public class CommentEntity {
     @Column(name = "section_id", nullable = false)
     private Integer sectionId;
     private String commentText;
-    private String tab;
+    private Integer tab;
     private Timestamp timestamp;
     private Integer isClose;
 

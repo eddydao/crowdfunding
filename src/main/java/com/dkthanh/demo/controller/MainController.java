@@ -540,12 +540,28 @@ public class MainController {
             optionList = optionService.getOptionListByProjectId(projectId);
             itemList= itemService.getItemsOfProject(projectId);
         }
+        List<OptionDto> optionDtos = new ArrayList<>();
 
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
         OptionDto optionDto = new OptionDto(null, null,
                 null, null, null, projectId, null);
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
-        model.addAttribute("options", optionList);
+        model.addAttribute("options", optionDtos);
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         model.addAttribute("option", optionDto);
@@ -554,34 +570,36 @@ public class MainController {
         return "/creator/project-reward";
     }
 
+
     /*
-    Open create new reward modal
+    * Open create new option modal
      */
 
-    @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
-    public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        OptionDto dto = new OptionDto(null, null,
-                null, null, null, projectId, null);
+    @GetMapping(value = "/creator/project/{projectId}/reward/new-option")
+    public String openCreateRewardModal(Model model,  @PathVariable("projectId") Integer projectId){
+        OptionDto dto = new OptionDto();
+        dto.setProjectId(projectId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", null);
-        return "/creator/project-reward :: edit-reward";
+        return "/creator/fragments/modal :: createRewardArea";
     }
+
+
     /*
     Open edit reward modal
      */
 
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
-    public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
+    public String openEditRewardModal(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
-        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("option", dto);
-        model.addAttribute("items", optionEntity.getItems());
-        return "/creator/fragments/modal :: editRewardArea";
+            OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+            OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+            model.addAttribute("projectId", projectId);
+            model.addAttribute("option", dto);
+            model.addAttribute("items", optionEntity.getItems());
+            return "/creator/fragments/modal :: editRewardArea";
     }
 
 
@@ -615,15 +633,17 @@ public class MainController {
         Integer projectId = dto.getProjectId();
         Integer itemId = dto.getNewItemId();
         Integer optionId = dto.getOptionId();
+        optionItemService.saveNewOptionItem(optionId, itemId, null);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
         List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
         OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
 
-        ItemEntity item = itemService.findItemByItemId(itemId);
+//        ItemEntity item = itemService.findItemByItemId(itemId);
+
 
 //        item.setOption(optionEntity);
 //        optionEntity.getItems().add(item);
-        optionEntity = optionService.save(optionEntity);
+//        optionEntity = optionService.save(optionEntity);
 
 
         model.addAttribute("projectId", projectId);
@@ -635,26 +655,28 @@ public class MainController {
     @GetMapping(value = "/creator/project/confirm-remove-item/")
     public String confirmRemoveItemFromList(Model model, OptionDto dto){
 
+        model.addAttribute("dto" , dto);
         return "/creator/fragments/modal :: removeItemModal";
     }
 
-//    @GetMapping(value = "/creator/project/remove-item/")
-//    public String removeItemFromList(Model model, OptionDto dto){
-//        Integer projectId = dto.getProjectId();
-//        Integer itemId = dto.getNewItemId();
-//        Integer optionId = dto.getOptionId();
-//        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-//        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
-//
-//        ItemEntity item = itemService.findItemByItemId(itemId);
-//        optionEntity.getItems().remove(item);
-//        optionEntity = optionService.save(optionEntity);
-//
-//        model.addAttribute("projectId", projectId);
-//        model.addAttribute("option", optionDto);
-//        model.addAttribute("items", optionEntity.getItems());
-//        return "/creator/fragments/modal :: editRewardArea";
-//    }
+    @PostMapping(value = "/creator/project/reward/remove-item")
+    public String removeItemFromList(Model model, OptionDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getNewItemId();
+        Integer optionId = dto.getOptionId();
+
+        boolean isDeleted = optionItemService.removeOptionItemById(optionId, itemId);
+
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardArea";
+    }
 
 
 
@@ -687,7 +709,12 @@ public class MainController {
         return "redirect:/creator/project/" +projectId + "/reward" ;
     }
 
+    /*
+    Load item page
+     */
 
+
+//======================================================================================================================
     /*
     *   Open story edit page
      */
