@@ -212,11 +212,14 @@
                                                     <div  th:fragment="item-list-div" id="item-list-div" >
                                                         <div class="card border  border-secondary">
                                                             <div class="card-header" th:each="item: ${items}">
+<!--                                                                <div>-->
+<!--                                                                    <input th:value="">-->
+<!--                                                                </div>-->
                                                                 <div class1="fl" style="float:left">
                                                                     <strong class="card-title" th:text="${item.itemName}"></strong>
                                                                 </div>
                                                                 <div class="fr" style="float: right;">
-                                                                    <button type="button" class="btn" data-toggle="modal" data-target="#mediumModal">
+                                                                    <button type="button" class="btn" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Edit
                                                                     </button>
                                                                     <button type="button" class="btn" data-toggle="modal" data-target="#smallmodal">
@@ -244,6 +247,7 @@
             <div id="addItemModalHolder"></div>
             <div id="removeItemModalHolder"></div>
             <div id="itemCreationModalHolder"></div>
+<!--            <div id="itemEditModalHolder"></div>-->
         </div>
     </div>
 

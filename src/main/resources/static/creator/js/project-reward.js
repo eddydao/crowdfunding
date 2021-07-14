@@ -175,8 +175,29 @@ function showCreateItemModal(projectId){
     })
 }
 
-function saveNewItem(){
+
+function showEditItemModal(projectId, itemId){
     debugger
+    var data = {
+        "projectId" : projectId,
+        "itemId"    : itemId
+    }
+
+    $.ajax({
+        url: "/creator/project/open-item-edit-modal",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#itemCreationModalHolder").html(data);
+            $("#editItem").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function saveNewItem(){
     var itemName = $("#item-name-inp").val();
     var projectId = $("#project-id-inp").val();
     var data  = {
@@ -186,7 +207,35 @@ function saveNewItem(){
     $("#addNewItem").modal("hide");
     $("#item-list-div").html("");
     $.ajax({
-        url: "/creator/project/save-new-item",
+        url: "/creator/project/save-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+
+
+function updateItem(){
+    debugger
+    var itemName = $("#item-name-inp").val();
+    var itemId = $("#item-id-inp").val();
+    var projectId = $("#project-id-inp").val();
+    var data  = {
+        "projectId": projectId,
+        "itemName": itemName,
+        "itemId"    : itemId
+    }
+    $("#editItem").modal("hide");
+    $("#item-list-div").html("");
+    $.ajax({
+        url: "/creator/project/save-item",
         data: data,
         type: "POST",
         success: function(data){

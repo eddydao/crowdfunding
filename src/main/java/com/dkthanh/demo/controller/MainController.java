@@ -730,20 +730,39 @@ public class MainController {
         return "/creator/fragments/modal :: addNewItem";
     }
 
+
+    /*
+    Open item edit modal
+     */
+    @GetMapping(value = "/creator/project/open-item-edit-modal")
+    public String openItemEditModal(Model model, ItemDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getItemId();
+        ItemEntity item = itemService.findItemByItemId(itemId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("item", item);
+
+        return "/creator/fragments/modal :: editItem";
+    }
+
     /*
     Add new item to project
      */
 
-    @PostMapping(value = "/creator/project/save-new-item")
-    public String saveNewItem(Model model, ItemDto dto){
+    @PostMapping(value = "/creator/project/save-item")
+    public String saveItem(Model model, ItemDto dto){
 
         Integer projectId = dto.getProjectId();
         String itemName = dto.getItemName();
+        Integer itemId = dto.getItemId();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         ItemEntity itemEntity = new ItemEntity(itemName, projectEntity);
+        if(itemId != null){
+            itemEntity.setItemId(itemId);
+        }
 
-        projectEntity.getItems().add(itemEntity);
-        projectService.saveProjectEntity(projectEntity);
+//        projectEntity.getItems().add(itemEntity);
+//        projectService.saveProjectEntity(projectEntity);
         itemService.saveNewItem(itemEntity);
 
 //        ProjectDto dto = new ProjectDto();
