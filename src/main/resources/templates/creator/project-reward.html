@@ -209,10 +209,9 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                
-                                                    <div class="card border  border-secondary" th:fragment="item-list-div" id="item-list-div" >
-                                                        <div th:each="item: ${items}">
-                                                            <div class="card-header">
+                                                    <div  th:fragment="item-list-div" id="item-list-div" >
+                                                        <div class="card border  border-secondary">
+                                                            <div class="card-header" th:each="item: ${items}">
                                                                 <div class1="fl" style="float:left">
                                                                     <strong class="card-title" th:text="${item.itemName}"></strong>
                                                                 </div>

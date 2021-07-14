@@ -54,7 +54,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  C.id as category_id,\n" +
                         "  C.name as category_name,\n" +
                         "  IFNULL(pledged, 0) / goal * 100 as percent_pledged,\n"+
-                        "  0 as day_left,\n"+
+                        "  DATEDIFF(end_date,CURDATE()) as day_left,\n"+
                         "  A.submit_date as submit_date,\n"+
                         "  A.is_editable as is_editable,\n"+
                         "  A.is_choosed as is_editable\n"+
