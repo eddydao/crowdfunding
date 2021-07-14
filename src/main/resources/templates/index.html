@@ -123,7 +123,6 @@
                     <div class="top-project-info">
                         <div class="content-info-short clearfix">
                             <a href="#" class="thumb-img">
-                                <!-- <img th:src="@{/project/image/} + ${recommended_project.projectId}" alt="$TITLE"> -->
                                 <img th:src="${recommended_project.thumbnailPath}" alt="Project-image">
                             </a>
                             <div class="wrap-short-detail">
@@ -131,11 +130,6 @@
                                 <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></a> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
                                 <p class="rs title-description" th:text="${recommended_project.projectShortDes}"></p>
                             </div>
-                            <!-- <p class="rs clearfix comment-view">
-                                <a href="#" class="fc-gray be-fc-orange">75 comments</a>
-                                <span class="sep">|</span>
-                                <a href="#" class="fc-gray be-fc-orange">378 views</a>
-                            </p> -->
                         </div>
                     </div><!--end: .top-project-info -->
                     <div class="bottom-project-info clearfix">
@@ -173,12 +167,11 @@
             </div>
             <div class="clear"></div>
             <div class="lst-popular-project clearfix">
-                <div class="grid_3" th:each="project : ${popular_projects}">
+                <div class="grid_3" th:each="project : ${popular_projects}" style="height: 450px">
                     <div class="project-short sml-thumb">
                         <div class="top-project-info">
                             <div class="content-info-short clearfix">
                                 <a href="#" class="thumb-img">
-                                    <!-- <img th:src="@{/project/image/} + ${project.projectId}" alt="$TITLE"> -->
                                     <img th:src="${project.thumbnailPath}" alt="Project-image">
                                 </a>
                                 <div class="wrap-short-detail">
@@ -189,11 +182,6 @@
                             </div>
                         </div>
                         <div class="bottom-project-info clearfix">
-                            <!-- <div class="line-progress">
-                                <div class="bg-progress">
-                                    <span  style="width: 50%"></span>
-                                </div>
-                            </div> -->
                             <div class="group-fee clearfix">
                                 <div class="fee-item">
                                     <p class="rs lbl">Funded</p>
@@ -213,7 +201,6 @@
                         </div>
                     </div>
                 </div>
-                <!--end: .grid_3 > .project-short-->
             </div>
         </div>
     </div><!--end: .home-popular-project -->

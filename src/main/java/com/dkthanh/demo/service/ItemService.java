@@ -21,4 +21,8 @@ public class ItemService {
     public ItemEntity findItemByItemId(Integer itemId){
         return itemRepository.findById(itemId).get();
     }
+
+    public ItemEntity saveNewItem(ItemEntity item){
+        return itemRepository.save(item);
+    }
 }

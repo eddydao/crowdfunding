@@ -37,6 +37,7 @@ public class ProjectService {
         List<Integer> status = new ArrayList<>();
         status.add(Constant.ProjectStatus.RUNNING.getId());
         map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
+        map.put(Constant.PROJECT_KEY.POPULAR, 1);
         List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;

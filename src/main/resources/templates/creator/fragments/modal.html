@@ -301,3 +301,34 @@
         </div>
     </div>
 </div>
+
+<!-- Item creation modal -->
+<div class="modal fade" id="addNewItem" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="addNewItem">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- <form action="" method="post" enctype="multipart/form-data" class="form-horizontal"></form> -->
+                <div class="modal-header">
+                    <h5 class="modal-title" >Add new item</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-5">
+                            <label for="text-input" class=" form-control-label"><b>Item title</b></label>
+                            <small class="form-text text-muted">Add a title that quickly and clearly describes this item</small>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <input type="text" id="item-name-inp" name="item-name-inp" placeholder="Item name" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-7" style="display: none;">
+                            <input type="text" id="project-id-inp" class="form-control" th:value="*{projectId}">
+                        </div>
+                    </div>
+                    <div class="model-footer">
+                        <button type="button" class="btn btn-primary" th:onclick="'javascript:saveNewItem();'">Choose this</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            <!-- </form> -->
+        </div>
+    </div>
+</div>

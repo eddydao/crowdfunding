@@ -216,6 +216,7 @@ public final class Constant {
         public static final String ITEM_ID = "itemId";
         public static final String OPTION_ID = "optionId";
         public static final String QUANTITY = "quantity";
+        public static final String POPULAR = "popular";
 
 
         private PROJECT_KEY(){}

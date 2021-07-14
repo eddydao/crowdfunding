@@ -199,7 +199,7 @@ public class MainController {
         return "/login-page";
     }
 
-    // search function - not complete
+    // search function
     @PostMapping(value = "/search", produces = { "application/json" })
     public String search(@RequestParam("search_box") String keyword, Model model){
         if (StringUtils.isEmpty(keyword)) {
@@ -246,8 +246,6 @@ public class MainController {
             for(int i = 0; i < popularProjects.size(); i++){
                 popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
             }
-
-
         }
         if(recommendedProject != null ){
             recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
@@ -435,10 +433,20 @@ public class MainController {
     *   run this when user click to create project
      */
     @GetMapping(value = "/creator/create-project")
-    public String openCreateProjectForm(Model model){
+    public String openCreateProjectForm(Model model, Authentication authentication){
+
+        String username = null;
+        UserEntity user = null;
+        if(authentication != null) {
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
         ProjectEntity p = new ProjectEntity();
         StatusEntity st = statusService.getStatusById(Constant.ProjectStatus.EDITING.getId());
-
+        p.setUser(user);
         p.setProjectStatus(st);
         ProjectEntity projectEntity = projectService.saveProjectEntity(p);
         int projectId = projectEntity.getProjectId();
@@ -502,6 +510,7 @@ public class MainController {
         }
         // ProjectEntity projectEntity = new ProjectEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
+        String thumbnailPath = projectEntity.getThumbnailPath();
         int step = dto.getStep();
         // insert basic information
         if(step == 1){
@@ -513,7 +522,7 @@ public class MainController {
             projectEntity.setProjectShortDes(dto.getSubTitle());
             projectEntity.setCategory(category);
             projectEntity.setGoal(dto.getGoal());
-            projectEntity.setThumbnailPath(this.doUpload(uploadDto));
+            projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? this.doUpload(uploadDto) : thumbnailPath);
         }
 
         projectService.saveProjectEntity(projectEntity);
@@ -565,7 +574,7 @@ public class MainController {
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         model.addAttribute("option", optionDto);
-        model.addAttribute("items", null);
+//        model.addAttribute("item", null);
         model.addAttribute("projectId", projectId);
         return "/creator/project-reward";
     }
@@ -710,8 +719,51 @@ public class MainController {
     }
 
     /*
-    Load item page
+    Open item creation modal
      */
+
+    @GetMapping(value = "/creator/project/open-item-creation-modal")
+    public String openItemCreationModal(Model model, ItemDto dto){
+        Integer projectId = dto.getProjectId();
+        model.addAttribute("projectId", projectId);
+
+        return "/creator/fragments/modal :: addNewItem";
+    }
+
+    /*
+    Add new item to project
+     */
+
+    @PostMapping(value = "/creator/project/save-new-item")
+    public String saveNewItem(Model model, ItemDto dto){
+
+        Integer projectId = dto.getProjectId();
+        String itemName = dto.getItemName();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        ItemEntity itemEntity = new ItemEntity(itemName, projectEntity);
+
+        projectEntity.getItems().add(itemEntity);
+        projectService.saveProjectEntity(projectEntity);
+        itemService.saveNewItem(itemEntity);
+
+//        ProjectDto dto = new ProjectDto();
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        dto.setProjectId(projectId);
+
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+//        List<OptionEntity> optionList = null;
+        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+//            optionList = optionService.getOptionListByProjectId(projectId);
+            itemList= itemService.getItemsOfProject(projectId);
+        }
+
+        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", fullInfoEntity);
+        return "/creator/project-reward :: item-list-div";
+    }
 
 
 //======================================================================================================================
@@ -971,6 +1023,25 @@ public class MainController {
             optionList = optionService.getOptionListByProjectId(projectId);
             itemList= itemService.getItemsOfProject(projectId);
         }
+
+        List<OptionDto> optionDtos = new ArrayList<>();
+
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
+
         StoryEntity story = storyService.getStoryByProjectId(projectId);
         List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
         int count = 0;
@@ -995,7 +1066,7 @@ public class MainController {
             commentMap.put("isClosed", "0");
         }
 
-        model.addAttribute("options", optionList);
+        model.addAttribute("options", optionDtos);
         model.addAttribute("items", itemList);
         model.addAttribute("project", projectFullInfoEntity);
         model.addAttribute("story", story);

@@ -26,6 +26,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
         String keyword = (String) map.get(Constant.PROJECT_KEY.KEYWORD);
         Integer category = (Integer) map.get(Constant.PROJECT_KEY.CATEGORY);
+        Integer popular = (Integer) map.get(Constant.PROJECT_KEY.POPULAR);
 
         // param
         List<Integer> projectStatus = (List<Integer>) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
@@ -52,7 +53,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  D.name as status_name,\n"+
                         "  C.id as category_id,\n" +
                         "  C.name as category_name,\n" +
-                        "  0.0 as percent_pledged,\n"+
+                        "  IFNULL(pledged, 0) / goal * 100 as percent_pledged,\n"+
                         "  0 as day_left,\n"+
                         "  A.submit_date as submit_date,\n"+
                         "  A.is_editable as is_editable,\n"+
@@ -99,6 +100,12 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         if(isRecommended != null){
             sql.append("LIMIT 1\n");
         }
+
+        if(popular != null){
+            sql.append("LIMIT 4\n");
+        }
+
+
         Query sqlQuery = em.createNativeQuery(sql.toString(), ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP);
         if(projectId != null ){
             sqlQuery.setParameter("id", projectId);

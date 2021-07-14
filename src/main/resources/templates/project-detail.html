@@ -146,9 +146,6 @@
                 <div class="project-tab-detail tabbable accordion">
                     <ul class="nav nav-tabs clearfix">
                         <li class="active"><a href="../#">The story</a></li>
-                        <!--                        <li><a href="../#" class="be-fc-orange">Updates (0)</a></li>-->
-                        <!--                        <li><a href="../#" class="be-fc-orange">Backers (270)</a></li>-->
-                        <!--                        <li><a href="../#" class="be-fc-orange">Comments (2)</a></li>-->
                     </ul>
                     <div class="tab-content">
                         <div>
@@ -174,7 +171,7 @@
                         <i class="icon iClock"></i>
                         <span class="val"><span class="fw-b">Funding ends: </span><span th:text="${project.endDate}"></span></span>
                     </div>
-                    <p class="rs description">This project will only be funded if at least $<span th:text="${project.goal}"></span> is pledged by Wednesday May 8, 2:05pm EDT.</p>
+                    <p class="rs description">This project will only be funded if at least $<span th:text="${project.goal}"></span> is pledged by Sunday August 8</p>
                 </div>
             </div><!--end: .project-runtime -->
             <div class="project-author">
@@ -186,7 +183,7 @@
                         </a>
                         <div class="media-body">
                             <h4 class="rs pb10"><a href="../#" class="be-fc-orange fw-b" ><span th:text="${project.userFullName}"></span></a></h4>
-                            <p class="rs" th:text="${project.countryName}"></p>
+<!--                            <p class="rs" th:text="${project.countryName}"></p>-->
 <!--                            <p class="rs fc-gray" >5 projects</p>-->
                         </div>
                     </div>
@@ -201,7 +198,7 @@
                                 <i class="icon iPlugGray"></i>
                                 <span class="pledge-amount">Pledge $<span th:text="${option.fundMin}"></span> or more</span>
                                 <input style="display: none" id="option" th:attrappend="id=${option.optionId}" th:value="${option.fundMin}">
-                                <span class="count-val">(12 of 31)</span>
+<!--                                <span class="count-val">(12 of 31)</span>-->
                                 <!-- <p class="rs fw-b pb20">Ocupated (2 of 10)</p> -->
                             </div>
                             <div class=" pledge-content accordion-content">

@@ -38,57 +38,9 @@
 
 <body class="animsition">
 <div class="page-wrapper">
-    <!-- HEADER MOBILE-->
-    <header class="header-mobile d-block d-lg-none">
-        <div class="header-mobile__bar">
-            <div class="container-fluid">
-                <div class="header-mobile-inner">
-                    <a class="logo" href="/creator/index.html">
-                        <img src="/creator/images/icon/logo.png" alt="CoolAdmin" />
-                    </a>
-                    <button class="hamburger hamburger--slider" type="button">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <nav class="navbar-mobile">
-            <div class="container-fluid">
-                <ul class="navbar-mobile__list list-unstyled">
-                    <li class="has-sub">
-                        <a class="js-arrow" href="/creator#">
-                            <i class="fas fa-tachometer-alt"></i>Quản lý dự án</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                            <li>
-                                <a href="/creator#">Danh mục</a>
-                            </li>
-                            <li>
-                                <a href="/creator#">Danh sách dự án</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/creator/chart.html">
-                            <i class="fas fa-table"></i>Quản lý tài khoản</a>
-                    </li>
-                    <li>
-                        <a href="/creator/table.html">
-                            <i class="fas fa-chart-bar"></i>Báo cáo</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <!-- END HEADER MOBILE-->
-
     <!-- MENU SIDEBAR-->
     <aside class="menu-sidebar d-none d-lg-block">
-        <div class="logo">
-            <a href="/creator#">
-                <img src="/creator/images/icon/logo.png" alt="Cool creator" />
-            </a>
+        <div class="" style="height: 75px;">
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
@@ -96,15 +48,14 @@
                     <li class="active has-sub">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Project management</a>
-<!--                            <ul class="list-unstyled navbar__sub-list js-sub-list">-->
-<!--                                <li>-->
-<!--                                    <a href="/creator#">Danh sách dự án</a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
                         </li>
                     <li>
                         <a href="#">
                             <i class="fas fa-chart-bar"></i>Report</a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-user"></i>Account management</a>
                     </li>
                 </ul>
             </nav>
@@ -124,24 +75,16 @@
                         <div class="header-button">
                             <div class="account-wrap">
                                 <div class="account-item clearfix js-item-menu">
-                                    <div class="image">
-                                        <img src="../images/icon/avatar-01.jpg" alt="John Doe" />
-                                    </div>
                                     <div class="content">
-                                        <a class="js-acc-btn" href="#">john doe</a>
+                                        <a class="js-acc-btn" href="#">Dao Thanh</a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
                                         <div class="info clearfix">
-                                            <div class="image">
-                                                <a href="#">
-                                                    <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                                </a>
-                                            </div>
                                             <div class="content">
                                                 <h5 class="name">
-                                                    <a href="#">john doe</a>
+                                                    <a href="#"></a>
                                                 </h5>
-                                                <span class="email">johndoe@example.com</span>
+                                                <span class="email"></span>
                                             </div>
                                         </div>
                                         <div class="account-dropdown__body">
@@ -213,7 +156,7 @@
                                             <td th:text="${project.endDate}"></td>
                                             <td class="text-right" th:text="${project.goal}"></td>
                                             <td class="text-right" th:text="${project.pledged}"></td>
-                                            <td class="text-right" th:text="${project.percentPledged}"></td>
+                                            <td class="text-right" ><span th:text="${project.percentPledged}"></span><span>%</span></td>
                                             <td>
                                                 <div class="table-data-feature">
                                                     <a class="item" data-toggle="tooltip" data-placement="top" title="Edit" th:href="@{/creator/project/} + ${project.projectId}">

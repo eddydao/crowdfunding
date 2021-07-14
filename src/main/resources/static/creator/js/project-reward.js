@@ -156,3 +156,45 @@ function removeFromItemList(){
 }
 
 function saveNewProjectReward(){}
+
+
+function showCreateItemModal(projectId){
+    var data = {"projectId" : projectId}
+
+    $.ajax({
+        url: "/creator/project/open-item-creation-modal",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#itemCreationModalHolder").html(data);
+            $("#addNewItem").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function saveNewItem(){
+    debugger
+    var itemName = $("#item-name-inp").val();
+    var projectId = $("#project-id-inp").val();
+    var data  = {
+        "projectId": projectId,
+        "itemName": itemName
+    }
+    $("#addNewItem").modal("hide");
+    $("#item-list-div").html("");
+    $.ajax({
+        url: "/creator/project/save-new-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
