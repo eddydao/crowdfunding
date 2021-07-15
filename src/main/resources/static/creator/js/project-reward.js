@@ -247,3 +247,48 @@ function updateItem(){
         }
     })
 }
+
+
+function showItemDeleteConfirmation(projectId, itemId){
+    debugger
+    var data ={
+        "projectId" : projectId,
+        "itemId" : itemId
+    }
+    $.ajax({
+        url: "/creator/project/delete-item-confirmation",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#itemDelConfirmationHolder").html(data);
+            $("#itemDelConfirmation").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
+function deleteItem(projectId, itemId){
+    var data ={
+        "projectId": projectId,
+        "itemId" : itemId
+    }
+    $("#itemDelConfirmation").modal("hide");
+    $.ajax({
+        url: "/creator/project/delete-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+            toastr.success('Delete success');
+        },
+        error: function(data){
+            console.log(data);
+            toastr.warning('Delete fail');
+        }
+    })
+}

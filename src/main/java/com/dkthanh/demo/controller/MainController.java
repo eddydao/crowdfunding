@@ -761,23 +761,52 @@ public class MainController {
             itemEntity.setItemId(itemId);
         }
 
-//        projectEntity.getItems().add(itemEntity);
-//        projectService.saveProjectEntity(projectEntity);
         itemService.saveNewItem(itemEntity);
 
-//        ProjectDto dto = new ProjectDto();
         ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
 
         dto.setProjectId(projectId);
 
-//        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-//        List<OptionEntity> optionList = null;
         List<ItemEntity> itemList = null;
 
         if(projectEntity != null){
-//            optionList = optionService.getOptionListByProjectId(projectId);
             itemList= itemService.getItemsOfProject(projectId);
         }
+
+        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", fullInfoEntity);
+        return "/creator/project-reward :: item-list-div";
+    }
+
+    /*
+    call delete item modal
+     */
+    @PostMapping(value = "/creator/project/delete-item-confirmation")
+    public String showItemDeleteConfirmationModal(Model model, ItemDto itemDto){
+        Integer itemId = itemDto.getItemId();
+        Integer projectId = itemDto.getProjectId();
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("itemId", itemId);
+
+        return "/creator/fragments/modal :: itemDelConfirmation";
+    }
+
+    /*
+    Delete item
+     */
+    @PostMapping(value = "creator/project/delete-item")
+    public String deleteItem(Model model, ItemDto itemDto){
+        Integer projectId = itemDto.getProjectId();
+        Integer itemId = itemDto.getItemId();
+
+        itemService.deleteItemById(itemId);
+
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        List<ItemEntity> itemList = null;
+
+        itemList= itemService.getItemsOfProject(projectId);
 
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", fullInfoEntity);

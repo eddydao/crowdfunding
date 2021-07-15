@@ -222,7 +222,7 @@
                                                                     <button type="button" class="btn" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Edit
                                                                     </button>
-                                                                    <button type="button" class="btn" data-toggle="modal" data-target="#smallmodal">
+                                                                    <button type="button" class="btn" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Delete
                                                                     </button>
                                                                 </div>
@@ -247,7 +247,7 @@
             <div id="addItemModalHolder"></div>
             <div id="removeItemModalHolder"></div>
             <div id="itemCreationModalHolder"></div>
-<!--            <div id="itemEditModalHolder"></div>-->
+            <div id="itemDelConfirmationHolder"></div>
         </div>
     </div>
 

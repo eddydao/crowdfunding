@@ -25,4 +25,13 @@ public class ItemService {
     public ItemEntity saveNewItem(ItemEntity item){
         return itemRepository.save(item);
     }
+
+    public int deleteItemById(Integer itemId){
+        try{
+            itemRepository.deleteById(itemId);
+        }catch(Exception e){
+            return -1;
+        }
+        return 1;
+    }
 }
