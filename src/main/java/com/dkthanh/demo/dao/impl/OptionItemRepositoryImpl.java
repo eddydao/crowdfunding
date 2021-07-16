@@ -60,12 +60,29 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
     }
 
     @Override
-    public int saveNewOptionItem(Map<String, Object> map) {
+    public int insertOptionItem(Map<String, Object> map) {
+        int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
+        int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
+        int quantity = (int) map.get(Constant.PROJECT_KEY.QUANTITY);
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO option_item(option_id, item_id, quantity)\n" +
+                "VALUES(:option_id, :item_id, :quantity)");
+        Query sqlQuery = em.createNativeQuery(sb.toString());
+        sqlQuery.setParameter("option_id", optionId);
+        sqlQuery.setParameter("item_id", itemId);
+        sqlQuery.setParameter("quantity", quantity);
+        return sqlQuery.executeUpdate();
+    }
+
+    @Override
+    public int updateOptionItem(Map<String, Object> map) {
         int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
         int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO option_item(option_id, item_id)" +
-                "VALUES(:option_id, :item_id)");
+        sb.append("UPDATE option_item\n" +
+                "SET option_id = :option_id\n" +
+                "   item_id = :item_id\n" +
+                "   quantity = :quantity\n");
         Query sqlQuery = em.createNativeQuery(sb.toString());
         sqlQuery.setParameter("option_id", optionId);
         sqlQuery.setParameter("item_id", itemId);
@@ -76,12 +93,14 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
     public int deleteByOptionIdAndItemId(Map<String, Object> map) {
         int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
         int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
+        int quantity = (int) map.get(Constant.PROJECT_KEY.QUANTITY);
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM option_item " +
                 "WHERE option_id = :option_id AND item_id = :item_id");
         Query sqlQuery = em.createNativeQuery(sb.toString());
         sqlQuery.setParameter("option_id", optionId);
         sqlQuery.setParameter("item_id", itemId);
+        sqlQuery.setParameter("quantity", quantity);
 
         return sqlQuery.executeUpdate();
     }

@@ -9,7 +9,8 @@ public interface OptionItemRepositoryCustom {
     List<ItemDtoEntity> findListItem(Map<String, Object> map);
 
 //    void removeOptionItemById(Map<String, Object> map);
-    int saveNewOptionItem(Map<String, Object> map);
+    int insertOptionItem(Map<String, Object> map);
+    int updateOptionItem(Map<String, Object> map);
 
     int deleteByOptionIdAndItemId(Map<String, Object> map);
 }

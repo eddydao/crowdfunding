@@ -1,6 +1,7 @@
 package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.OptionItemRepository;
+import com.dkthanh.demo.domain.OptionItemEntity;
 import com.dkthanh.demo.domain.dto.ItemDtoEntity;
 import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +28,31 @@ public class OptionItemService {
         return list;
     }
 
-    public boolean saveNewOptionItem(Integer optionId, Integer itemId, Integer quantity){
-        Map<String, Object> map = new HashMap<>();
+    public OptionItemEntity save(OptionItemEntity optionItemEntity){
+        return null;
+    }
 
-        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
-        map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
-        map.put(Constant.PROJECT_KEY.QUANTITY, quantity);
 
-        try{
-            repository.saveNewOptionItem(map);
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
+    public boolean saveOptionItem(Map<String, Object> map){
+        if(map.get(Constant.PROJECT_KEY.OPTION_ID) != null && map.get(Constant.PROJECT_KEY.ITEM_ID) != null){
+            try{
+                repository.updateOptionItem(map);
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        } else{
+            try{
+                repository.insertOptionItem(map);
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
         }
         return true;
     }
 
     public boolean removeOptionItemById(Integer optionId, Integer itemId){
-//        OptionItemEntityPK id = new OptionItemEntityPK(optionId, itemId);
         Map<String, Object> map = new HashMap<>();
 
         map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);

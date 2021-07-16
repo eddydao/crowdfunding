@@ -1,12 +1,16 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "option_item", schema = "demo", catalog = "")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OptionItemEntity {
     @EmbeddedId
     private OptionItemEntityPK optionItemEntityPK;

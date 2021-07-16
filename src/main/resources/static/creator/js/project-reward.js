@@ -148,15 +148,14 @@ function removeFromItemList(){
         success: function(data){
             console.log(data);
             $("#editRewardHolder").html(data);
+            toastr.success("Remove successfully");
         },
         error: function(data){
             console.log(data);
+            toastr.success("Remove failed");
         }
     })
 }
-
-function saveNewProjectReward(){}
-
 
 function showCreateItemModal(projectId){
     var data = {"projectId" : projectId}
@@ -213,9 +212,11 @@ function saveNewItem(){
         success: function(data){
             console.log(data);
             $("#item-list-div").html(data);
+            toastr.success("Save successfully");
         },
         error: function(data){
             console.log(data);
+            toastr.success("Save failed");
         }
     })
 }
@@ -223,7 +224,6 @@ function saveNewItem(){
 
 
 function updateItem(){
-    debugger
     var itemName = $("#item-name-inp").val();
     var itemId = $("#item-id-inp").val();
     var projectId = $("#project-id-inp").val();
@@ -241,9 +241,11 @@ function updateItem(){
         success: function(data){
             console.log(data);
             $("#item-list-div").html(data);
+            toastr.success("Save successfully");
         },
         error: function(data){
             console.log(data);
+            toastr.success("Save failed");
         }
     })
 }
@@ -284,7 +286,7 @@ function deleteItem(projectId, itemId){
         success: function(data){
             console.log(data);
             $("#item-list-div").html(data);
-            toastr.success('Delete success');
+            toastr.success('Delete successfully');
         },
         error: function(data){
             console.log(data);

@@ -574,7 +574,6 @@ public class MainController {
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         model.addAttribute("option", optionDto);
-//        model.addAttribute("item", null);
         model.addAttribute("projectId", projectId);
         return "/creator/project-reward";
     }
@@ -642,7 +641,12 @@ public class MainController {
         Integer projectId = dto.getProjectId();
         Integer itemId = dto.getNewItemId();
         Integer optionId = dto.getOptionId();
-        optionItemService.saveNewOptionItem(optionId, itemId, null);
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
+        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+        map.put(Constant.PROJECT_KEY.QUANTITY, null);
+
+        optionItemService.saveOptionItem(map);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
         List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
         OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
@@ -698,7 +702,7 @@ public class MainController {
         Integer projectId  = optionDto.getProjectId();
         OptionEntity optionEntity = new OptionEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionDto.getOptionId());
+//        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionDto.getOptionId());
         if(optionDto.getOptionId() == null ){
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
@@ -715,6 +719,22 @@ public class MainController {
         }
         projectEntity.getOptions().add(optionEntity);
         projectService.saveProjectEntity(projectEntity);
+
+        List<ItemDtoEntity > itemDtoEntityList = optionDto.getItemDtoEntitiess();
+        if(itemDtoEntityList != null && !itemDtoEntityList.isEmpty()){
+            int listSize =  itemDtoEntityList.size();
+            int optionId = optionDto.getOptionId();
+            for(int i = 0 ; i < listSize; i++){
+                itemDtoEntityList.get(i).setOptionId(optionId);
+                Map<String, Object> map = new HashMap<>();
+                map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+                map.put(Constant.PROJECT_KEY.ITEM_ID, itemDtoEntityList.get(i).getItemId());
+                map.put(Constant.PROJECT_KEY.QUANTITY, itemDtoEntityList.get(i).getQuantity());
+
+                optionItemService.saveOptionItem(map);
+            }
+        }
+
         return "redirect:/creator/project/" +projectId + "/reward" ;
     }
 
