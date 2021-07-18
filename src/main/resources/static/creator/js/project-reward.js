@@ -1,3 +1,4 @@
+
 // create new option form
 function showCreateRewardArea(projectId){
     $.ajax({
@@ -17,11 +18,8 @@ function showCreateRewardArea(projectId){
 }
 //  oepn add item form
 function openNewOptionAddItemModal(projectId){
-    debugger
     var dataForm = new FormData();
     dataForm.append("projectId", projectId);
-    // dataForm.append("optionId", optionId);
-    // dataForm.append("items", items);
     $.ajax({
         url:"/creator/project/reward/addItemModal",
         ache: false,
@@ -82,7 +80,6 @@ function openAddItemModal(projectId, optionId, items){
 }
 
 function addToItemList(){
-    debugger
     var itemId = $("#itemListInput option:selected").val();
     var optionId = $("#input-option-id").val();
     var projectId = $("#input-project-id").val();

@@ -129,10 +129,10 @@
                                     <strong>Basic information about your project</strong>
                                 </div>
                                 <div class="card-body card-block custom-col">
-                                    <form action="#" th:action = "@{/creator/save-project-basic}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
+                                    <form action="#" id="project-basic-form" th:action = "@{/creator/save-project-basic}" method="post" th:object = "${project_dto}" enctype="multipart/form-data" class="form-horizontal">
                                         <!-- Project title and subtitle -->
                                         <div class="row form-group">
-                                            <input type="hidden" th:field="*{projectId}" readonly="true">
+                                            <input type="hidden" id="inp_project_id" th:field="*{projectId}" readonly="true">
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-5">
@@ -259,7 +259,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-dot-circle-o"></i> Save
                                             </button>
-                                            <button type="reset" class="btn btn-danger ">
+                                            <button type="button" class="btn btn-danger" th:onclick="'returnToOverviewPage()'">
                                                 <i class="fa fa-ban"></i> Cancel
                                             </button>
                                         </div>
@@ -299,6 +299,7 @@
 <!-- Main JS-->
 <script src="../../js/main.js"></script>
 <script src="../../js/custom-proj.js"></script>
+<script src="../../js/project-basic.js"></script>
 </body>
 
 </html>

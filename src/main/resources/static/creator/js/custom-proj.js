@@ -77,36 +77,36 @@ function showSpecEndDateInput() {
 
 }
 
-function openAddRewardModal(projectId){
-    $.ajax({
-        url: "/creator/project/" + projectId + "/create-reward-form",
-        success: function(data){
-            console.log(data);
-            // $("#createRewardModalHolder").html(data);
-            // $("#createRewardModal").modal("show");
+// function openAddRewardModal(projectId){
+//     $.ajax({
+//         url: "/creator/project/" + projectId + "/create-reward-form",
+//         success: function(data){
+//             console.log(data);
+//             // $("#createRewardModalHolder").html(data);
+//             // $("#createRewardModal").modal("show");
+//
+//         },
+//         error: function(data){
+//             console.log(data);
+//         }
+//
+//     })
+// }
 
-        },
-        error: function(data){
-            console.log(data);
-        }
-
-    })
-}
-
-function openEditRewardModal(projectId, optionId){
-    $.ajax({
-        url: "/creator/project/" + projectId + "/reward/" + optionId,
-        success: function(data){
-            console.log(data);
-            $("#editRewardModalHolder").html(data);
-            $("#editRewardModal").modal("show");
-        },
-        error: function(data){
-            console.log(data);
-        }
-
-    })
-}
+// function openEditRewardModal(projectId, optionId){
+//     $.ajax({
+//         url: "/creator/project/" + projectId + "/reward/" + optionId,
+//         success: function(data){
+//             console.log(data);
+//             $("#editRewardModalHolder").html(data);
+//             $("#editRewardModal").modal("show");
+//         },
+//         error: function(data){
+//             console.log(data);
+//         }
+//
+//     })
+// }
 
 
 

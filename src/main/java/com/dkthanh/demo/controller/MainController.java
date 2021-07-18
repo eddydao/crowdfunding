@@ -702,19 +702,16 @@ public class MainController {
         Integer projectId  = optionDto.getProjectId();
         OptionEntity optionEntity = new OptionEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-//        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionDto.getOptionId());
         if(optionDto.getOptionId() == null ){
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-//            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         } else {
             optionEntity.setOptionId(optionDto.getOptionId());
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-//            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         }
         projectEntity.getOptions().add(optionEntity);
