@@ -34,7 +34,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @CrossOrigin("*")
@@ -491,6 +493,8 @@ public class MainController {
             dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
             dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : REPLACE_THUMBNAIL_PATH);
             dto.setGoal(projectEntity.getGoal());
+            dto.setStartDate(projectEntity.getStartDate().toLocalDate());
+            dto.setEndDate(projectEntity.getEndDate().toLocalDate());
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
@@ -523,6 +527,8 @@ public class MainController {
             projectEntity.setCategory(category);
             projectEntity.setGoal(dto.getGoal());
             projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? this.doUpload(uploadDto) : thumbnailPath);
+            projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIN, ZoneOffset.UTC));
+            projectEntity.setEndDate(OffsetDateTime.of(dto.getEndDate(), LocalTime.MIN, ZoneOffset.UTC));
         }
 
         projectService.saveProjectEntity(projectEntity);
@@ -644,19 +650,12 @@ public class MainController {
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
         map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
-        map.put(Constant.PROJECT_KEY.QUANTITY, null);
+        map.put(Constant.PROJECT_KEY.QUANTITY, 1);
 
         optionItemService.saveOptionItem(map);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
         List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
         OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
-
-//        ItemEntity item = itemService.findItemByItemId(itemId);
-
-
-//        item.setOption(optionEntity);
-//        optionEntity.getItems().add(item);
-//        optionEntity = optionService.save(optionEntity);
 
 
         model.addAttribute("projectId", projectId);
@@ -717,7 +716,7 @@ public class MainController {
         projectEntity.getOptions().add(optionEntity);
         projectService.saveProjectEntity(projectEntity);
 
-        List<ItemDtoEntity > itemDtoEntityList = optionDto.getItemDtoEntitiess();
+        List<ItemDtoEntity > itemDtoEntityList = optionDto.getItemDtoEntities();
         if(itemDtoEntityList != null && !itemDtoEntityList.isEmpty()){
             int listSize =  itemDtoEntityList.size();
             int optionId = optionDto.getOptionId();
@@ -726,7 +725,7 @@ public class MainController {
                 Map<String, Object> map = new HashMap<>();
                 map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
                 map.put(Constant.PROJECT_KEY.ITEM_ID, itemDtoEntityList.get(i).getItemId());
-                map.put(Constant.PROJECT_KEY.QUANTITY, itemDtoEntityList.get(i).getQuantity());
+                map.put(Constant.PROJECT_KEY.QUANTITY, itemDtoEntityList.get(i).getQuantity() != null ? itemDtoEntityList.get(i).getQuantity() : 0);
 
                 optionItemService.saveOptionItem(map);
             }

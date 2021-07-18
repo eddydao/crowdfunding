@@ -28,6 +28,15 @@ public class OptionItemService {
         return list;
     }
 
+    public ItemDtoEntity getItemDtoByOptionIdAndItemId(Integer optionId , Integer itemId){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
+        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+        List<ItemDtoEntity> list = repository.findListItem(map);
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
+    }
+
     public OptionItemEntity save(OptionItemEntity optionItemEntity){
         return null;
     }
@@ -35,19 +44,32 @@ public class OptionItemService {
 
     public boolean saveOptionItem(Map<String, Object> map){
         if(map.get(Constant.PROJECT_KEY.OPTION_ID) != null && map.get(Constant.PROJECT_KEY.ITEM_ID) != null){
-            try{
-                repository.updateOptionItem(map);
-            }catch (Exception e){
-                e.printStackTrace();
-                return false;
+            if(this.getItemDtoByOptionIdAndItemId( (Integer)map.get(Constant.PROJECT_KEY.OPTION_ID), (Integer)map.get(Constant.PROJECT_KEY.ITEM_ID)) != null ){
+                if((Integer) map.get(Constant.PROJECT_KEY.QUANTITY) == 0 ){
+                    try{
+                        this.removeOptionItemById((int)map.get(Constant.PROJECT_KEY.OPTION_ID), (int)map.get(Constant.PROJECT_KEY.ITEM_ID));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return false;
+                    }
+                    return true;
+                }
+
+                try{
+                    repository.updateOptionItem(map);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
             }
-        } else{
-            try{
-                repository.insertOptionItem(map);
-            }catch (Exception e){
-                e.printStackTrace();
-                return false;
-            }
+        }
+
+        try{
+            repository.insertOptionItem(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
         return true;
     }

@@ -20,7 +20,7 @@ public class OptionDto {
     private Long fundMin;
     private List<OptionItemEntity> optionItems;
     private List<ItemEntity> items;
-    private List<ItemDtoEntity> itemDtoEntitiess;
+    private List<ItemDtoEntity> itemDtoEntities;
     private Integer projectId;
     private Long pledge;
     private Integer newItemId;
@@ -31,7 +31,7 @@ public class OptionDto {
         this.optionName = optionName;
         this.optionDescription = optionDescription;
         this.fundMin = fundMin;
-        this.itemDtoEntitiess = items;
+        this.itemDtoEntities = items;
 //        this.optionItems = items;
 //        this.items = items;
         this.projectId = projectId;

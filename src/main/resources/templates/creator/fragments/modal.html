@@ -121,19 +121,19 @@
                             <label  class=" form-control-label"><b>Item</b></label>
                         </div>
                         <div class="col-12 col-md-7" >
-                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
+                            <div class="row" th:each="item,i : ${option.itemDtoEntities}">
                                 <div style="display: none;">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].itemId}">
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
+                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].itemName}">
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
+                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].quantity}">
                                 </div>
                                 <div class="col-12 col-md-2">
                                     <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;"
-                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntitiess[__${i.index}__].itemId} + '\');'">
+                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntities[__${i.index}__].itemId} + '\');'">
                                         remove
                                     </button>
                                 </div>
@@ -205,19 +205,19 @@
                             <label  class=" form-control-label"><b>Item</b></label>
                         </div>
                         <div class="col-12 col-md-7" >
-                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
+                            <div class="row" th:each="item,i : ${option.itemDtoEntities}">
                                 <div style="display: none;">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
+                                    <input type="text" placeholder="Item" th:id="'input-item-id' + ${option.itemDtoEntities[__${i.index}__].itemId}" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].itemId}">
                                 </div>
                                 <div class="col-12 col-md-7">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
+                                    <input type="text" placeholder="Item" th:id="'input-item-name' + ${option.itemDtoEntities[__${i.index}__].itemId}"  name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].itemName}">
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
+                                    <input type="text"  th:id="'input-item-quantity' + ${option.itemDtoEntities[__${i.index}__].itemId}"  placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].quantity}">
                                 </div>
                                 <div class="col-12 col-md-2">
                                     <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;"
-                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntitiess[__${i.index}__].itemId} + '\');'">
+                                            th:onclick="'openRemoveItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\',\'' + *{itemDtoEntities[__${i.index}__].itemId} + '\');'">
                                         remove
                                     </button>
                                 </div>

@@ -164,7 +164,7 @@
                                                     </p>
                                                 </small>
                                             </div>
-                                            <div class="col-12 col-md-7">
+                                            <div class="col-12 col-md-5">
                                                 <select name="" id=""  class="form-control" th:field="*{categoryId}">
                                                     <option th:each="category : ${allCategory}"
                                                             th:value="${category.id}"
@@ -203,40 +203,21 @@
                                             <div class="col col-md-5">
                                                 <label class=" form-control-label"><b>Target launch date</b></label>
                                             </div>
-                                            <div class="col-12 col-md-7">
-                                                <div class="col-12 col-md-7">
+<!--                                            <div class="col-12 col-md-7">-->
+                                                <div class="col-12 col-md-5">
                                                     <input class="form-control"  id="start-date" name="start-date" placeholder="DD/MM/YYYY" type="date" th:field="*{startDate}"/>
                                                 </div>
-                                            </div>
+<!--                                            </div>-->
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-5">
-                                                <label class=" form-control-label"><b>Duration</b></label>
+                                                <label class=" form-control-label"><b>Funding end date</b></label>
                                             </div>
-                                            <div class="col-12 col-md-7">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="inp-date" id="fixed-day" checked  onclick="javascript:showSpecEndDateInput();">
-                                                    <label class="form-check-label" >
-                                                      Fixed number of days (1-60)
-                                                    </label>
-                                                    <div class="col-12 col-md-7" id="inp-fixed-day" >
-                                                        <input type="text" placeholder="Enter number of days">
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="inp-date" id="spec-date" onclick="javascript:showSpecEndDateInput();" >
-                                                    <label class="form-check-label">
-                                                      End in specific date
-                                                    </label>
-                                                    <div class="col-12 col-md-7" id="inp-spec-date" style="visibility:hidden">
-                                                        <label for=""></label>
-                                                        <input class="form-control" id="end-date" name="end-date" placeholder="DD/MM/YYYY" type="date"/>
-                                                    </div>
-                                                  </div>
-                                            </div>
-                                            <!-- <div class="col-12 col-md-7">
-                                                <input type="date" id="duration" name="" th:field="*{duration}">
-                                            </div> -->
+<!--                                            <div class="col-12 col-md-7">-->
+                                                <div class="col-12 col-md-5" id="inp-spec-date">
+                                                    <input class="form-control" id="end-date" name="end-date" placeholder="DD/MM/YYYY" type="date" th:field="*{endDate}"/>
+                                                </div>
+<!--                                            </div>-->
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-12">
@@ -248,8 +229,11 @@
                                                 <label for="text-input" class=" form-control-label"><b>Project funding goal</b></label>
                                                 <small class="form-text text-muted"><br></small>
                                             </div>
-                                            <div class="col-12 col-md-7">
+                                            <div class="col col-md-5">
                                                 <input type="text" id="text-input-goal" name="text-input" placeholder="Goal" class="form-control" th:field = "*{goal}">
+                                            </div>
+                                            <div class="col col-md-2">
+                                                <input type="text" style="border-style: none" class="form-control" th:value="'$'">
                                             </div>
                                         </div>
                                         <div style="display: none;">

@@ -10,6 +10,10 @@ $("input[type='reset']").click(function() {
     }
 });
 
+$("project-basic-form").change(function() {
+    $(this).data("changed","true");
+});
+
 function returnToOverviewPage(){
     var project_id = $("#inp_project_id").val();
     window.location.href = "/creator/project/" + project_id;
