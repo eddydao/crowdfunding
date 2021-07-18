@@ -78,14 +78,16 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
     public int updateOptionItem(Map<String, Object> map) {
         int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
         int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
+        int quantity = (int) map.get(Constant.PROJECT_KEY.QUANTITY);
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE option_item\n" +
-                "SET option_id = :option_id\n" +
-                "   item_id = :item_id\n" +
-                "   quantity = :quantity\n");
+                "SET quantity = :quantity\n" +
+                "WHERE option_id = :option_id\n" +
+                "AND item_id = :item_id");
         Query sqlQuery = em.createNativeQuery(sb.toString());
         sqlQuery.setParameter("option_id", optionId);
         sqlQuery.setParameter("item_id", itemId);
+        sqlQuery.setParameter("quantity", quantity);
         return sqlQuery.executeUpdate();
     }
 
@@ -93,14 +95,14 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
     public int deleteByOptionIdAndItemId(Map<String, Object> map) {
         int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
         int itemId = (int) map.get(Constant.PROJECT_KEY.ITEM_ID);
-        int quantity = (int) map.get(Constant.PROJECT_KEY.QUANTITY);
+
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM option_item " +
                 "WHERE option_id = :option_id AND item_id = :item_id");
         Query sqlQuery = em.createNativeQuery(sb.toString());
         sqlQuery.setParameter("option_id", optionId);
         sqlQuery.setParameter("item_id", itemId);
-        sqlQuery.setParameter("quantity", quantity);
+
 
         return sqlQuery.executeUpdate();
     }
