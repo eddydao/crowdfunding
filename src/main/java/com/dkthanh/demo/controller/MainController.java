@@ -1206,6 +1206,6 @@ public class MainController {
     @GetMapping(value = "/admin/user/list")
     public String getUserList(Model model){
 
-        return null;
+        return "/admin/user-management";
     }
 }

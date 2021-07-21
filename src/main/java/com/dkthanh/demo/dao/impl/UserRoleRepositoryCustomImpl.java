@@ -2,6 +2,7 @@ package com.dkthanh.demo.dao.impl;
 
 import com.dkthanh.demo.dao.UserRoleRepositoryCustom;
 import com.dkthanh.demo.domain.RoleEntity;
+import com.dkthanh.demo.domain.UserRoleEntity;
 import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,5 +45,12 @@ public class UserRoleRepositoryCustomImpl implements UserRoleRepositoryCustom {
         sql.setParameter("role", roleId);
         List<Tuple> listTuple = sql.getResultList();
         return listTuple.size();
+    }
+
+    @Override
+    public List<UserRoleEntity> findUserListByRole(Integer roleid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        return null;
     }
 }

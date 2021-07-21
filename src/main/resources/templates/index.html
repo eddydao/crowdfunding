@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/ie8.css"/>
     <![endif]-->
     <link rel="stylesheet" href="css/responsive.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="js/html5.js"></script>
     <![endif]-->
@@ -128,15 +129,15 @@
                             <div class="wrap-short-detail">
                                 <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${recommended_project.projectId}" ><span th:text="${recommended_project.projectName}"></span></a></h3>
                                 <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></a> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
-                                <p class="rs title-description" th:text="${recommended_project.projectShortDes}"></p>
+                                <p class="rs title-description " th:text="${recommended_project.projectShortDes}"></p>
                             </div>
                         </div>
                     </div><!--end: .top-project-info -->
                     <div class="bottom-project-info clearfix">
-                        <div class="project-progress sys_circle_progress" data-percent="76">
-                            <div class="sys_holder_sector"></div>
-                        </div>
-                        <div class="group-fee clearfix">
+<!--                        <div class="project-progress sys_circle_progress" data-percent="76">-->
+<!--                            <div class="sys_holder_sector"></div>-->
+<!--                        </div>-->
+                        <div class="group-fee clearfix" style="margin-bottom: 50px">
                             <div class="fee-item">
                                 <p class="rs lbl">Backers</p>
                                 <span class="val" th:text="${recommended_project.investorCount}"></span>
@@ -172,22 +173,17 @@
                         <div class="top-project-info">
                             <div class="content-info-short clearfix">
                                 <a href="#" class="thumb-img">
-                                    <img th:src="${project.thumbnailPath}" alt="Project-image">
+                                    <img th:src="${project.thumbnailPath}" alt="Project-image" style="height: 150px;">
                                 </a>
                                 <div class="wrap-short-detail">
                                     <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
                                     <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></a></p>
-                                    <p class="rs title-description" th:text="${project.projectShortDes}"></p>
+                                    <p class="rs title-description text-wrap" th:text="${project.projectShortDes}"></p>
                                 </div>
                             </div>
                         </div>
                         <div class="bottom-project-info clearfix">
                             <div class="group-fee clearfix">
-                                <div class="fee-item">
-                                    <p class="rs lbl">Funded</p>
-                                    <span class="val"><span th:text="${project.percentPledged}"></span>%</span>
-                                </div>
-                                <div class="sep"></div>
                                 <div class="fee-item">
                                     <p class="rs lbl">Pledged</p>
                                     <span class="val">$<span th:text="${project.pledged}"></span></span>
