@@ -7,10 +7,10 @@ function btn_submitReview_onclick(){
         url: "/creator/submit-to-review",
         data: data,
         type: "POST",
-        success: function(data) {
+        success: function(msg) {
             console.log(msg);
-            toastr.error('Submit review succeeded');
-            $("#project-review-noti-div").html(data);
+            window.location.href = "/creator/project/" + projectId + "/project-review";
+            toastr.success('Submit review succeeded');
         },
         error: function(msg) {
             console.log(msg);

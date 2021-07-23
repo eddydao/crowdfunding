@@ -945,7 +945,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/creator/submit-to-review")
-    public String submitProjectReview(Model model, ProjectDto dto){
+    public ResponseEntity<?> submitProjectReview(Model model, ProjectDto dto){
         Integer projectId = dto.getProjectId();
 
         ProjectEntity entity = projectService.getProjectEntityById(projectId);
@@ -953,7 +953,8 @@ public class MainController {
         StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.WAITING.getId());
         entity.setProjectStatus(newStatusEntity);
         projectService.saveProjectEntity(entity);
-        return "/creator/project/" + projectId + "/project-review :: project-review-noti-div";
+        model.addAttribute("statusId", Constant.ProjectStatus.WAITING.getId());
+        return new ResponseEntity<String>("Save success", HttpStatus.OK);
     }
 
     // CATEGORY MANAGEMENT
