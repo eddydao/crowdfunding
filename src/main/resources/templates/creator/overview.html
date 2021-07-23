@@ -143,7 +143,7 @@
                                                     <td>
                                                         <a th:href="@{/creator/project/{projectId}/story (projectId = ${project_dto.projectId})} " >
                                                             <label class=" form-control-label"><b>Story</b></label>
-                                                            <small class="form-text text-muted">Add a detailed project description and convey your risks and challenges.</small>
+                                                            <small class="form-text text-muted">Add a detailed project description.</small>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -151,6 +151,21 @@
                                                     <td>
                                                         <label class=" form-control-label"><b>Payment</b></label>
                                                         <small class="form-text text-muted">Confirm your identity and link a bank account.</small>
+                                                    </td>
+                                                </tr>
+                                                <tr></tr>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/project-review (projectId = ${project_dto.projectId})} " >
+                                                        <label class=" form-control-label"><b>Project review</b></label>
+                                                        <small class="form-text text-muted">We'll check to make sure it follows our rules and guidelines</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label class=" form-control-label"><b>Launch your project</b></label>
+                                                        <small class="form-text text-muted">Bring your idea to people.</small>
                                                     </td>
                                                 </tr>
                                                 </tbody>

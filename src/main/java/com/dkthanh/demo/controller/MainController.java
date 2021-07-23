@@ -922,6 +922,39 @@ public class MainController {
 
         return "/creator/creator-report";
     }
+    //==================================================================================================================
+    /*
+     * Open project review submitting page
+     */
+    @GetMapping(value = "/creator/project/{projectId}/project-review")
+    public String openProjectReviewPage(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+        int statusId = entity.getProjectStatus().getStatusId();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+
+        // in real run, uncomment this block
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        model.addAttribute("statusId", statusId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("username", username);
+        return "/creator/project-review";
+    }
+
+    @PostMapping(value = "/creator/submit-to-review")
+    public String submitProjectReview(Model model, ProjectDto dto){
+        Integer projectId = dto.getProjectId();
+
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+
+        StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.WAITING.getId());
+        entity.setProjectStatus(newStatusEntity);
+        projectService.saveProjectEntity(entity);
+        return "/creator/project/" + projectId + "/project-review :: project-review-noti-div";
+    }
 
     // CATEGORY MANAGEMENT
     //==================================================================================================================

@@ -49,7 +49,8 @@ public final class Constant {
         STOP(4, "STOP"),//denied
         COMPLETE(5, "COMPLETE"),//
         REJECT(6, "REJECT"),//denied
-        EDITING(7, "EDITING")
+        EDITING(7, "EDITING"),
+        READY(9, "READY_TO_REVIEW")
         ;
 
         private Integer id;
