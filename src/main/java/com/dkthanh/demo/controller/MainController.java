@@ -944,6 +944,12 @@ public class MainController {
         return "/creator/project-review";
     }
 
+    @GetMapping(value = "/creator/project/{projectId}/confirm-submit")
+    public String confirmSubmitProject(Model model, @PathVariable("projectId") Integer projectId){
+        model.addAttribute("projectId", projectId);
+        return "/creator/fragments/modal :: submitReviewConfirmationModal";
+    }
+
     @PostMapping(value = "/creator/submit-to-review")
     public ResponseEntity<?> submitProjectReview(Model model, ProjectDto dto){
         Integer projectId = dto.getProjectId();
@@ -953,6 +959,16 @@ public class MainController {
         StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.WAITING.getId());
         entity.setProjectStatus(newStatusEntity);
         projectService.saveProjectEntity(entity);
+
+        // reset status of comment section
+        List<CommentEntity> listComment = commentService.getAllCommentsByProjectId(projectId);
+        for (CommentEntity comment: listComment
+             ) {
+            comment.setIsClose(Constant.IS_CLOSED.OPEN.getId());
+            comment.setCommentText(null);
+            commentService.saveComment(comment);
+        }
+
         model.addAttribute("statusId", Constant.ProjectStatus.WAITING.getId());
         return new ResponseEntity<String>("Save success", HttpStatus.OK);
     }
