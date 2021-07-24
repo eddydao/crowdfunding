@@ -192,11 +192,11 @@
                                             <span>Hi </span><span th:text="${username}"></span><span>,</span>
                                             <p>Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.
                                             </p>
-                                            <p>We recommend you review out Rules and comment of our reviewer about the project</p>
+                                            <p>We recommend you review out Rules and <a href="#" th:onclick="showComment()" > comment </a> of our reviewer about the project</p>
                                             <p>You can submit again after make sure your project is following our Rules and Guidelines</p>
                                         </div>
                                         <div class="au-message__footer">
-                                            <button class="au-btn btn btn-success btn-lg">Submit again</button>
+                                            <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_returnToEditProject_onclick()'">Edit your project</button>
                                         </div>
                                     </div>
                                 </div>
@@ -212,6 +212,7 @@
         <!-- END PAGE CONTAINER-->
     </div>
     <div id="submitReviewConfirmationModalHolder"></div>
+    <div id="commentModalHolder"></div>
 </div>
 
 <!-- Jquery JS-->

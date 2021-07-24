@@ -48,7 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.cors().and().authorizeRequests().antMatchers("/**").permitAll();
 
         http.authorizeRequests().antMatchers("/","/index", "/logout", "/css/**", "/js/**"
-                , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result", "/signin", "/register", "/login-assets/**", "/category/**").permitAll()
+                , "/img/**", "/project/**", "/images/**", "cdn.datatables.net/**", "/search", "/temp-result"
+                , "/signin", "/register", "/login-assets/**", "/category/**","/logoutSuccessful", "/404", "/403").permitAll()
                 .antMatchers("/fund-project").authenticated()
                 .antMatchers("/create-charge").authenticated()
                 .antMatchers("/creator/**").hasRole("CREATOR")

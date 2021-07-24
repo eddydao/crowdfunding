@@ -36,23 +36,33 @@ function submitReview(projectId){
     })
 }
 
-// var dataForm = new FormData();
-// dataForm.append("id", categoryId);
-// $("#categoryDelConfirmation").modal("hide");
-// $.ajax({
-//     url: "/admin/category/del",
-//     cache: false,
-//     contentType : false,
-//     processData: false,
-//     data: dataForm,
-//     type: "POST",
-//     success: function(data){
-//         console.log(data);
-//         $("#category-table").html(data);
-//         toastr.success('Delete success');
-//     },
-//     error: function(data){
-//         console.log(data);
-//         toastr.warning('Delete fail');
-//     }
-// })
+
+function showComment(){
+    $.ajax({
+        url: "/creator/project/" + projectId + "/show-comment" ,
+        success: function(data){
+            console.log(data);
+            $("#commentModalHolder").html(data);
+            $("#commentModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
+function btn_returnToEditProject_onclick(){
+    $.ajax({
+        url: "/creator/project/" + projectId + "/return-to-edit" ,
+        success: function(data){
+            console.log(data);
+            window.location.href = "/creator/project/" + projectId;
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+
+}

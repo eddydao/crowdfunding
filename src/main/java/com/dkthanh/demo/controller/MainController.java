@@ -234,6 +234,20 @@ public class MainController {
         return modifiedContent.toString();
     }
 
+    @GetMapping(value = "/404")
+    public String returnNotFoundPage(){
+        return "/404";
+    }
+
+    @GetMapping(value = "/403")
+    public String returnFobiddenPage(){
+        return "/403";
+    }
+
+    @GetMapping(value = "/logoutSuccessful")
+    public String logoutSucceed(){
+        return "/logoutSuccess";
+    }
 
     /*
      *  Index page function
@@ -933,7 +947,6 @@ public class MainController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
 
-        // in real run, uncomment this block
         if(authentication != null) {
 
             username = ((UserDetails) authentication.getPrincipal()).getUsername();
@@ -971,6 +984,34 @@ public class MainController {
 
         model.addAttribute("statusId", Constant.ProjectStatus.WAITING.getId());
         return new ResponseEntity<String>("Save success", HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/creator/project/{projectId}/show-comment")
+    public String showProjectReviewComment(Model model, @PathVariable("projectId") Integer projectId){
+        List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
+        Map<String, String> commentMap = new HashMap<>();
+        for(int i = 0 ; i< listCom.size(); i++){
+            if(listCom.get(i).getSectionId() == 1){
+                commentMap.put("basicTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 2){
+                commentMap.put("rewardTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 3){
+                commentMap.put("storyTab", listCom.get(i).getCommentText());
+            }
+        }
+
+        model.addAllAttributes(commentMap);
+        return "/creator/fragments/modal::commentModal";
+    }
+
+    @GetMapping(value="/creator/project/{projectId}/return-to-edit")
+    public ResponseEntity<?> returnToEditProject(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+
+        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
+        projectService.saveProjectEntity(projectEntity);
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
     // CATEGORY MANAGEMENT

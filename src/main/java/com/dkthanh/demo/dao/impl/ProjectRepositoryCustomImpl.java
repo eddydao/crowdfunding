@@ -57,7 +57,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  DATEDIFF(end_date,CURDATE()) as day_left,\n"+
                         "  A.submit_date as submit_date,\n"+
                         "  A.is_editable as is_editable,\n"+
-                        "  A.is_choosed as is_editable\n"+
+                        "  A.is_ready as is_ready\n"+
                         "FROM\n" +
                         "  project A \n" +
                         "  LEFT JOIN category C ON A.category_id = C.id\n" +

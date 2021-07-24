@@ -38,7 +38,7 @@ import java.time.OffsetDateTime;
                         @ColumnResult(name = "day_left", type = Integer.class),
                         @ColumnResult(name = "submit_date", type = OffsetDateTime.class),
                         @ColumnResult(name = "is_editable", type = Integer.class),
-                        @ColumnResult(name = "is_choosed", type = Integer.class)
+                        @ColumnResult(name = "is_ready", type = Integer.class)
             })
         }
     )

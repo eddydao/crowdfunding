@@ -42,7 +42,7 @@ public class ProjectFullInfoEntity implements Serializable {
 
     // key for measurement
     public Integer isEditable;
-    public Integer isChoosed;
+    public Integer isReady;
 
 
     
@@ -73,7 +73,7 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer dayLeft
             , OffsetDateTime submitDate
             , Integer isEditable
-            , Integer isChoosed) {
+            , Integer isReady) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -96,7 +96,7 @@ public class ProjectFullInfoEntity implements Serializable {
         this.dayLeft = dayLeft;
         this.submitDate = submitDate;
         this.isEditable = isEditable;
-        this.isChoosed = isChoosed;
+        this.isReady = isReady;
     }
 
     // mapping basic info for jpa
