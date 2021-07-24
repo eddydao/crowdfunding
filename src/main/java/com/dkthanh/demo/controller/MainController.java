@@ -192,7 +192,7 @@ public class MainController {
         }catch (Exception e){
             return "register";
         }
-        return "temp-result";
+        return "registerSucceed";
     }
 
     // open login form
