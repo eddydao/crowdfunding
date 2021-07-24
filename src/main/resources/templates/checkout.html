@@ -72,8 +72,18 @@
             <div class="grid_12 header-content">
                 <div id="sys_header_right" class="header-right">
                     <div class="account-panel">
-                        <a th:href="@{/register}" class="btn btn-red">Register</a>
-                        <a th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/register}" class="btn btn-red">Register</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <div class="dropdown" th:if="${#request.userPrincipal != null}">
+                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${#request.userPrincipal.name}"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Account</a>
+                                <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-search">
                         <form action="#" th:action="@{/search}" th:object="${project}" method="post">
@@ -87,7 +97,7 @@
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
