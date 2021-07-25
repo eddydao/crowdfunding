@@ -406,6 +406,35 @@ public class MainController {
         return new ChargeRequestEntity(true, "Success! Your charge id is " + chargeId);
     }
 
+    @GetMapping(value = "/create-project")
+    public String createNewProject(Model model, Authentication authentication){
+        String username = null;
+        UserEntity user = null;
+        if(authentication != null) {
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        List<RoleEntity> roleEntities = user.getRoles();
+        int count=0;
+        for (RoleEntity role : roleEntities
+             ) {
+            if(role.getRoleId() == 3){
+                count++;
+            }
+        }
+
+        if(count == 0 ){
+            roleEntities.add(new RoleEntity(Constant.Roles.CREATOR.getId(), "CREATOR"));
+            user.setRoles(roleEntities);
+            userService.saveUser(user);
+        }
+
+        return "redirect:/creator/create-project";
+    }
+
     /*
      *  Creator management function
      * ===========================================
@@ -481,12 +510,14 @@ public class MainController {
     public String openProjectEditForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
         ProjectEntity entity = projectService.getProjectEntityById(projectId);
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
         if(entity.getProjectName() != null){
             dto.setProjectName(entity.getProjectName());
         }
         dto.setProjectId(projectId);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+        model.addAttribute("project_full_entity", fullInfoEntity);
         return "/creator/overview";
     }
 
@@ -507,8 +538,8 @@ public class MainController {
             dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
             dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : REPLACE_THUMBNAIL_PATH);
             dto.setGoal(projectEntity.getGoal());
-            dto.setStartDate(projectEntity.getStartDate().toLocalDate());
-            dto.setEndDate(projectEntity.getEndDate().toLocalDate());
+            dto.setStartDate(projectEntity.getStartDate() !=null ? projectEntity.getStartDate().toLocalDate() : null);
+            dto.setEndDate(projectEntity.getEndDate() != null ? projectEntity.getEndDate().toLocalDate() : null);
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());

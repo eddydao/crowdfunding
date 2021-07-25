@@ -39,12 +39,8 @@
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
                     <li class="active has-sub">
-                        <a class="js-arrow" href="#">
+                        <a class="js-arrow" th:href="@{/creator}">
                             <i class="fas fa-tachometer-alt"></i>Project management</a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-chart-bar"></i>Report</a>
                     </li>
                     <li>
                         <a href="#">
@@ -72,28 +68,28 @@
                                         <a class="js-acc-btn" href="#">Dao Thanh</a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
-<!--                                        <div class="info clearfix">-->
-<!--                                            <div class="content">-->
-<!--                                                <h5 class="name">-->
-<!--                                                    <a href="#"></a>-->
-<!--                                                </h5>-->
-<!--                                                <span class="email"></span>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="account-dropdown__body">-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
-<!--                                            </div>-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
-<!--                                            </div>-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi"></i>Project</a>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
+                                        <!--                                        <div class="info clearfix">-->
+                                        <!--                                            <div class="content">-->
+                                        <!--                                                <h5 class="name">-->
+                                        <!--                                                    <a href="#"></a>-->
+                                        <!--                                                </h5>-->
+                                        <!--                                                <span class="email"></span>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="account-dropdown__body">-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi"></i>Project</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
                                         <div class="account-dropdown__footer">
                                             <a th:href="@{/logout}">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
@@ -159,6 +155,14 @@
                                                         <a th:href="@{/creator/project/{projectId}/project-review (projectId = ${project_dto.projectId})} " >
                                                         <label class=" form-control-label"><b>Project review</b></label>
                                                         <small class="form-text text-muted">We'll check to make sure it follows our rules and guidelines</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId == 3}">
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Project report</b></label>
+                                                            <small class="form-text text-muted">See how your project going</small>
                                                         </a>
                                                     </td>
                                                 </tr>

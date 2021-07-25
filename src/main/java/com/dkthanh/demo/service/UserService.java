@@ -70,4 +70,13 @@ public class UserService {
         }
         return user;
     }
+    public UserEntity saveUser(UserEntity userEntity){
+        UserEntity user = new UserEntity();
+        try{
+            user = userRepository.save(userEntity);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return user;
+    }
 }

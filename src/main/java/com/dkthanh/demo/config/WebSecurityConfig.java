@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 , "/signin", "/register", "/login-assets/**", "/category/**","/logoutSuccessful", "/404", "/403").permitAll()
                 .antMatchers("/fund-project").authenticated()
                 .antMatchers("/create-charge").authenticated()
+                .antMatchers("/create-project").authenticated()
                 .antMatchers("/creator/**").hasRole("CREATOR")
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
         .and().formLogin()

@@ -39,19 +39,18 @@
 
 <body class="animsition" >
 <div class="page-wrapper">
-    <!-- MENU SIDEBAR-->
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="" style="height: 75px;">
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-                    <li class="active has-sub">
-                        <a class="js-arrow" href="#">
+                    <li >
+                        <a class="js-arrow" th:href="@{/admin}">
                             <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li class="active">
+                        <a th:href="@{/admin/project/pending-list}">
                             <i class="fas fa-check"></i>Pending approval project</a>
                     </li>
                     <li>
@@ -59,7 +58,7 @@
                             <i class="fas fa-user"></i>Account management</a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a th:href="@{/admin/category/list}">
                             <i class="fas fa-tag"></i>Category management</a>
                     </li>
                 </ul>
@@ -69,7 +68,7 @@
     <!-- END MENU SIDEBAR-->
 
     <!-- PAGE CONTAINER-->
-    <div class="page-container" >
+    <div class="page-container">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop">
             <div class="section__content section__content--p30">
@@ -84,28 +83,28 @@
                                         <a class="js-acc-btn" href="#">Dao Thanh</a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
-                                        <div class="info clearfix">
-                                            <div class="content">
-                                                <h5 class="name">
-                                                    <a href="#"></a>
-                                                </h5>
-                                                <span class="email"></span>
-                                            </div>
-                                        </div>
-                                        <div class="account-dropdown__body">
-                                            <div class="account-dropdown__item">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-account"></i>Account</a>
-                                            </div>
-                                            <div class="account-dropdown__item">
-                                                <a href="#">
-                                                    <i class="zmdi zmdi-settings"></i>Setting</a>
-                                            </div>
-                                            <div class="account-dropdown__item">
-                                                <a href="#">
-                                                    <i class="zmdi"></i>Project</a>
-                                            </div>
-                                        </div>
+                                        <!--                                        <div class="info clearfix">-->
+                                        <!--                                            <div class="content">-->
+                                        <!--                                                <h5 class="name">-->
+                                        <!--                                                    <a href="#"></a>-->
+                                        <!--                                                </h5>-->
+                                        <!--                                                <span class="email"></span>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="account-dropdown__body">-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi"></i>Project</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
                                         <div class="account-dropdown__footer">
                                             <a href="#">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
