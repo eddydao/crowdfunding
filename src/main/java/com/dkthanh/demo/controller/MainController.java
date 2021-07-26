@@ -97,6 +97,9 @@ public class MainController {
     @Autowired
     private OptionItemService optionItemService;
 
+    @Autowired
+    private CountryService countryService;
+
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
 
@@ -248,6 +251,38 @@ public class MainController {
     public String logoutSucceed(){
         return "/logoutSuccess";
     }
+
+    @GetMapping(value = "/user/account")
+    public String getAccountInfor(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        UserEntity user = null;
+
+        // in real run, uncomment this block
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId = user.getId();
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId) != null ?  userDetailService.getUserDetailByUserId(userId) : new UserDetailEntity(userId);
+
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+
+        model.addAttribute("user", user);
+        model.addAttribute("user_detail", userDetailEntity);
+        model.addAttribute("countries", countryEntities);
+        return "/user/account-management";
+    }
+
+    @PostMapping(value = "/user/save-account-info")
+    public String saveAccountInfo(Model model, @ModelAttribute("user_detail") @Validated UserDetailEntity entity,BindingResult result){
+        return null;
+    }
+
 
     /*
      *  Index page function
@@ -471,6 +506,7 @@ public class MainController {
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
         model.addAttribute("projects", list);
         model.addAttribute("creator", userDetailEntity);
+//        model.addAttribute("")
         return "/creator/creator-dashboard";
     }
 
@@ -1044,6 +1080,8 @@ public class MainController {
         projectService.saveProjectEntity(projectEntity);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
+
+
 
     // CATEGORY MANAGEMENT
     //==================================================================================================================

@@ -1,14 +1,16 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_detail", schema = "demo", catalog = "")
 @Data
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDetailEntity {
     @Id
     @Column(name = "user_id", nullable = false)
@@ -32,4 +34,8 @@ public class UserDetailEntity {
 
     @OneToOne(mappedBy = "userDetail")
     private UserEntity user;
+
+    public UserDetailEntity(Integer userId) {
+        this.userId = userId;
+    }
 }

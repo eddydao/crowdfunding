@@ -76,7 +76,8 @@
                                 <span th:text="${#request.userPrincipal.name}"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Account</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/account}">Account</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Project</a>
                                 <a class="dropdown-item" th:href="@{/logout}">Log out</a>
                             </div>
                         </div>

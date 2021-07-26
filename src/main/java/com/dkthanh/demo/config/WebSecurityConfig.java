@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/fund-project").authenticated()
                 .antMatchers("/create-charge").authenticated()
                 .antMatchers("/create-project").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .antMatchers("/creator/**").hasRole("CREATOR")
                 .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
         .and().formLogin()
