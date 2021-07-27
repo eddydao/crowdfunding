@@ -3,12 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
     <title>Forms</title>
@@ -33,7 +27,7 @@
 
     <!-- Main CSS-->
     <link href="/user/css/theme.css" rel="stylesheet" media="all">
-
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
 </head>
 
 <body class="animsition">
@@ -450,7 +444,7 @@
                                     <strong>Basic Form</strong> Elements
                                     <div style="float: right;"> <button class="btn btn-primary" th:onclick="'btn_edit_onclick()'">Edit</button></div>
                                 </div>
-                                <div class="card-body card-block">
+                                <div class="card-body card-block" th:fragment="div-account-form">
 <!--                                    <form action="#" method="post" th:action = "@{/user/save-account-info}" enctype="multipart/form-data" class="form-horizontal" th:object="${user_detail}">-->
                                     <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal" id="account_form">
                                         <div class="row form-group">
@@ -459,7 +453,7 @@
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 <p class="form-control-static" th:text="${user.username}"></p>
-                                                <p class="form-control-static" th:text="${user.id}" style="display: none"></p>
+                                                <input class="form-control-static" th:value="${user.id}" style="display: none" id="userId">
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -467,7 +461,7 @@
                                                 <label class=" form-control-label">Password</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <a class="form-control-static" href="#">Change password</a>
+                                                <a class="form-control-static" href="#" id="link-change-pass" th:onclick="'link_change_password_onclick()'">Change password</a>
                                             </div>
                                         </div>
 
@@ -477,7 +471,7 @@
                                                 <label class=" form-control-label">First name</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text"  name="firstName" required placeholder="First name" class="form-control" id="firstName" th:value="${user_detail.firstName}" disabled>
+                                                <input type="text"  name="firstName"  placeholder="First name" class="form-control required" id="firstName" th:value="${user_detail.firstName}" disabled>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -519,10 +513,9 @@
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 <select name=""  class="form-control" id="countryId" th:value="${user_detail.countryId}" disabled>
-                                                    <option value="-1" th:selected="selected">Please select...</option>
                                                     <option th:each="country : ${countries}"
                                                             th:value="${country.countryId}"
-                                                            th:text="${country.countryName}"></option>
+                                                            th:text="${country.countryName}">Please select...</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -539,7 +532,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6" style="display: none">
+                        <div class="col-lg-6" style="display: none" id="div-change-password">
                             <div class="card">
                                 <div class="card-header">
                                     <strong>Horizontal</strong> Form
@@ -548,28 +541,36 @@
                                     <form action="" method="post" class="form-horizontal">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
-                                                <label for="hf-email" class=" form-control-label">Email</label>
+                                                <label  class=" form-control-label">Old password</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." class="form-control">
+                                                <input type="password" id="old-password" name="hf-password" placeholder="Enter old password..." class="form-control">
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-3">
-                                                <label for="hf-password" class=" form-control-label">Password</label>
+                                                <label class=" form-control-label">Password</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="password" id="hf-password" name="hf-password" placeholder="Enter Password..." class="form-control">
+                                                <input type="password" id="new-password" name="hf-password" placeholder="Enter new password..." class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label  class=" form-control-label">Password</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="password" id="confirm-password" name="hf-password" placeholder="Confirm password" class="form-control">
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm" th:onclick="'btn_save_password_change_onclick()'">
                                         <i class="fa fa-dot-circle-o"></i> Submit
                                     </button>
-                                    <button type="reset" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-ban"></i> Reset
+                                    <button type="reset" class="btn btn-danger btn-sm" th:onclick="'btn_cancel_password_change_onclick()'">
+                                        <i class="fa fa-ban"></i> Cancel
                                     </button>
                                 </div>
                             </div>
@@ -585,6 +586,9 @@
 
 <!-- Jquery JS-->
 <script src="/user/vendor/jquery-3.2.1.min.js"></script>
+<!--<script src="/static/user/vendor/jquery.validate.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
 <!-- Bootstrap JS-->
 <script src="/user/vendor/bootstrap-4.1/popper.min.js"></script>
 <script src="/user/vendor/bootstrap-4.1/bootstrap.min.js"></script>
@@ -603,9 +607,10 @@
 <script src="/user/vendor/chartjs/Chart.bundle.min.js"></script>
 <script src="/user/vendor/select2/select2.min.js">
 </script>
-
+<script src="/admin/js/jquery.toast.min.js"></script>
+<script src="/admin/js/toastr.min.js"></script>
 <!-- Main JS-->
-<script src="/user/js/jquery.validate.js"></script>
+
 <script src="/user/js/main.js"></script>
 <script src="/user/js/account-management.js"></script>
 

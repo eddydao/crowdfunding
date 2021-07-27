@@ -5,7 +5,6 @@ import com.dkthanh.demo.domain.UserDetailEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -23,5 +22,9 @@ public class UserDetailService {
             return optionalUserDetailEntity.get();
         }
         return null;
+    }
+
+    public UserDetailEntity save(UserDetailEntity entity){
+        return repository.save(entity);
     }
 }

@@ -279,9 +279,32 @@ public class MainController {
     }
 
     @PostMapping(value = "/user/save-account-info")
-    public String saveAccountInfo(Model model, @ModelAttribute("user_detail") @Validated UserDetailEntity entity,BindingResult result){
+    public String saveAccountInfo(Model model, UserDetailEntity entity,BindingResult result){
 
-        return null;
+        Integer userId = entity.getUserId();
+        UserEntity userEntity = userService.findUserById(userId);
+        entity.setUser(userEntity);
+        entity = userDetailService.save(entity);
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+        model.addAttribute("user", userEntity);
+        model.addAttribute("user_detail", entity);
+        model.addAttribute("countries", countryEntities);
+        return "/user/account-management:: div-account-form";
+    }
+
+    @PostMapping(value = "/user/save-password")
+    public String saveAccountInfo(Model model, UserEntity formInput,BindingResult result){
+
+        Integer userId = formInput.getId();
+        UserEntity userEntity = userService.findUserById(userId);
+        userEntity.setPassword(formInput.getPassword());
+        userEntity = userService.saveUser(userEntity);
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId) != null ?  userDetailService.getUserDetailByUserId(userId) : new UserDetailEntity(userId);
+        model.addAttribute("user", userEntity);
+        model.addAttribute("user_detail", userDetailEntity);
+        model.addAttribute("countries", countryEntities);
+        return "/user/account-management:: div-account-form";
     }
 
 
