@@ -280,6 +280,7 @@ public class MainController {
 
     @PostMapping(value = "/user/save-account-info")
     public String saveAccountInfo(Model model, @ModelAttribute("user_detail") @Validated UserDetailEntity entity,BindingResult result){
+
         return null;
     }
 

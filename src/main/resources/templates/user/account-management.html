@@ -451,13 +451,15 @@
                                     <div style="float: right;"> <button class="btn btn-primary" th:onclick="'btn_edit_onclick()'">Edit</button></div>
                                 </div>
                                 <div class="card-body card-block">
-                                    <form action="#" method="post" th:action = "@{/user/save-account-info}" enctype="multipart/form-data" class="form-horizontal" th:object="${user_detail}">
+<!--                                    <form action="#" method="post" th:action = "@{/user/save-account-info}" enctype="multipart/form-data" class="form-horizontal" th:object="${user_detail}">-->
+                                    <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal" id="account_form">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
                                                 <label class=" form-control-label">Username</label>
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 <p class="form-control-static" th:text="${user.username}"></p>
+                                                <p class="form-control-static" th:text="${user.id}" style="display: none"></p>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -475,7 +477,7 @@
                                                 <label class=" form-control-label">First name</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text"  placeholder="First name" class="form-control" th:field="*{firstName}" disabled>
+                                                <input type="text"  name="firstName" required placeholder="First name" class="form-control" id="firstName" th:value="${user_detail.firstName}" disabled>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -483,7 +485,7 @@
                                                 <label class=" form-control-label">Last name</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" placeholder="Last name" class="form-control" th:field="*{lastName}" disabled>
+                                                <input type="text" placeholder="Last name" class="form-control" id="lastName" th:value="${user_detail.lastName}" disabled>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -491,7 +493,7 @@
                                                 <label class=" form-control-label">Email Input</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" placeholder="Enter Email" class="form-control" th:field="*{email}" disabled>
+                                                <input type="email" placeholder="Enter Email" class="form-control" id="email" th:value="${user_detail.email}" disabled>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -499,7 +501,7 @@
                                                 <label class=" form-control-label">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text"  name="text-input" placeholder="Address" class="form-control" th:field="*{address}" disabled>
+                                                <input type="text"  name="text-input" placeholder="Address" class="form-control" id="address" th:value="${user_detail.address}" disabled>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -507,7 +509,7 @@
                                                 <label class=" form-control-label">Phone number</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" placeholder="Phone number" class="form-control" th:field="*{phoneNum}" disabled>
+                                                <input type="text" placeholder="Phone number" class="form-control" id="phoneNum" th:value="${user_detail.phoneNum}" disabled>
                                             </div>
                                         </div>
 
@@ -516,7 +518,7 @@
                                                 <label class=" form-control-label">Country</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <select name="" id=""  class="form-control" th:field="*{countryId}" disabled>
+                                                <select name=""  class="form-control" id="countryId" th:value="${user_detail.countryId}" disabled>
                                                     <option value="-1" th:selected="selected">Please select...</option>
                                                     <option th:each="country : ${countries}"
                                                             th:value="${country.countryId}"
@@ -527,17 +529,17 @@
 
                                     </form>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-dot-circle-o"></i> Submit
+                                <div class="card-footer" id="card-footer" style="display: none">
+                                    <button type="button" class="btn btn-primary btn-sm" th:onclick="'btn_save_onclick()'">
+                                        <i class="fa fa-dot-circle-o"></i> Save
                                     </button>
-                                    <button type="reset" class="btn btn-danger btn-sm">
+                                    <button type="reset" class="btn btn-danger btn-sm" th:onclick="'btn_cancel_onclick()'">
                                         <i class="fa fa-ban"></i> Cancel
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6" style="display: none">
                             <div class="card">
                                 <div class="card-header">
                                     <strong>Horizontal</strong> Form
@@ -603,6 +605,7 @@
 </script>
 
 <!-- Main JS-->
+<script src="/user/js/jquery.validate.js"></script>
 <script src="/user/js/main.js"></script>
 <script src="/user/js/account-management.js"></script>
 
