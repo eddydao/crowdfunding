@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -99,6 +100,9 @@ public class MainController {
 
     @Autowired
     private CountryService countryService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -293,18 +297,43 @@ public class MainController {
     }
 
     @PostMapping(value = "/user/save-password")
-    public String saveAccountInfo(Model model, UserEntity formInput,BindingResult result){
+    public ResponseEntity<?> saveAccountInfo(Model model, UserDTO formInput,BindingResult result){
 
-        Integer userId = formInput.getId();
+        Integer userId = formInput.getUserId();
         UserEntity userEntity = userService.findUserById(userId);
-        userEntity.setPassword(formInput.getPassword());
+//        if(formInput.getOldPassword() != null && !formInput.getOldPassword().isEmpty()){
+//            return new ResponseEntity<>("-4", HttpStatus.OK);
+//        }
+//        if(formInput.getUserPassword() != null && !formInput.getUserPassword().isEmpty()){
+//            return new ResponseEntity<>("-5", HttpStatus.OK);
+//        }
+//        if(formInput.getConfirmPassword() != null && !formInput.getConfirmPassword().isEmpty()){
+//            return new ResponseEntity<>("-6", HttpStatus.OK);
+//        }
+
+
+        // check old password is correct
+        if(!this.passwordEncoder.matches(formInput.getOldPassword(), userEntity.getPassword())){
+            return new ResponseEntity<>("-1", HttpStatus.OK);
+        }
+        // check new password is not equal old pass
+        if(this.passwordEncoder.matches(formInput.getUserPassword(), userEntity.getPassword())){
+            return new ResponseEntity<>("-2", HttpStatus.OK);
+        }
+
+        if(!formInput.getUserPassword().equals(formInput.getConfirmPassword())){
+            return new ResponseEntity<>("-3", HttpStatus.OK);
+        }
+
+        String encryptPass = this.passwordEncoder.encode(formInput.getUserPassword());
+        userEntity.setPassword(encryptPass);
         userEntity = userService.saveUser(userEntity);
         List<CountryEntity> countryEntities = countryService.getAllCountry();
         UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId) != null ?  userDetailService.getUserDetailByUserId(userId) : new UserDetailEntity(userId);
         model.addAttribute("user", userEntity);
         model.addAttribute("user_detail", userDetailEntity);
         model.addAttribute("countries", countryEntities);
-        return "/user/account-management:: div-account-form";
+        return new ResponseEntity<>("1", HttpStatus.OK);
     }
 
 

@@ -18,6 +18,8 @@ public class UserDTO  implements Serializable {
     private String email;
     private String address;
     private String phoneNum;
+    private String oldPassword;
+    private String confirmPassword;
 
     public UserDTO() {
     }

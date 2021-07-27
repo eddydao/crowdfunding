@@ -68,10 +68,14 @@ function btn_cancel_password_change_onclick(){
 function btn_save_password_change_onclick(){
     let userId = $("#userId").val();
     let password = $("#new-password").val();
+    let oldPassword = $("#old-password").val();
+    let confirmPassword = $("#confirm-password").val();
 
     var data = {
-        "id": userId,
-        "password": password
+        "userId": userId,
+        "userPassword": password,
+        "oldPassword": oldPassword,
+        "confirmPassword": confirmPassword
     };
 
     $.ajax({
@@ -80,9 +84,33 @@ function btn_save_password_change_onclick(){
         type: "POST",
         success: function(msg) {
             console.log(msg);
-            $("#div-change-password").css("display", "none");
-            $("#div-account-form").html(msg);
-            toastr.success('Password changed');
+            if(msg == '1'){
+                $("#old-password").val("");
+                $("#new-password").val("");
+                $("#confirm-password").val("");
+                $("#div-change-password").css("display", "none");
+                toastr.success('Password changed');
+            }else if(msg == '-1'){
+                toastr.error('The old password is not correct');
+                $("#old-password").focus();
+            } else if(msg == '-2'){
+                toastr.error('The new password can not be the same as the old one');
+                $("#new-password").focus();
+            }else if(msg == '-3'){
+                toastr.error('Confirmation password is not match');
+                $("#confirm-password").focus();
+            }
+            // else if(msg == '-4'){
+            //     toastr.error('Confirmation password is not match');
+            //     $("#confirm-password").focus();
+            // }else if(msg == '-5'){
+            //     toastr.error('Confirmation password is not match');
+            //     $("#confirm-password").focus();
+            // }else if(msg == '-6'){
+            //     toastr.error('Confirmation password is not match');
+            //     $("#confirm-password").focus();
+            // }
+
         },
         error: function(msg) {
             console.log(msg);
