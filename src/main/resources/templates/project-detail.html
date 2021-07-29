@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="../css/ie8.css"/>
     <![endif]-->
     <link rel="stylesheet" href="../css/responsive.css"/>
-    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
-    <link href="/admin/css/toastr.css" rel="stylesheet"/>
+    <link href="../css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/toastr.css" rel="stylesheet"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="../js/html5.js"></script>
     <![endif]-->
@@ -29,8 +29,8 @@
     <script type="text/javascript" src="../js/jquery.sidr.min.js"></script>
     <script type="text/javascript" src="../js/jquery.tweet.min.js"></script>
     <script type="text/javascript" src="../js/pie.js"></script>
-    <script src="/admin/js/jquery.toast.min.js"></script>
-    <script src="/admin/js/toastr.min.js"></script>
+    <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/toastr.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 
 
@@ -94,7 +94,7 @@
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">
@@ -214,9 +214,9 @@
                             <div class=" pledge-content accordion-content">
                                 <div class="pledge-detail">
                                     <p class="rs pledge-description" th:text="${option.optionDescription}"></p>
-                                    <ul th:each="item,i : ${option.itemDtoEntitiess}">
+                                    <ul th:each="item,i : ${option.itemDtoEntities}">
 <!--                                        <li th:value="${items[__${i.index}__].itemId}"></li>-->
-                                        <li th:text="${option.itemDtoEntitiess[__${i.index}__].itemName}"></li>
+                                        <li th:text="${option.itemDtoEntities[__${i.index}__].itemName}"></li>
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
                                     <form action="#" th:action = "@{/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">
@@ -280,83 +280,5 @@
     </footer><!--end: #footer -->
 
 </div>
-
-<!--<div class="popup-common" id="sys_popup_common">-->
-<!--    <div class="overlay-bl-bg"></div>-->
-<!--    <div class="container_12 pop-content">-->
-<!--        <div class="grid_12 wrap-btn-close ta-r">-->
-<!--            <i class="icon iBigX closePopup"></i>-->
-<!--        </div>-->
-<!--        <div class="grid_6 prefix_1">-->
-<!--            <div class="form login-form">-->
-<!--                <form action="#">-->
-<!--                    <h3 class="rs title-form">Register</h3>-->
-<!--                    <div class="box-white">-->
-<!--                        <h4 class="rs title-box">New to Kickstars?</h4>-->
-<!--                        <p class="rs">A Kickstars account is required to continue.</p>-->
-<!--                        <div class="form-action">-->
-<!--                            <label for="txt_name">-->
-<!--                                <input id="txt_name" class="txt fill-width" type="text" placeholder="Enter full name"/>-->
-<!--                            </label>-->
-<!--                            <div class="wrap-2col clearfix">-->
-<!--                                <div class="col">-->
-<!--                                    <label for="txt_email">-->
-<!--                                        <input id="txt_email" class="txt fill-width" type="email" placeholder="Enter your e-mail address"/>-->
-<!--                                    </label>-->
-<!--                                    <label for="txt_re_email">-->
-<!--                                        <input id="txt_re_email" class="txt fill-width" type="email" placeholder="Re-enter your e-mail adress"/>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                                <div class="col">-->
-<!--                                    <label for="txt_password">-->
-<!--                                        <input id="txt_password" class="txt fill-width" type="password" placeholder="Enter password"/>-->
-<!--                                    </label>-->
-<!--                                    <label for="txt_re_password">-->
-<!--                                        <input id="txt_re_password" class="txt fill-width" type="password" placeholder="Re-enter password"/>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <p class="rs pb10">By signing up, you agree to our <a href="../#" class="fc-orange">terms of use</a> and <a href="../#" class="fc-orange">privacy policy</a>.</p>-->
-<!--                            <p class="rs ta-c">-->
-<!--                                <button class="btn btn-red btn-submit" type="submit">Register</button>-->
-<!--                            </p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="grid_4">-->
-<!--            <div class="form login-form">-->
-<!--                <form action="#">-->
-<!--                    <h3 class="rs title-form">Login</h3>-->
-<!--                    <div class="box-white">-->
-<!--                        <h4 class="rs title-box">Already Have an Account?</h4>-->
-<!--                        <p class="rs">Please log in to continue.</p>-->
-<!--                        <div class="form-action">-->
-<!--                            <label for="txt_email_login">-->
-<!--                                <input id="txt_email_login" class="txt fill-width" type="email" placeholder="Enter your e-mail address"/>-->
-<!--                            </label>-->
-<!--                            <label for="txt_password_login">-->
-<!--                                <input id="txt_password_login" class="txt fill-width" type="password" placeholder="Enter password"/>-->
-<!--                            </label>-->
-
-<!--                            <label for="chk_remember" class="rs pb20 clearfix">-->
-<!--                                <input id="chk_remember" type="checkbox" class="chk-remember"/>-->
-<!--                                <span class="lbl-remember">Remember me</span>-->
-<!--                            </label>-->
-<!--                            <p class="rs ta-c pb10">-->
-<!--                                <button class="btn btn-red btn-submit" type="submit">Login</button>-->
-<!--                            </p>-->
-<!--                            <p class="rs ta-c">-->
-<!--                                <a href="../#" class="fc-orange">I forgot my password</a>-->
-<!--                            </p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="clear"></div>-->
-<!--    </div>-->
-<!--</div>-->
 </body>
 </html>
