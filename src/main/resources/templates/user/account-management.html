@@ -33,17 +33,28 @@
 <body class="animsition">
 <div class="page-wrapper">
     <aside class="menu-sidebar d-none d-lg-block">
-        <div class="" style="height: 75px;">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-                    <li class="active has-sub">
-                        <a class="js-arrow" th:href="@{/creator}">
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/creator}">Backed Project</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a th:href="@{/user/account}">
                             <i class="fas fa-user"></i>Account management</a>
                     </li>
                 </ul>
@@ -68,28 +79,6 @@
                                         <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
-                                        <!--                                        <div class="info clearfix">-->
-                                        <!--                                            <div class="content">-->
-                                        <!--                                                <h5 class="name">-->
-                                        <!--                                                    <a href="#"></a>-->
-                                        <!--                                                </h5>-->
-                                        <!--                                                <span class="email"></span>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </div>-->
-                                        <!--                                        <div class="account-dropdown__body">-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi"></i>Project</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </div>-->
                                         <div class="account-dropdown__footer">
                                             <a th:href="@{/logout}">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
