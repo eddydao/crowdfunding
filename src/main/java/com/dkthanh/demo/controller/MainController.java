@@ -282,6 +282,7 @@ public class MainController {
         return "/user/account-management";
     }
 
+
     @PostMapping(value = "/user/save-account-info")
     public String saveAccountInfo(Model model, UserDetailEntity entity,BindingResult result){
 
@@ -334,6 +335,28 @@ public class MainController {
         model.addAttribute("user_detail", userDetailEntity);
         model.addAttribute("countries", countryEntities);
         return new ResponseEntity<>("1", HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/user/backed-project")
+    public String getUserBackedProject(Model model, Authentication authentication){
+        String username = null;
+        UserEntity user = null;
+        UserDetailEntity  userDetailEntity;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+//        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> listProjectFull = projectService.getAllBackedProjectByUserId(userId);
+        model.addAttribute("projects", listProjectFull);
+        return "/user/backed-project";
     }
 
 

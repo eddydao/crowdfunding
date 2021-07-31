@@ -208,26 +208,9 @@ public class ProjectService {
     }
 
 
-
-//    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
-//        ProjectEntity entity = new ProjectEntity();
-//        MaterialEntity materialEntity = new MaterialEntity();
-//
-//
-//        if(dto != null){
-//            entity.setProjectId(dto.getProjectId());
-//            entity.setProjectName(dto.getProjectName());
-////            entity.setCategoryId(dto.getCategoryId());
-//            materialEntity.setProjectId(dto.getProjectId());
-//            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
-//            materialEntity.setPath(dto.getMaterialThumbnailPath());
-//            projectRepository.save(entity);
-//            materialService.saveImage(materialEntity);
-//        }
-//
-//
-//        return 0;
-//    }
-
+    public List<ProjectFullInfoEntity> getAllBackedProjectByUserId(Integer userId){
+        List<ProjectFullInfoEntity> list = projectRepository.gteBackedProjectByUserId(userId);
+        return list;
+    }
 
 }

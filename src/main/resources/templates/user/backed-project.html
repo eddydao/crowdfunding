@@ -11,27 +11,27 @@
     <title>Dashboard</title>
 
     <!-- Fontfaces CSS-->
-    <link href="/creator/css/font-face.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="/user/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
-    <link href="/creator/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
-    <link href="/creator/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="/creator/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/user/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
     <link href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
-<!--    <link href="/creator/css/theme.css" rel="stylesheet" media="all">-->
-    <link href="../css/custom-style.css" rel="stylesheet" media="all">
+    <!--    <link href="/user/css/theme.css" rel="stylesheet" media="all">-->
+    <link href="/user/css/custom-style.css" rel="stylesheet" media="all">
 
 
 </head>
@@ -45,10 +45,10 @@
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-<!--                    <li class="active has-sub">-->
-<!--                        <a class="js-arrow" th:href="@{/creator}">-->
-<!--                            <i class="fas fa-tachometer-alt"></i>Project management</a>-->
-<!--                    </li>-->
+                    <!--                    <li class="active has-sub">-->
+                    <!--                        <a class="js-arrow" th:href="@{/creator}">-->
+                    <!--                            <i class="fas fa-tachometer-alt"></i>Project management</a>-->
+                    <!--                    </li>-->
                     <li class="has-sub">
                         <a class="js-arrow" href="#">
                             <i class="fas fa-tachometer-alt"></i>Project management</a>
@@ -87,28 +87,28 @@
                                         <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
-<!--                                        <div class="info clearfix">-->
-<!--                                            <div class="content">-->
-<!--                                                <h5 class="name">-->
-<!--                                                    <a href="#"></a>-->
-<!--                                                </h5>-->
-<!--                                                <span class="email"></span>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="account-dropdown__body">-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
-<!--                                            </div>-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
-<!--                                            </div>-->
-<!--                                            <div class="account-dropdown__item">-->
-<!--                                                <a href="#">-->
-<!--                                                    <i class="zmdi"></i>Project</a>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
+                                        <!--                                        <div class="info clearfix">-->
+                                        <!--                                            <div class="content">-->
+                                        <!--                                                <h5 class="name">-->
+                                        <!--                                                    <a href="#"></a>-->
+                                        <!--                                                </h5>-->
+                                        <!--                                                <span class="email"></span>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
+                                        <!--                                        <div class="account-dropdown__body">-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div class="account-dropdown__item">-->
+                                        <!--                                                <a href="#">-->
+                                        <!--                                                    <i class="zmdi"></i>Project</a>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
                                         <div class="account-dropdown__footer">
                                             <a th:href="@{/logout}">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
@@ -132,8 +132,8 @@
                             <div class="top-campaign">
                                 <h3 class="title-3 m-b-30">Project Overview</h3>
                                 <div>
-                                        <a class="au-btn au-btn-icon au-btn--green au-btn--small" style="float:right; margin: 20px 40px 20px 0;"
-                                                th:href="@{/creator/create-project}"><i class="zmdi"></i>Create new </a>
+                                    <a class="au-btn au-btn-icon au-btn--green au-btn--small" style="float:right; margin: 20px 40px 20px 0;"
+                                       th:href="@{/creator/create-project}"><i class="zmdi"></i>Create new </a>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-top-campaign" id="project-lst-tbl">
@@ -187,24 +187,24 @@
 
 <!-- Jquery JS-->
 
-<script src="/creator/vendor/jquery-3.2.1.min.js"></script>
+<script src="/user/vendor/jquery-3.2.1.min.js"></script>
 <!-- Bootstrap JS-->
-<script src="/creator/vendor/bootstrap-4.1/popper.min.js"></script>
-<script src="/creator/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<script src="/user/vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="/user/vendor/bootstrap-4.1/bootstrap.min.js"></script>
 <!-- Vendor JS       -->
-<script src="/creator/vendor/slick/slick.min.js">
+<script src="/user/vendor/slick/slick.min.js">
 </script>
-<script src="/creator/vendor/wow/wow.min.js"></script>
-<script src="/creator/vendor/animsition/animsition.min.js"></script>
-<script src="/creator/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+<script src="/user/vendor/wow/wow.min.js"></script>
+<script src="/user/vendor/animsition/animsition.min.js"></script>
+<script src="/user/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
 </script>
-<script src="/creator/vendor/counter-up/jquery.waypoints.min.js"></script>
-<script src="/creator/vendor/counter-up/jquery.counterup.min.js">
+<script src="/user/vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="/user/vendor/counter-up/jquery.counterup.min.js">
 </script>
-<script src="/creator/vendor/circle-progress/circle-progress.min.js"></script>
-<script src="/creator/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-<script src="/creator/vendor/chartjs/Chart.bundle.min.js"></script>
-<script src="/creator/vendor/select2/select2.min.js">
+<script src="/user/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/user/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/user/vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="/user/vendor/select2/select2.min.js">
 </script>
 
 <!-- Datatable -->
@@ -212,7 +212,7 @@
 <script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
 <!-- Main JS-->
-<script src="/creator/js/creator-proj-lst-tbl.js"></script>
+<script src="/user/js/creator-proj-lst-tbl.js"></script>
 <script>
 </script>
 </body>

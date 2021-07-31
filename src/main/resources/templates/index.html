@@ -78,6 +78,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" th:href="@{/user/account}">Account</a>
                                 <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Project</a>
+                                <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/backed-project}">Backed project</a>
                                 <a class="dropdown-item" th:href="@{/logout}">Log out</a>
                             </div>
                         </div>

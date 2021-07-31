@@ -8,4 +8,6 @@ import java.util.Map;
 public interface ProjectRepositoryCustom {
     List<ProjectFullInfoEntity> getProjectListWithDetail(Map<String, Object> map);
 
+
+    List<ProjectFullInfoEntity> gteBackedProjectByUserId(Integer userId);
 }
