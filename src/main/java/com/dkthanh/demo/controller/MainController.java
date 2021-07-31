@@ -605,6 +605,7 @@ public class MainController {
         StatusEntity st = statusService.getStatusById(Constant.ProjectStatus.EDITING.getId());
         p.setUser(user);
         p.setProjectStatus(st);
+        p.setProjectName("Sample project");
         ProjectEntity projectEntity = projectService.saveProjectEntity(p);
         int projectId = projectEntity.getProjectId();
         ProjectDto dto = new ProjectDto();
