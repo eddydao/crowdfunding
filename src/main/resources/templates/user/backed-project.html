@@ -124,7 +124,7 @@
                                         </thead>
                                         <tbody>
                                         <tr class="tr-shadow" th:each="project : ${projects}">
-                                            <td><a th:href="@{/creator/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></td>
+                                            <td><a th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></td>
                                             <td th:text="${project.statusName}"></td>
                                             <td class="desc" th:text="${project.categoryName}"></td>
                                             <td th:text="${project.startDate}"></td>
