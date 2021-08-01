@@ -31,7 +31,10 @@
 <body class="animsition">
 <div class="page-wrapper">
     <aside class="menu-sidebar d-none d-lg-block">
-        <div class="" style="height: 75px;">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
@@ -71,33 +74,11 @@
                             <div class="account-wrap">
                                 <div class="account-item clearfix js-item-menu">
                                     <div class="content">
-                                        <a class="js-acc-btn" href="#">Dao Thanh</a>
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
                                     </div>
                                     <div class="account-dropdown js-dropdown">
-                                        <!--                                        <div class="info clearfix">-->
-                                        <!--                                            <div class="content">-->
-                                        <!--                                                <h5 class="name">-->
-                                        <!--                                                    <a href="#"></a>-->
-                                        <!--                                                </h5>-->
-                                        <!--                                                <span class="email"></span>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </div>-->
-                                        <!--                                        <div class="account-dropdown__body">-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi zmdi-account"></i>Account</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi zmdi-settings"></i>Setting</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                            <div class="account-dropdown__item">-->
-                                        <!--                                                <a href="#">-->
-                                        <!--                                                    <i class="zmdi"></i>Project</a>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </div>-->
                                         <div class="account-dropdown__footer">
-                                            <a href="#">
+                                            <a th:href="@{/logout}">
                                                 <i class="zmdi zmdi-power"></i>Logout</a>
                                         </div>
                                     </div>
@@ -108,7 +89,7 @@
                 </div>
             </div>
         </header>
-        <!-- END HEADER DESKTOP-->
+        <!-- HEADER DESKTOP-->
 
         <!-- MAIN CONTENT-->
         <div class="main-content">
