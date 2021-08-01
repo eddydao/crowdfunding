@@ -5,5 +5,5 @@ import com.dkthanh.demo.domain.dto.UserDTO;
 import java.util.List;
 
 public interface UserRepositoryCustom  {
-    public List<UserDTO> getListUserFullInformation();
+    public List<UserDTO> getListAdminUserFullInfo();
 }

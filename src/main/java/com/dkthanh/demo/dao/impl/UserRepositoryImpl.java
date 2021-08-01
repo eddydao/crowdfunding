@@ -15,7 +15,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private EntityManager em;
 
     @Override
-    public List<UserDTO> getListUserFullInformation() {
+    public List<UserDTO> getListAdminUserFullInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append(
                 "SELECT\n" +
@@ -28,11 +28,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 ", C.role_id\n" +
                 "FROM \n" +
                 "user A \n" +
-                "JOIN user_detail B ON A.id = B.user_id\n" +
+                "LEFT JOIN user_detail B ON A.id = B.user_id\n" +
                 "LEFT JOIN user_role C ON A.id = C.user_id\n" +
                 "LEFT JOIN role D on C.role_id = D.role_id\n" +
                 "WHERE \n" +
-                "1 = 1\n" );
+                "1 = 1\n" +
+                "AND C.role_id = 1" );
 
         Query query = em.createNativeQuery(sb.toString(), UserDTO.USER_FULL_DTO_MAP);
         return query.getResultList();

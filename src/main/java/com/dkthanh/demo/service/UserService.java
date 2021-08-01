@@ -82,8 +82,36 @@ public class UserService {
         return user;
     }
 
-    public List<UserDTO> getListUserFullInfo(){
-        return userRepository.getListUserFullInformation();
+    public List<UserDTO> getListAdminUserFullInfo(){
+        return userRepository.getListAdminUserFullInfo();
+    }
+
+    public UserEntity saveNewAdminUser(NewUserDTO newUserDTO){
+        String username = newUserDTO.getUsername();
+        UserEntity userEntity = new UserEntity();
+        try{
+            userEntity.setUsername(username);
+            userEntity.setPassword(this.passwordEncoder.encode("1234"));
+            userRepository.save(userEntity);
+
+            userRoleRepository.save(new UserRoleEntity(userEntity.getId(), Constant.Roles.ADMIN.getId()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userEntity;
+    }
+
+    public boolean deleteAccount(UserEntity entity){
+        int userId = entity.getId();
+        userRepository.deleteById(userId);
+
+        Optional<UserEntity> chkUser = userRepository.findById(userId);
+        if(chkUser.isPresent() && chkUser != null){
+            return false;
+        }
+
+        return true;
     }
 
 }

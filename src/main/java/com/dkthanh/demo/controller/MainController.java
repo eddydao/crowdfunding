@@ -1471,8 +1471,36 @@ public class MainController {
 
     @GetMapping(value = "/admin/user/list")
     public String getUserList(Model model){
-        List<UserDTO> listUser = userService.getListUserFullInfo();
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
         model.addAttribute("users", listUser);
         return "/admin/user-management";
+    }
+
+    @GetMapping(value = "/admin/user/add-new/")
+    public String openAddNewAccountModal(Model model){
+        return "/admin/fragments/user-management-modal::addNewAccountModal";
+    }
+
+    @PostMapping(value = "/admin/user/save-new-account")
+    public String saveNewAccount(Model model, NewUserDTO newUserDTO){
+        userService.saveNewAdminUser(newUserDTO);
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
+        model.addAttribute("users", listUser);
+        return "/admin/user-management :: user-table-div";
+    }
+
+    @GetMapping(value = "/admin/user/open-delete-modal/")
+    public String openDeleteConfirmationModal(Model model, UserDTO userDTO){
+        UserEntity user = userService.findUserById(userDTO.getUserId());
+        model.addAttribute("user", user);
+        return "/admin/fragments/user-management-modal:: adminUserDelConfirmation";
+    }
+
+    @PostMapping(value = "/admin/user/delete-admin-account")
+    public String deleteAdminAccount(Model model, UserEntity user){
+        userService.deleteAccount(user);
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
+        model.addAttribute("users", listUser);
+        return "/admin/user-management :: user-table-div";
     }
 }
