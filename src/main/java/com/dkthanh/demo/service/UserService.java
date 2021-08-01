@@ -6,6 +6,7 @@ import com.dkthanh.demo.dao.UserRoleRepository;
 import com.dkthanh.demo.domain.NewUserDTO;
 import com.dkthanh.demo.domain.UserEntity;
 import com.dkthanh.demo.domain.UserRoleEntity;
+import com.dkthanh.demo.domain.dto.UserDTO;
 import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -80,4 +81,9 @@ public class UserService {
         }
         return user;
     }
+
+    public List<UserDTO> getListUserFullInfo(){
+        return userRepository.getListUserFullInformation();
+    }
+
 }

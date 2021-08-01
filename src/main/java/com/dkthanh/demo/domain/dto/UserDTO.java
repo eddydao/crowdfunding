@@ -9,6 +9,7 @@ import java.io.Serializable;
 @ToString
 public class UserDTO  implements Serializable {
     public static final String USER_DTO_MAP = "userDtoMap";
+    public static final String USER_FULL_DTO_MAP = "userFullDtoMap";
 
     private Integer userId;
     private String userName;
@@ -20,6 +21,8 @@ public class UserDTO  implements Serializable {
     private String phoneNum;
     private String oldPassword;
     private String confirmPassword;
+    private String roleName;
+    private Integer roleId;
 
     public UserDTO() {
     }
@@ -32,5 +35,15 @@ public class UserDTO  implements Serializable {
         this.email = email;
         this.address = address;
         this.phoneNum = phoneNum;
+    }
+
+    public UserDTO(Integer userId, String userName, String email, String address, String phoneNum, String roleName, Integer roleId) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.roleName = roleName;
+        this.roleId = roleId;
     }
 }

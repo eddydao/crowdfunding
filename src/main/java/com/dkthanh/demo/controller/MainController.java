@@ -1449,12 +1449,12 @@ public class MainController {
         Integer reviewResult = formInput.getReviewResult();
         StatusEntity st = null;
 
-        if(reviewResult == 1){              // Approve result
+        if(reviewResult == 1){
             st = statusService.getStatusById(Constant.ProjectStatus.APPROVED.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
             projectService.saveProjectEntity(projectEntity);
-        }else if(reviewResult == 2){        // reject
+        }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
@@ -1471,7 +1471,8 @@ public class MainController {
 
     @GetMapping(value = "/admin/user/list")
     public String getUserList(Model model){
-
+        List<UserDTO> listUser = userService.getListUserFullInfo();
+        model.addAttribute("users", listUser);
         return "/admin/user-management";
     }
 }
