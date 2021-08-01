@@ -420,10 +420,12 @@ public class MainController {
                                          null);
             optionDtos.add(optionDto);
         }
+        UserDetailEntity userDetail = userDetailService.getUserDetailByUserId(p.getUserId());
 
         model.addAttribute("project", p);
         model.addAttribute("story", story);
         model.addAttribute("options", optionDtos);
+        model.addAttribute("creator", userDetail);
         return "project-detail";
     }
 
@@ -544,6 +546,13 @@ public class MainController {
         }
 
         return "redirect:/creator/create-project";
+    }
+
+    // get creator information
+    @GetMapping(value = "/get-creator-info/{id}")
+    public String getCreatorInformation(Model model, @PathVariable("id") Integer creatorId){
+
+        return "creator-info";
     }
 
     /*

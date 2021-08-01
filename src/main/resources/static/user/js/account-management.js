@@ -5,6 +5,7 @@ function disableEditForm(value){
     $("#address").attr("disabled", value);
     $("#phoneNum").attr("disabled", value);
     $("#countryId").attr("disabled", value);
+    $("#biography").attr("disabled", value);
 }
 
 function btn_edit_onclick(){
@@ -25,6 +26,7 @@ function btn_save_onclick(){
     let address = $("#address").val();
     let phoneNum = $("#phoneNum").val();
     let countryId = $("#countryId").val();
+    let biography = $("#biography").val();
 
     var data = {
         "userId": userId,
@@ -33,7 +35,8 @@ function btn_save_onclick(){
         "email": email,
         "address": address,
         "phoneNum": phoneNum,
-        "countryId": countryId
+        "countryId": countryId,
+        "biography": biography
     };
 
     $.ajax({

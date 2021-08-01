@@ -180,6 +180,17 @@
                                             </div>
                                         </div>
 
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="textarea-input" class=" form-control-label">Biography</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <textarea name="textarea-input" id="biography" rows="9" placeholder="Content..." class="form-control" style="resize: none" th:value="${user_detail.biography}" disabled></textarea>
+                                                <small class="help-block form-text">We suggest a short bio. If it's 300 characters or less it'll look great on your profile.</small>
+                                            </div>
+
+                                        </div>
+
                                     </form>
                                 </div>
                                 <div class="card-footer" id="card-footer" style="display: none">

@@ -31,6 +31,8 @@ public class UserDetailEntity {
     private Integer countryId;
     @Column(name = "phone_num", nullable = true, length = 15)
     private String phoneNum;
+    @Column(name = "biography", nullable = true)
+    private String biography;
 
     @OneToOne(mappedBy = "userDetail")
     private UserEntity user;
