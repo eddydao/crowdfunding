@@ -1,7 +1,8 @@
 package com.dkthanh.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,7 +10,8 @@ import java.util.Set;
 @Entity
 @Table(name = "role", schema = "demo", catalog = "")
 @Data
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleEntity {
     @Id
     @Column(name = "role_id", nullable = false)
@@ -19,4 +21,9 @@ public class RoleEntity {
 
     @ManyToMany(mappedBy = "roles")
     Set<UserEntity> users;
+
+    public RoleEntity(Integer roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 }

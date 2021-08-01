@@ -13,6 +13,7 @@ import java.util.List;
 public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
+
     public List<ItemEntity> getItemsOfProject(Integer projectId){
         return itemRepository.findItemEntitiesByProjectProjectId(projectId);
     }
@@ -21,4 +22,16 @@ public class ItemService {
         return itemRepository.findById(itemId).get();
     }
 
+    public ItemEntity saveNewItem(ItemEntity item){
+        return itemRepository.save(item);
+    }
+
+    public int deleteItemById(Integer itemId){
+        try{
+            itemRepository.deleteById(itemId);
+        }catch(Exception e){
+            return -1;
+        }
+        return 1;
+    }
 }

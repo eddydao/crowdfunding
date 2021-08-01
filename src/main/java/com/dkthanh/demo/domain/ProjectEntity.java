@@ -37,8 +37,8 @@ public class ProjectEntity {
     private String submitDate;
     @Column(name="is_editable", nullable = true)
     private Integer isEditable;
-    @Column(name="is_choosed", nullable = true)
-    private Integer isChoosed;
+    @Column(name="is_ready", nullable = true)
+    private Integer isReady;
 
 
     @ManyToOne

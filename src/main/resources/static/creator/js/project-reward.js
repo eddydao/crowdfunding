@@ -1,11 +1,43 @@
-function showCreateProjectRewardArea(){
-    $("#edit-reward").css('display', 'block');
-    $('html,body').animate({
-        scrollTop: $("#edit-reward").offset().top
-    }, 'slow');
-    $("#title-inp").focus();
+
+// create new option form
+function showCreateRewardArea(projectId){
+    $.ajax({
+        url: "/creator/project/" + projectId + "/reward/new-option",
+        success: function(data){
+            console.log(data);
+            $("#createRewardHolder").html(data);
+            $('html,body').animate({
+                scrollTop: $("#createRewardArea").offset().top
+            }, 'slow');
+            $("#title-inp").focus();
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+//  oepn add item form
+function openNewOptionAddItemModal(projectId){
+    var dataForm = new FormData();
+    dataForm.append("projectId", projectId);
+    $.ajax({
+        url:"/creator/project/reward/addItemModal",
+        ache: false,
+        contentType : false,
+        processData: false,
+        data: dataForm,
+        type: "POST",
+        success: function(data){
+            $("#addItemModalHolder").html(data);
+            $("#addItemModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
 }
 
+// edit option form
 function showEditRewardArea(projectId, optionId){
     $.ajax({
         url: "/creator/project/" + projectId + "/reward/" + optionId,
@@ -20,11 +52,11 @@ function showEditRewardArea(projectId, optionId){
         error: function(data){
             console.log(data);
         }
-
     })
 }
 
 function openAddItemModal(projectId, optionId, items){
+    debugger
     var dataForm = new FormData();
     dataForm.append("projectId", projectId);
     dataForm.append("optionId", optionId);
@@ -48,7 +80,6 @@ function openAddItemModal(projectId, optionId, items){
 }
 
 function addToItemList(){
-    debugger
     var itemId = $("#itemListInput option:selected").val();
     var optionId = $("#input-option-id").val();
     var projectId = $("#input-project-id").val();
@@ -96,22 +127,43 @@ function openRemoveItemModal(projectId, optionId, itemId){
 }
 
 function removeFromItemList(){
-    var itemId = $("#itemListInput option:selected").val();
-    var optionId = $("#input-option-id").val();
-    var projectId = $("#input-project-id").val();
+    debugger
+    var itemId = $("#item_id_input").val();
+    var optionId = $("#option_id_input").val();
+    var projectId = $("#project_id_input").val();
     var data  = {
         "projectId": projectId,
         "newItemId": itemId,
         "optionId" : optionId
     }
-    $("#addItemModal").modal("hide");
+    $("#removeItemModal").modal("hide");
     $("#editRewardHolder").html("");
     $.ajax({
-        url: "/creator/project/reward/addItemToList",
+        url: "/creator/project/reward/remove-item",
         data: data,
+        type: "POST",
         success: function(data){
             console.log(data);
             $("#editRewardHolder").html(data);
+            toastr.success("Remove successfully");
+        },
+        error: function(data){
+            console.log(data);
+            toastr.success("Remove failed");
+        }
+    })
+}
+
+function showCreateItemModal(projectId){
+    var data = {"projectId" : projectId}
+
+    $.ajax({
+        url: "/creator/project/open-item-creation-modal",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#itemCreationModalHolder").html(data);
+            $("#addNewItem").modal("show");
         },
         error: function(data){
             console.log(data);
@@ -119,4 +171,123 @@ function removeFromItemList(){
     })
 }
 
-function saveNewProjectReward(){}
+
+function showEditItemModal(projectId, itemId){
+    debugger
+    var data = {
+        "projectId" : projectId,
+        "itemId"    : itemId
+    }
+
+    $.ajax({
+        url: "/creator/project/open-item-edit-modal",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#itemCreationModalHolder").html(data);
+            $("#editItem").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function saveNewItem(){
+    var itemName = $("#item-name-inp").val();
+    var projectId = $("#project-id-inp").val();
+    var data  = {
+        "projectId": projectId,
+        "itemName": itemName
+    }
+    $("#addNewItem").modal("hide");
+    $("#item-list-div").html("");
+    $.ajax({
+        url: "/creator/project/save-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+            toastr.success("Save successfully");
+        },
+        error: function(data){
+            console.log(data);
+            toastr.success("Save failed");
+        }
+    })
+}
+
+
+
+function updateItem(){
+    var itemName = $("#item-name-inp").val();
+    var itemId = $("#item-id-inp").val();
+    var projectId = $("#project-id-inp").val();
+    var data  = {
+        "projectId": projectId,
+        "itemName": itemName,
+        "itemId"    : itemId
+    }
+    $("#editItem").modal("hide");
+    $("#item-list-div").html("");
+    $.ajax({
+        url: "/creator/project/save-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+            toastr.success("Save successfully");
+        },
+        error: function(data){
+            console.log(data);
+            toastr.success("Save failed");
+        }
+    })
+}
+
+
+function showItemDeleteConfirmation(projectId, itemId){
+    debugger
+    var data ={
+        "projectId" : projectId,
+        "itemId" : itemId
+    }
+    $.ajax({
+        url: "/creator/project/delete-item-confirmation",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#itemDelConfirmationHolder").html(data);
+            $("#itemDelConfirmation").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
+function deleteItem(projectId, itemId){
+    var data ={
+        "projectId": projectId,
+        "itemId" : itemId
+    }
+    $("#itemDelConfirmation").modal("hide");
+    $.ajax({
+        url: "/creator/project/delete-item",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#item-list-div").html(data);
+            toastr.success('Delete successfully');
+        },
+        error: function(data){
+            console.log(data);
+            toastr.warning('Delete fail');
+        }
+    })
+}

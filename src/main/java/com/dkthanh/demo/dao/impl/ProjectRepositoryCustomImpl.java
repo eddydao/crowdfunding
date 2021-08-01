@@ -26,6 +26,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         Integer userId = (Integer) map.get(Constant.PROJECT_KEY.USER_ID);
         String keyword = (String) map.get(Constant.PROJECT_KEY.KEYWORD);
         Integer category = (Integer) map.get(Constant.PROJECT_KEY.CATEGORY);
+        Integer popular = (Integer) map.get(Constant.PROJECT_KEY.POPULAR);
 
         // param
         List<Integer> projectStatus = (List<Integer>) map.get(Constant.PROJECT_KEY.PROJECT_STATUS);
@@ -52,11 +53,11 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                         "  D.name as status_name,\n"+
                         "  C.id as category_id,\n" +
                         "  C.name as category_name,\n" +
-                        "  0.0 as percent_pledged,\n"+
-                        "  0 as day_left,\n"+
+                        "  IFNULL(pledged, 0) / goal * 100 as percent_pledged,\n"+
+                        "  DATEDIFF(end_date,CURDATE()) as day_left,\n"+
                         "  A.submit_date as submit_date,\n"+
                         "  A.is_editable as is_editable,\n"+
-                        "  A.is_choosed as is_editable\n"+
+                        "  A.is_ready as is_ready\n"+
                         "FROM\n" +
                         "  project A \n" +
                         "  LEFT JOIN category C ON A.category_id = C.id\n" +
@@ -99,6 +100,12 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         if(isRecommended != null){
             sql.append("LIMIT 1\n");
         }
+
+        if(popular != null){
+            sql.append("LIMIT 4\n");
+        }
+
+
         Query sqlQuery = em.createNativeQuery(sql.toString(), ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP);
         if(projectId != null ){
             sqlQuery.setParameter("id", projectId);
@@ -118,6 +125,41 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
         if(category != null){
             sqlQuery.setParameter("category", category);
+        }
+
+        return sqlQuery.getResultList();
+    }
+
+    @Override
+    public List<ProjectFullInfoEntity> gteBackedProjectByUserId(Integer userId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(
+                " SELECT\n" +
+                        "  A.project_id,\n" +
+                        "  A.project_name,\n" +
+                        "  A.user_id,\n" +
+                        "  CONCAT(F.last_name , ' ' , F.first_name) as user_full_name,\n" +
+                        "  A.status_id as status_id,\n" +
+                        "  D.name as status_name,\n" +
+                        "  C.id as category_id,\n" +
+                        "  C.name as category_name,\n" +
+                        "  K.pledged as pledged_by_user\n" +
+                        "FROM\n" +
+                        "  project A \n" +
+                        "  LEFT JOIN category C ON A.category_id = C.id\n" +
+                        "  LEFT JOIN status D ON A.status_id = D.status_id\n" +
+                        "  LEFT JOIN user E ON A.user_id = E.id\n" +
+                        "  LEFT JOIN user_detail F ON E.id = F.user_id\n" +
+                        "  LEFT JOIN package K ON A.project_id = K.project_id\n" +
+                        "WHERE 1 = 1\n" +
+                        "AND K.user_id = :user_id"
+                        );
+
+        Query sqlQuery = em.createNativeQuery(sb.toString(), ProjectFullInfoEntity.PROJECT_PLEDGED_BY_USER);
+
+        if(userId != null){
+            sqlQuery.setParameter("user_id", userId);
         }
 
         return sqlQuery.getResultList();

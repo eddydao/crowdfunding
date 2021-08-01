@@ -24,6 +24,11 @@ public class UserRoleService {
         return repo.save(userRoleEntity);
     }
 
+//    public UserRoleEntity insertNewAccountRole(Integer userId, Integer roleId) {
+//
+//        return repo.save();
+//    }
+
     public int countUserByRole(Integer roleId){
         return repo.countUserByRole(roleId);
     }

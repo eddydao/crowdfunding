@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class ProjectFullInfoEntity implements Serializable {
     public static final String PROJECT_FULL_INFOR_MAP = "projectFullInforMap";
+    public static final String PROJECT_PLEDGED_BY_USER = "projectPledgedByUser";
 
     // bacsic info
     protected Integer projectId;
@@ -42,7 +43,10 @@ public class ProjectFullInfoEntity implements Serializable {
 
     // key for measurement
     public Integer isEditable;
-    public Integer isChoosed;
+    public Integer isReady;
+
+    // pledge by user
+    protected Long pledgedByUser;
 
 
     
@@ -73,7 +77,7 @@ public class ProjectFullInfoEntity implements Serializable {
             , Integer dayLeft
             , OffsetDateTime submitDate
             , Integer isEditable
-            , Integer isChoosed) {
+            , Integer isReady) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.userId = userId;
@@ -96,7 +100,7 @@ public class ProjectFullInfoEntity implements Serializable {
         this.dayLeft = dayLeft;
         this.submitDate = submitDate;
         this.isEditable = isEditable;
-        this.isChoosed = isChoosed;
+        this.isReady = isReady;
     }
 
     // mapping basic info for jpa
@@ -125,5 +129,28 @@ public class ProjectFullInfoEntity implements Serializable {
         this.investorCount = investorCount;
         this.recommended = recommended;
         this.categoryId = categoryId;
+    }
+
+    // constructor for mapping user pledge
+    public ProjectFullInfoEntity(
+            Integer projectId,
+            String projectName,
+            Integer userId,
+            String userFullName,
+            Integer statusId,
+            String statusName,
+            Integer categoryId,
+            String categoryName,
+            Long pledgedByUser
+    ){
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.userId = userId;
+        this.userFullName = userFullName;
+        this.statusId = statusId;
+        this.statusName =  statusName;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.pledgedByUser = pledgedByUser;
     }
 }

@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/normalize.css"/>
     <link rel="stylesheet" href="../css/jquery.sidr.light.css"/>
     <link rel="stylesheet" href="../css/animate.min.css"/>
@@ -19,6 +20,9 @@
     <![endif]-->
     <link rel="stylesheet" href="../css/responsive.css"/>
     <!--[if lt IE 9]> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <link href="/login-assets/css/toastr.css" rel="stylesheet"/>
     <script type="text/javascript" src="../js/html5.js"></script>
@@ -72,8 +76,20 @@
             <div class="grid_12 header-content">
                 <div id="sys_header_right" class="header-right">
                     <div class="account-panel">
-                        <a th:href="@{/register}" class="btn btn-red">Register</a>
-                        <a th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/register}" class="btn btn-red">Register</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <div class="dropdown" th:if="${#request.userPrincipal != null}">
+                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${#request.userPrincipal.name}"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/user/account}">Account</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Your Project</a>
+                                <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/backed-project}">Backed project</a>
+                                <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-search">
                         <form action="#" th:action="@{/search}" th:object="${project}" method="post">
@@ -87,7 +103,7 @@
                 </div>
                 <div class="header-left">
                     <h1 id="logo">
-                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
+                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
                     </h1>
                     <div class="main-nav clearfix">
                         <div class="nav-item">

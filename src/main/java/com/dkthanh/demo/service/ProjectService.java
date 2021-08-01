@@ -37,6 +37,7 @@ public class ProjectService {
         List<Integer> status = new ArrayList<>();
         status.add(Constant.ProjectStatus.RUNNING.getId());
         map.put(Constant.PROJECT_KEY.PROJECT_STATUS, status);
+        map.put(Constant.PROJECT_KEY.POPULAR, 1);
         List<ProjectFullInfoEntity> list = projectRepository.getProjectListWithDetail(map);
         if(list != null && list.size() > 0){
             return list;
@@ -174,6 +175,7 @@ public class ProjectService {
     }
 
     // save project entity
+
     public ProjectEntity saveProjectEntity(ProjectEntity entity){
         return projectRepository.save(entity);
     }
@@ -206,26 +208,9 @@ public class ProjectService {
     }
 
 
-
-//    public int saveProjectFullInfoEntity(ProjectFullInfoEntity dto){
-//        ProjectEntity entity = new ProjectEntity();
-//        MaterialEntity materialEntity = new MaterialEntity();
-//
-//
-//        if(dto != null){
-//            entity.setProjectId(dto.getProjectId());
-//            entity.setProjectName(dto.getProjectName());
-////            entity.setCategoryId(dto.getCategoryId());
-//            materialEntity.setProjectId(dto.getProjectId());
-//            materialEntity.setMaterialTypeId(Constant.MaterialType.THUMBNAIL.getId());
-//            materialEntity.setPath(dto.getMaterialThumbnailPath());
-//            projectRepository.save(entity);
-//            materialService.saveImage(materialEntity);
-//        }
-//
-//
-//        return 0;
-//    }
-
+    public List<ProjectFullInfoEntity> getAllBackedProjectByUserId(Integer userId){
+        List<ProjectFullInfoEntity> list = projectRepository.gteBackedProjectByUserId(userId);
+        return list;
+    }
 
 }

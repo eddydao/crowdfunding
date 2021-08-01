@@ -49,7 +49,8 @@ public final class Constant {
         STOP(4, "STOP"),//denied
         COMPLETE(5, "COMPLETE"),//
         REJECT(6, "REJECT"),//denied
-        EDITING(7, "EDITING")
+        EDITING(7, "EDITING"),
+        READY(9, "READY_TO_REVIEW")
         ;
 
         private Integer id;
@@ -213,6 +214,10 @@ public final class Constant {
         public static final String USER_ID = "userId";
         public static final String KEYWORD = "KEYWORD";
         public static final String CATEGORY = "category";
+        public static final String ITEM_ID = "itemId";
+        public static final String OPTION_ID = "optionId";
+        public static final String QUANTITY = "quantity";
+        public static final String POPULAR = "popular";
 
 
         private PROJECT_KEY(){}

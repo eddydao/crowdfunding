@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -34,7 +35,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @CrossOrigin("*")
@@ -89,7 +92,17 @@ public class MainController {
     @Autowired
     private StatusService statusService;
 
-    @Autowired CommentService commentService;
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private OptionItemService optionItemService;
+
+    @Autowired
+    private CountryService countryService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -186,7 +199,7 @@ public class MainController {
         }catch (Exception e){
             return "register";
         }
-        return "temp-result";
+        return "registerSucceed";
     }
 
     // open login form
@@ -195,7 +208,7 @@ public class MainController {
         return "/login-page";
     }
 
-    // search function - not complete
+    // search function
     @PostMapping(value = "/search", produces = { "application/json" })
     public String search(@RequestParam("search_box") String keyword, Model model){
         if (StringUtils.isEmpty(keyword)) {
@@ -228,6 +241,124 @@ public class MainController {
         return modifiedContent.toString();
     }
 
+    @GetMapping(value = "/404")
+    public String returnNotFoundPage(){
+        return "/404";
+    }
+
+    @GetMapping(value = "/403")
+    public String returnFobiddenPage(){
+        return "/403";
+    }
+
+    @GetMapping(value = "/logoutSuccessful")
+    public String logoutSucceed(){
+        return "/logoutSuccess";
+    }
+
+    @GetMapping(value = "/user/account")
+    public String getAccountInfor(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        UserEntity user = null;
+
+        // in real run, uncomment this block
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId = user.getId();
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId) != null ?  userDetailService.getUserDetailByUserId(userId) : new UserDetailEntity(userId);
+
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+
+        model.addAttribute("user", user);
+        model.addAttribute("user_detail", userDetailEntity);
+        model.addAttribute("countries", countryEntities);
+        return "/user/account-management";
+    }
+
+
+    @PostMapping(value = "/user/save-account-info")
+    public String saveAccountInfo(Model model, UserDetailEntity entity,BindingResult result){
+
+        Integer userId = entity.getUserId();
+        UserEntity userEntity = userService.findUserById(userId);
+        entity.setUser(userEntity);
+        entity = userDetailService.save(entity);
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+        model.addAttribute("user", userEntity);
+        model.addAttribute("user_detail", entity);
+        model.addAttribute("countries", countryEntities);
+        return "/user/account-management:: div-account-form";
+    }
+
+    @PostMapping(value = "/user/save-password")
+    public ResponseEntity<?> saveAccountInfo(Model model, UserDTO formInput,BindingResult result){
+
+        Integer userId = formInput.getUserId();
+        UserEntity userEntity = userService.findUserById(userId);
+//        if(formInput.getOldPassword() != null && !formInput.getOldPassword().isEmpty()){
+//            return new ResponseEntity<>("-4", HttpStatus.OK);
+//        }
+//        if(formInput.getUserPassword() != null && !formInput.getUserPassword().isEmpty()){
+//            return new ResponseEntity<>("-5", HttpStatus.OK);
+//        }
+//        if(formInput.getConfirmPassword() != null && !formInput.getConfirmPassword().isEmpty()){
+//            return new ResponseEntity<>("-6", HttpStatus.OK);
+//        }
+
+
+        // check old password is correct
+        if(!this.passwordEncoder.matches(formInput.getOldPassword(), userEntity.getPassword())){
+            return new ResponseEntity<>("-1", HttpStatus.OK);
+        }
+        // check new password is not equal old pass
+        if(this.passwordEncoder.matches(formInput.getUserPassword(), userEntity.getPassword())){
+            return new ResponseEntity<>("-2", HttpStatus.OK);
+        }
+
+        if(!formInput.getUserPassword().equals(formInput.getConfirmPassword())){
+            return new ResponseEntity<>("-3", HttpStatus.OK);
+        }
+
+        String encryptPass = this.passwordEncoder.encode(formInput.getUserPassword());
+        userEntity.setPassword(encryptPass);
+        userEntity = userService.saveUser(userEntity);
+        List<CountryEntity> countryEntities = countryService.getAllCountry();
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId) != null ?  userDetailService.getUserDetailByUserId(userId) : new UserDetailEntity(userId);
+        model.addAttribute("user", userEntity);
+        model.addAttribute("user_detail", userDetailEntity);
+        model.addAttribute("countries", countryEntities);
+        return new ResponseEntity<>("1", HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/user/backed-project")
+    public String getUserBackedProject(Model model, Authentication authentication){
+        String username = null;
+        UserEntity user = null;
+        UserDetailEntity  userDetailEntity;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+//        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> listProjectFull = projectService.getAllBackedProjectByUserId(userId);
+        model.addAttribute("projects", listProjectFull);
+        return "/user/backed-project";
+    }
+
 
     /*
      *  Index page function
@@ -242,8 +373,6 @@ public class MainController {
             for(int i = 0; i < popularProjects.size(); i++){
                 popularProjects.get(i).setThumbnailPath(RELATIVE_PATH+ popularProjects.get(i).getThumbnailPath());
             }
-
-
         }
         if(recommendedProject != null ){
             recommendedProject.setThumbnailPath(RELATIVE_PATH+ recommendedProject.getThumbnailPath());
@@ -274,23 +403,29 @@ public class MainController {
         ProjectFullInfoEntity p = projectService.getProjectDetail(id);
         StoryEntity story = storyService.getStoryByProjectId(id);
         List<OptionEntity> options =  optionService.getOptionListByProjectId(id);
+
         p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
         List<OptionDto> optionDtos = new ArrayList<>();
+
         for(int i = 0; i < options.size(); i++){
             OptionEntity option = options.get(i);
+
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(id, option.getOptionId());
             OptionDto optionDto = new OptionDto(option.getOptionId(),
                                                 option.getOptionName(),
                                                 option.getOptionDescription(),
                                                 option.getFundMin(),
-                                                option.getItems(),
+                                                listItem,
                                                 option.getProject().getProjectId(),
                                          null);
             optionDtos.add(optionDto);
         }
+        UserDetailEntity userDetail = userDetailService.getUserDetailByUserId(p.getUserId());
 
         model.addAttribute("project", p);
         model.addAttribute("story", story);
         model.addAttribute("options", optionDtos);
+        model.addAttribute("creator", userDetail);
         return "project-detail";
     }
 
@@ -384,6 +519,42 @@ public class MainController {
         return new ChargeRequestEntity(true, "Success! Your charge id is " + chargeId);
     }
 
+    @GetMapping(value = "/create-project")
+    public String createNewProject(Model model, Authentication authentication){
+        String username = null;
+        UserEntity user = null;
+        if(authentication != null) {
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        List<RoleEntity> roleEntities = user.getRoles();
+        int count=0;
+        for (RoleEntity role : roleEntities
+             ) {
+            if(role.getRoleId() == 3){
+                count++;
+            }
+        }
+
+        if(count == 0 ){
+            roleEntities.add(new RoleEntity(Constant.Roles.CREATOR.getId(), "CREATOR"));
+            user.setRoles(roleEntities);
+            userService.saveUser(user);
+        }
+
+        return "redirect:/creator/create-project";
+    }
+
+    // get creator information
+    @GetMapping(value = "/get-creator-info/{id}")
+    public String getCreatorInformation(Model model, @PathVariable("id") Integer creatorId){
+
+        return "creator-info";
+    }
+
     /*
      *  Creator management function
      * ===========================================
@@ -420,6 +591,7 @@ public class MainController {
         List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
         model.addAttribute("projects", list);
         model.addAttribute("creator", userDetailEntity);
+//        model.addAttribute("")
         return "/creator/creator-dashboard";
     }
 
@@ -427,11 +599,22 @@ public class MainController {
     *   run this when user click to create project
      */
     @GetMapping(value = "/creator/create-project")
-    public String openCreateProjectForm(Model model){
+    public String openCreateProjectForm(Model model, Authentication authentication){
+
+        String username = null;
+        UserEntity user = null;
+        if(authentication != null) {
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
         ProjectEntity p = new ProjectEntity();
         StatusEntity st = statusService.getStatusById(Constant.ProjectStatus.EDITING.getId());
-
+        p.setUser(user);
         p.setProjectStatus(st);
+        p.setProjectName("Sample project");
         ProjectEntity projectEntity = projectService.saveProjectEntity(p);
         int projectId = projectEntity.getProjectId();
         ProjectDto dto = new ProjectDto();
@@ -449,12 +632,14 @@ public class MainController {
     public String openProjectEditForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
         ProjectEntity entity = projectService.getProjectEntityById(projectId);
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
         if(entity.getProjectName() != null){
             dto.setProjectName(entity.getProjectName());
         }
         dto.setProjectId(projectId);
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+        model.addAttribute("project_full_entity", fullInfoEntity);
         return "/creator/overview";
     }
 
@@ -475,6 +660,8 @@ public class MainController {
             dto.setCategoryId(projectEntity.getCategory()!= null ? projectEntity.getCategory().getId() : null);
             dto.setThumbnailPathFile(projectEntity.getThumbnailPath() != null ? RELATIVE_PATH + projectEntity.getThumbnailPath() : REPLACE_THUMBNAIL_PATH);
             dto.setGoal(projectEntity.getGoal());
+            dto.setStartDate(projectEntity.getStartDate() !=null ? projectEntity.getStartDate().toLocalDate() : null);
+            dto.setEndDate(projectEntity.getEndDate() != null ? projectEntity.getEndDate().toLocalDate() : null);
         }
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
@@ -494,6 +681,7 @@ public class MainController {
         }
         // ProjectEntity projectEntity = new ProjectEntity();
         ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
+        String thumbnailPath = projectEntity.getThumbnailPath();
         int step = dto.getStep();
         // insert basic information
         if(step == 1){
@@ -505,7 +693,9 @@ public class MainController {
             projectEntity.setProjectShortDes(dto.getSubTitle());
             projectEntity.setCategory(category);
             projectEntity.setGoal(dto.getGoal());
-            projectEntity.setThumbnailPath(this.doUpload(uploadDto));
+            projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? this.doUpload(uploadDto) : thumbnailPath);
+            projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIN, ZoneOffset.UTC));
+            projectEntity.setEndDate(OffsetDateTime.of(dto.getEndDate(), LocalTime.MIN, ZoneOffset.UTC));
         }
 
         projectService.saveProjectEntity(projectEntity);
@@ -532,47 +722,65 @@ public class MainController {
             optionList = optionService.getOptionListByProjectId(projectId);
             itemList= itemService.getItemsOfProject(projectId);
         }
+        List<OptionDto> optionDtos = new ArrayList<>();
 
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
         OptionDto optionDto = new OptionDto(null, null,
                 null, null, null, projectId, null);
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
-        model.addAttribute("options", optionList);
+        model.addAttribute("options", optionDtos);
         model.addAttribute("items", itemList);
         model.addAttribute("project_dto", dto);
         model.addAttribute("option", optionDto);
-        model.addAttribute("items", null);
         model.addAttribute("projectId", projectId);
         return "/creator/project-reward";
     }
 
+
     /*
-    Open create new reward modal
+    * Open create new option modal
      */
 
-    @GetMapping(value = "/creator/project/{projectId}/create-reward-form")
-    public String createProjectReward(Model model,  @PathVariable("projectId") Integer projectId) {
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
-        OptionDto dto = new OptionDto(null, null,
-                null, null, null, projectId, null);
+    @GetMapping(value = "/creator/project/{projectId}/reward/new-option")
+    public String openCreateRewardModal(Model model,  @PathVariable("projectId") Integer projectId){
+        OptionDto dto = new OptionDto();
+        dto.setProjectId(projectId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
         model.addAttribute("items", null);
-        return "/creator/project-reward :: edit-reward";
+        return "/creator/fragments/modal :: createRewardArea";
     }
+
+
     /*
     Open edit reward modal
      */
 
     @GetMapping(value = "/creator/project/{projectId}/reward/{optionId}")
-    public String getProjectItemByProjectId(Model model,  @PathVariable("projectId") Integer projectId,
+    public String openEditRewardModal(Model model,  @PathVariable("projectId") Integer projectId,
             @PathVariable("optionId") Integer optionId){
-        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("option", dto);
-        model.addAttribute("items", optionEntity.getItems());
-        return "/creator/fragments/modal :: editRewardArea";
+            OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+            OptionDto dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+            model.addAttribute("projectId", projectId);
+            model.addAttribute("option", dto);
+            model.addAttribute("items", optionEntity.getItems());
+            return "/creator/fragments/modal :: editRewardArea";
     }
 
 
@@ -590,7 +798,8 @@ public class MainController {
         OptionEntity optionEntity ;
         if(optionId != null){
             optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
         }
         model.addAttribute("projectId", projectId);
         model.addAttribute("option", dto);
@@ -605,14 +814,15 @@ public class MainController {
         Integer projectId = dto.getProjectId();
         Integer itemId = dto.getNewItemId();
         Integer optionId = dto.getOptionId();
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
+        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+        map.put(Constant.PROJECT_KEY.QUANTITY, 1);
+
+        optionItemService.saveOptionItem(map);
         OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
-
-        ItemEntity item = itemService.findItemByItemId(itemId);
-
-//        item.setOption(optionEntity);
-        optionEntity.getItems().add(item);
-        optionEntity = optionService.save(optionEntity);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
 
 
         model.addAttribute("projectId", projectId);
@@ -624,26 +834,28 @@ public class MainController {
     @GetMapping(value = "/creator/project/confirm-remove-item/")
     public String confirmRemoveItemFromList(Model model, OptionDto dto){
 
+        model.addAttribute("dto" , dto);
         return "/creator/fragments/modal :: removeItemModal";
     }
 
-//    @GetMapping(value = "/creator/project/remove-item/")
-//    public String removeItemFromList(Model model, OptionDto dto){
-//        Integer projectId = dto.getProjectId();
-//        Integer itemId = dto.getNewItemId();
-//        Integer optionId = dto.getOptionId();
-//        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
-//        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), optionEntity.getItems(), projectId, null);
-//
-//        ItemEntity item = itemService.findItemByItemId(itemId);
-//        optionEntity.getItems().remove(item);
-//        optionEntity = optionService.save(optionEntity);
-//
-//        model.addAttribute("projectId", projectId);
-//        model.addAttribute("option", optionDto);
-//        model.addAttribute("items", optionEntity.getItems());
-//        return "/creator/fragments/modal :: editRewardArea";
-//    }
+    @PostMapping(value = "/creator/project/reward/remove-item")
+    public String removeItemFromList(Model model, OptionDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getNewItemId();
+        Integer optionId = dto.getOptionId();
+
+        boolean isDeleted = optionItemService.removeOptionItemById(optionId, itemId);
+
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardArea";
+    }
 
 
 
@@ -660,22 +872,132 @@ public class MainController {
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         } else {
             optionEntity.setOptionId(optionDto.getOptionId());
             optionEntity.setOptionName(optionDto.getOptionName());
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
-            optionEntity.setItems(optionDto.getItems());
             optionEntity.setProject(projectEntity);
         }
         projectEntity.getOptions().add(optionEntity);
         projectService.saveProjectEntity(projectEntity);
+
+        List<ItemDtoEntity > itemDtoEntityList = optionDto.getItemDtoEntities();
+        if(itemDtoEntityList != null && !itemDtoEntityList.isEmpty()){
+            int listSize =  itemDtoEntityList.size();
+            int optionId = optionDto.getOptionId();
+            for(int i = 0 ; i < listSize; i++){
+                itemDtoEntityList.get(i).setOptionId(optionId);
+                Map<String, Object> map = new HashMap<>();
+                map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+                map.put(Constant.PROJECT_KEY.ITEM_ID, itemDtoEntityList.get(i).getItemId());
+                map.put(Constant.PROJECT_KEY.QUANTITY, itemDtoEntityList.get(i).getQuantity() != null ? itemDtoEntityList.get(i).getQuantity() : 0);
+
+                optionItemService.saveOptionItem(map);
+            }
+        }
+
         return "redirect:/creator/project/" +projectId + "/reward" ;
     }
 
+    /*
+    Open item creation modal
+     */
 
+    @GetMapping(value = "/creator/project/open-item-creation-modal")
+    public String openItemCreationModal(Model model, ItemDto dto){
+        Integer projectId = dto.getProjectId();
+        model.addAttribute("projectId", projectId);
+
+        return "/creator/fragments/modal :: addNewItem";
+    }
+
+
+    /*
+    Open item edit modal
+     */
+    @GetMapping(value = "/creator/project/open-item-edit-modal")
+    public String openItemEditModal(Model model, ItemDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getItemId();
+        ItemEntity item = itemService.findItemByItemId(itemId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("item", item);
+
+        return "/creator/fragments/modal :: editItem";
+    }
+
+    /*
+    Add new item to project
+     */
+
+    @PostMapping(value = "/creator/project/save-item")
+    public String saveItem(Model model, ItemDto dto){
+
+        Integer projectId = dto.getProjectId();
+        String itemName = dto.getItemName();
+        Integer itemId = dto.getItemId();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        ItemEntity itemEntity = new ItemEntity(itemName, projectEntity);
+        if(itemId != null){
+            itemEntity.setItemId(itemId);
+        }
+
+        itemService.saveNewItem(itemEntity);
+
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        dto.setProjectId(projectId);
+
+        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+            itemList= itemService.getItemsOfProject(projectId);
+        }
+
+        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", fullInfoEntity);
+        return "/creator/project-reward :: item-list-div";
+    }
+
+    /*
+    call delete item modal
+     */
+    @PostMapping(value = "/creator/project/delete-item-confirmation")
+    public String showItemDeleteConfirmationModal(Model model, ItemDto itemDto){
+        Integer itemId = itemDto.getItemId();
+        Integer projectId = itemDto.getProjectId();
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("itemId", itemId);
+
+        return "/creator/fragments/modal :: itemDelConfirmation";
+    }
+
+    /*
+    Delete item
+     */
+    @PostMapping(value = "creator/project/delete-item")
+    public String deleteItem(Model model, ItemDto itemDto){
+        Integer projectId = itemDto.getProjectId();
+        Integer itemId = itemDto.getItemId();
+
+        itemService.deleteItemById(itemId);
+
+        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        List<ItemEntity> itemList = null;
+
+        itemList= itemService.getItemsOfProject(projectId);
+
+        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", fullInfoEntity);
+        return "/creator/project-reward :: item-list-div";
+    }
+
+
+//======================================================================================================================
     /*
     *   Open story edit page
      */
@@ -767,6 +1089,105 @@ public class MainController {
 
         return "/creator/creator-report";
     }
+    //==================================================================================================================
+    /*
+     * Open project review submitting page
+     */
+    @GetMapping(value = "/creator/project/{projectId}/project-review")
+    public String openProjectReviewPage(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+        int statusId = entity.getProjectStatus().getStatusId();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        model.addAttribute("statusId", statusId);
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("username", username);
+        return "/creator/project-review";
+    }
+
+    @GetMapping(value = "/creator/project/{projectId}/confirm-submit")
+    public String confirmSubmitProject(Model model, @PathVariable("projectId") Integer projectId){
+        model.addAttribute("projectId", projectId);
+        return "/creator/fragments/modal :: submitReviewConfirmationModal";
+    }
+
+    @PostMapping(value = "/creator/submit-to-review")
+    public ResponseEntity<?> submitProjectReview(Model model, ProjectDto dto){
+        Integer projectId = dto.getProjectId();
+
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+
+        StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.WAITING.getId());
+        entity.setProjectStatus(newStatusEntity);
+        projectService.saveProjectEntity(entity);
+
+        // reset status of comment section
+        List<CommentEntity> listComment = commentService.getAllCommentsByProjectId(projectId);
+        for (CommentEntity comment: listComment
+             ) {
+            comment.setIsClose(Constant.IS_CLOSED.OPEN.getId());
+            comment.setCommentText(null);
+            commentService.saveComment(comment);
+        }
+
+        model.addAttribute("statusId", Constant.ProjectStatus.WAITING.getId());
+        return new ResponseEntity<String>("Save success", HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/creator/project/{projectId}/show-comment")
+    public String showProjectReviewComment(Model model, @PathVariable("projectId") Integer projectId){
+        List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
+        Map<String, String> commentMap = new HashMap<>();
+        for(int i = 0 ; i< listCom.size(); i++){
+            if(listCom.get(i).getSectionId() == 1){
+                commentMap.put("basicTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 2){
+                commentMap.put("rewardTab", listCom.get(i).getCommentText());
+            }else if(listCom.get(i).getSectionId() == 3){
+                commentMap.put("storyTab", listCom.get(i).getCommentText());
+            }
+        }
+
+        model.addAllAttributes(commentMap);
+        return "/creator/fragments/modal::commentModal";
+    }
+
+    @GetMapping(value="/creator/project/{projectId}/return-to-edit")
+    public ResponseEntity<?> returnToEditProject(Model model, @PathVariable("projectId") Integer projectId){
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+
+        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
+        projectService.saveProjectEntity(projectEntity);
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/creator/project/{projectId}/confirm-launch")
+    public String confirmLaunchProject(Model model, @PathVariable("projectId") Integer projectId){
+        model.addAttribute("projectId", projectId);
+        return "/creator/fragments/modal :: submitLaunchConfirmationModal";
+    }
+
+    @PostMapping(value = "/creator/submit-to-launch")
+    public ResponseEntity<?> submitLaunchProject(Model model, ProjectDto dto){
+        Integer projectId = dto.getProjectId();
+
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+
+        StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.RUNNING.getId());
+        entity.setProjectStatus(newStatusEntity);
+        projectService.saveProjectEntity(entity);
+
+        model.addAttribute("statusId", Constant.ProjectStatus.RUNNING.getId());
+        return new ResponseEntity<String>("Save success", HttpStatus.OK);
+    }
+
 
     // CATEGORY MANAGEMENT
     //==================================================================================================================
@@ -932,6 +1353,25 @@ public class MainController {
             optionList = optionService.getOptionListByProjectId(projectId);
             itemList= itemService.getItemsOfProject(projectId);
         }
+
+        List<OptionDto> optionDtos = new ArrayList<>();
+
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
+
         StoryEntity story = storyService.getStoryByProjectId(projectId);
         List<CommentEntity> listCom = commentService.getAllCommentsByProjectId(projectId);
         int count = 0;
@@ -956,7 +1396,7 @@ public class MainController {
             commentMap.put("isClosed", "0");
         }
 
-        model.addAttribute("options", optionList);
+        model.addAttribute("options", optionDtos);
         model.addAttribute("items", itemList);
         model.addAttribute("project", projectFullInfoEntity);
         model.addAttribute("story", story);
@@ -1009,12 +1449,12 @@ public class MainController {
         Integer reviewResult = formInput.getReviewResult();
         StatusEntity st = null;
 
-        if(reviewResult == 1){              // Approve result
+        if(reviewResult == 1){
             st = statusService.getStatusById(Constant.ProjectStatus.APPROVED.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
             projectService.saveProjectEntity(projectEntity);
-        }else if(reviewResult == 2){        // reject
+        }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
@@ -1031,7 +1471,36 @@ public class MainController {
 
     @GetMapping(value = "/admin/user/list")
     public String getUserList(Model model){
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
+        model.addAttribute("users", listUser);
+        return "/admin/user-management";
+    }
 
-        return null;
+    @GetMapping(value = "/admin/user/add-new/")
+    public String openAddNewAccountModal(Model model){
+        return "/admin/fragments/user-management-modal::addNewAccountModal";
+    }
+
+    @PostMapping(value = "/admin/user/save-new-account")
+    public String saveNewAccount(Model model, NewUserDTO newUserDTO){
+        userService.saveNewAdminUser(newUserDTO);
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
+        model.addAttribute("users", listUser);
+        return "/admin/user-management :: user-table-div";
+    }
+
+    @GetMapping(value = "/admin/user/open-delete-modal/")
+    public String openDeleteConfirmationModal(Model model, UserDTO userDTO){
+        UserEntity user = userService.findUserById(userDTO.getUserId());
+        model.addAttribute("user", user);
+        return "/admin/fragments/user-management-modal:: adminUserDelConfirmation";
+    }
+
+    @PostMapping(value = "/admin/user/delete-admin-account")
+    public String deleteAdminAccount(Model model, UserEntity user){
+        userService.deleteAccount(user);
+        List<UserDTO> listUser = userService.getListAdminUserFullInfo();
+        model.addAttribute("users", listUser);
+        return "/admin/user-management :: user-table-div";
     }
 }
