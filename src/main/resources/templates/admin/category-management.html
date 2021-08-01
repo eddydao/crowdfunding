@@ -42,19 +42,19 @@
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-                    <li >
+                    <li class="active">
                         <a class="js-arrow" th:href="@{/admin}">
                             <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                     </li>
-                    <li>
+                    <li >
                         <a th:href="@{/admin/project/pending-list}">
                             <i class="fas fa-check"></i>Pending approval project</a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a th:href="@{/admin/user/list}">
                             <i class="fas fa-user"></i>Account management</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a th:href="@{/admin/category/list}">
                             <i class="fas fa-tag"></i>Category management</a>
                     </li>
