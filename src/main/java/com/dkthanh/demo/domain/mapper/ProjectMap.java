@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-//@SqlResultSetMappings({
+@SqlResultSetMappings({
     @SqlResultSetMapping(
         name = ProjectFullInfoEntity.PROJECT_FULL_INFOR_MAP,
         classes = {
@@ -41,8 +41,26 @@ import java.time.OffsetDateTime;
                         @ColumnResult(name = "is_ready", type = Integer.class)
             })
         }
+    ),
+    @SqlResultSetMapping(
+            name = ProjectFullInfoEntity.PROJECT_PLEDGED_BY_USER,
+            classes = {
+                    @ConstructorResult(
+                            targetClass = ProjectFullInfoEntity.class,
+                            columns = {
+                                    @ColumnResult(name = "project_id", type = Integer.class),
+                                    @ColumnResult(name = "project_name", type = String.class),
+                                    @ColumnResult(name = "user_id", type = Integer.class),
+                                    @ColumnResult(name = "user_full_name", type = String.class),
+                                    @ColumnResult(name = "status_id", type = Integer.class),
+                                    @ColumnResult(name = "status_name", type = String.class),
+                                    @ColumnResult(name = "category_id", type = Integer.class),
+                                    @ColumnResult(name = "category_name", type = String.class),
+                                    @ColumnResult(name = "pledged_by_user", type = Long.class)
+                            })
+            }
     )
-//})
+})
 
 @Entity
 public class ProjectMap {

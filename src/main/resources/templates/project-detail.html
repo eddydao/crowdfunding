@@ -124,7 +124,7 @@
         <div class="content grid_8">
             <div class="project-detail">
                 <h2 class="rs project-title"><span th:text="${project.projectName}"></span></h2>
-                <p class="rs post-by">by <a href="../#"><span th:text="${project.userFullName}"></span></a></p>
+<!--                <p class="rs post-by">by <a href="../#"><span th:text="${project.userFullName}"></span></a></p>-->
                 <div class="project-short big-thumb">
                     <div class="top-project-info">
                         <div class="content-info-short clearfix">
@@ -202,7 +202,8 @@
                         <div class="media-body">
                             </span><h4 class="rs pb10 fa-user"><a th:href="@{/get-creator-info/} + ${project.userId}" class="be-fc-orange fw-b" ><span th:text="${project.userFullName}"></span></a></h4>
                             <p class="rs" >From: <span th:text="${project.countryName}"></span></p>
-                            <p class="rs fc-gray" >Email: <span th:text="${creator.email}"></span></p>
+                            <p class="rs fc-gray" ><span th:text="${creator.email}"></span></p>
+                            <p class="rs"><span th:text="${creator.biography}"></span></p>
                         </div>
                     </div>
 
@@ -216,8 +217,6 @@
                                 <i class="icon iPlugGray"></i>
                                 <span class="pledge-amount">Pledge $<span th:text="${option.fundMin}"></span> or more</span>
                                 <input style="display: none" id="option" th:attrappend="id=${option.optionId}" th:value="${option.fundMin}">
-<!--                                <span class="count-val">(12 of 31)</span>-->
-                                <!-- <p class="rs fw-b pb20">Ocupated (2 of 10)</p> -->
                             </div>
                             <div class=" pledge-content accordion-content">
                                 <div class="pledge-detail">

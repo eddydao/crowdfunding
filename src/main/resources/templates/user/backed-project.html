@@ -117,8 +117,6 @@
                                             <th>Project</th>
                                             <th>Status</th>
                                             <th>Category</th>
-                                            <th>Start date</th>
-                                            <th>End date</th>
                                             <th>Pledge</th>
                                         </tr>
                                         </thead>
@@ -127,9 +125,7 @@
                                             <td><a th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></td>
                                             <td th:text="${project.statusName}"></td>
                                             <td class="desc" th:text="${project.categoryName}"></td>
-                                            <td th:text="${project.startDate}"></td>
-                                            <td th:text="${project.endDate}"></td>
-                                            <td class="text-right" th:text="${project.pledged}"></td>
+                                            <td class="text-right" >$<span th:text="${#numbers.formatDecimal(project.pledgedByUser, 0, 'COMMA', 2, 'POINT')}"></span></td>
                                         </tbody>
                                     </table>
                                 </div>
