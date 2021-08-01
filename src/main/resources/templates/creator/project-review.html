@@ -141,7 +141,7 @@
                                             </p>
                                         </div>
                                         <div class="au-message__footer">
-                                            <button class="au-btn btn btn-success btn-lg">Continue to launch</button>
+                                            <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_launchProject_onclick()'">Continue to launch</button>
                                         </div>
                                     </div>
                                 </div>
@@ -161,6 +161,22 @@
                                     </div>
                                 </div>
 
+                                <div class="au-inbox-wrap js-inbox-wrap" id="project-launch-noti-div" th:fragment="project-launch-noti-div" th:if="${statusId} == '3'">
+                                    <div class="au-message js-list-load">
+                                        <div class="au-message__noti">
+                                            <span>Congratulation!</span>
+                                            <p>Your project launched successfully<br>Keep updating what you are working for your project.<br> And sharing it to people.
+                                            </p>
+                                        </div>
+                                        <div class="au-message__footer">
+                                            <div class="card-body text-white bg-success">
+                                                <p class="card-text text-light">Project is running.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -173,6 +189,7 @@
     </div>
     <div id="submitReviewConfirmationModalHolder"></div>
     <div id="commentModalHolder"></div>
+    <div id="submitLaunchConfirmationModalHolder"></div>
 </div>
 
 <!-- Jquery JS-->

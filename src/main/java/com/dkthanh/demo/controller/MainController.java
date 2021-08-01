@@ -1168,6 +1168,26 @@ public class MainController {
     }
 
 
+    @GetMapping(value = "/creator/project/{projectId}/confirm-launch")
+    public String confirmLaunchProject(Model model, @PathVariable("projectId") Integer projectId){
+        model.addAttribute("projectId", projectId);
+        return "/creator/fragments/modal :: submitLaunchConfirmationModal";
+    }
+
+    @PostMapping(value = "/creator/submit-to-launch")
+    public ResponseEntity<?> submitLaunchProject(Model model, ProjectDto dto){
+        Integer projectId = dto.getProjectId();
+
+        ProjectEntity entity = projectService.getProjectEntityById(projectId);
+
+        StatusEntity newStatusEntity = statusService.getStatusById(Constant.ProjectStatus.RUNNING.getId());
+        entity.setProjectStatus(newStatusEntity);
+        projectService.saveProjectEntity(entity);
+
+        model.addAttribute("statusId", Constant.ProjectStatus.RUNNING.getId());
+        return new ResponseEntity<String>("Save success", HttpStatus.OK);
+    }
+
 
     // CATEGORY MANAGEMENT
     //==================================================================================================================

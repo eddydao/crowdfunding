@@ -15,7 +15,6 @@ function btn_submitReview_onclick(){
 }
 
 function submitReview(projectId){
-    debugger
     let data = {
         "projectId": projectId
     };
@@ -64,5 +63,40 @@ function btn_returnToEditProject_onclick(){
         }
 
     })
+}
 
+function btn_launchProject_onclick(){
+    $.ajax({
+        url: "/creator/project/" + projectId + "/confirm-launch" ,
+        success: function(data){
+            console.log(data);
+            $("#submitLaunchConfirmationModalHolder").html(data);
+            $("#submitLaunchConfirmationModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
+function submitLaunch(projectId){
+    let data = {
+        "projectId": projectId
+    };
+    $("#submitLaunchConfirmationModal").modal("hide");
+    $.ajax({
+        url: "/creator/submit-to-launch",
+        data: data,
+        type: "POST",
+        success: function(msg) {
+            console.log(msg);
+            window.location.href = "/creator/project/" + projectId + "/project-review";
+            toastr.success('Submit review succeeded');
+        },
+        error: function(msg) {
+            console.log(msg);
+            toastr.error('Submit review failed');
+        }
+    })
 }
