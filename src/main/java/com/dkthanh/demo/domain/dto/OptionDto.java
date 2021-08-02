@@ -25,6 +25,7 @@ public class OptionDto {
     private Long pledge;
     private Integer newItemId;
     private Integer quantity;
+    private Integer isTemp;
 
     public OptionDto(Integer optionId, String optionName, String optionDescription, Long fundMin, List<ItemDtoEntity> items, Integer projectId, Long pledge) {
         this.optionId = optionId;
@@ -32,9 +33,18 @@ public class OptionDto {
         this.optionDescription = optionDescription;
         this.fundMin = fundMin;
         this.itemDtoEntities = items;
-//        this.optionItems = items;
-//        this.items = items;
         this.projectId = projectId;
         this.pledge = pledge;
+    }
+
+    public OptionDto(Integer optionId, String optionName, String optionDescription, Long fundMin, List<ItemDtoEntity> items, Integer projectId, Long pledge, Integer isTemp) {
+        this.optionId = optionId;
+        this.optionName = optionName;
+        this.optionDescription = optionDescription;
+        this.fundMin = fundMin;
+        this.itemDtoEntities = items;
+        this.projectId = projectId;
+        this.pledge = pledge;
+        this.isTemp = isTemp;
     }
 }

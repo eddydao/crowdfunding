@@ -13,4 +13,5 @@ public interface OptionItemRepositoryCustom {
     int updateOptionItem(Map<String, Object> map);
 
     int deleteByOptionIdAndItemId(Map<String, Object> map);
+    int deleteByOptionId(Map<String, Object> map);
 }

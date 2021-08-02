@@ -108,5 +108,19 @@ public class OptionItemRepositoryImpl implements OptionItemRepositoryCustom {
         return sqlQuery.executeUpdate();
     }
 
+    @Override
+    public int deleteByOptionId(Map<String, Object> map) {
+        int optionId = (int) map.get(Constant.PROJECT_KEY.OPTION_ID);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("DELETE FROM option_item " +
+                "WHERE option_id = :option_id");
+        Query sqlQuery = em.createNativeQuery(sb.toString());
+        sqlQuery.setParameter("option_id", optionId);
+
+
+        return sqlQuery.executeUpdate();
+    }
+
 
 }

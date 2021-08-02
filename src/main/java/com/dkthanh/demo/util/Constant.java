@@ -312,4 +312,34 @@ public final class Constant {
         }
     }
 
+    public enum IS_TEMPORARY {
+        TEMPORARY(1, "TEMPORARY"),
+        NOT_TEMPORARY(0, "NOT_TEMPORARY");
+
+        private Integer id;
+        private String name;
+
+        IS_TEMPORARY(Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static IS_TEMPORARY getCommentSectionById(Integer id){
+            for (IS_TEMPORARY e : values()) {
+                if (e.getId().equals(id)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+    }
+
 }

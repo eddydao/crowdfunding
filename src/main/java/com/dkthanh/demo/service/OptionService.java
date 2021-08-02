@@ -14,6 +14,9 @@ public class OptionService {
     @Autowired
     private OptionRepository optionRepository;
 
+    @Autowired
+    private OptionItemService optionItemService;
+
     public List<OptionEntity> getOptionListByProjectId(Integer projectId){
         return optionRepository.findOptionEntitiesByProjectProjectId(projectId);
     }
@@ -24,5 +27,17 @@ public class OptionService {
 
     public OptionEntity save(OptionEntity optionEntity){
         return optionRepository.save(optionEntity);
+    }
+
+    public boolean removeOption(Integer projectId, Integer optionId){
+        try{
+            optionItemService.removeAllItemOfOption(optionId);
+
+            optionRepository.deleteById(optionId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

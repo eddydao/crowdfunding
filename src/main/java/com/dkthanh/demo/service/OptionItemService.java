@@ -87,4 +87,17 @@ public class OptionItemService {
         }
         return true;
     }
+
+    public boolean removeAllItemOfOption(Integer optionId){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+        try{
+            repository.deleteByOptionId(map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

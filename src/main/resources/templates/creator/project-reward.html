@@ -142,37 +142,39 @@
                                                             <span>Includes</span>
                                                         </div>
                                                     </div>
-                                                    <div class="card" th:each="option : ${options}">
-                                                        <div class="card-body">
-                                                            <div class="mx-auto d-block">
-                                                                <div class="row">
-                                                                    <div class="col-lg-3">
-                                                                        <span th:text="${option.fundMin}"></span>
-                                                                    </div>
-                                                                    <div class="col-lg-5">
-                                                                        <span th:text="${option.optionName}"></span>
-                                                                        <div th:text="${option.optionDescription}">
+                                                    <div  th:fragment="reward-list-div" id="reward-list-div" >
+                                                        <div class="card" th:each="option : ${options}">
+                                                            <div class="card-body">
+                                                                <div class="mx-auto d-block">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-3">
+                                                                            <span th:text="${option.fundMin}"></span>
+                                                                        </div>
+                                                                        <div class="col-lg-5">
+                                                                            <span th:text="${option.optionName}"></span>
+                                                                            <div th:text="${option.optionDescription}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-4">
+                                                                        <div>
+                                                                            <ul th:each="item : ${option.itemDtoEntities}">
+                                                                                <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                            </ul>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-lg-4">
-                                                                    <div>
-                                                                        <ul th:each="item : ${option.itemDtoEntities}">
-                                                                            <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
-                                                                        </ul>
                                                                     </div>
                                                                 </div>
-                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="card-footer">
-                                                            <div style="float:right">
-                                                                <button type="button" style="margin-right: 30px" 
-                                                                    th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
-                                                                    Edit
-                                                                </button>
-                                                                <button type="button" >
-                                                                    Delete
-                                                                </button>
+                                                            <div class="card-footer">
+                                                                <div style="float:right">
+                                                                    <button type="button" style="margin-right: 30px"
+                                                                        th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
+                                                                        Edit
+                                                                    </button>
+                                                                    <button type="button" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -214,13 +216,15 @@
                         </div>
                         <div id="createRewardHolder"></div>
                         <div id="editRewardHolder"></div>
+
                     </div>
                 </div>
             </div>
             <!-- createReward -->
             <div id="createRewardModalHolder"></div>
-
+            <div id="removeRewardHolder"></div>
             <div id="addItemModalHolder"></div>
+            <div id="addItemModalNewRewardHolder"></div>
             <div id="removeItemModalHolder"></div>
             <div id="itemCreationModalHolder"></div>
             <div id="itemDelConfirmationHolder"></div>

@@ -1,83 +1,4 @@
 <!-- createReward -->
-<!-- <div class="modal fade" id="createRewardArea" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="createRewardArea">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form action="#" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="smallmodalLabel">Add a reward</h5>
-                    <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>
-                </div>
-                <div class="modal-body">
-                    <div class="row form-group" style="display: none;">
-                        <input type="text" id="input-option-id" name="text-input" placeholder="Title" class="form-control" th:field="*{optionId}">
-                        <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label"><b>Title</b></label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="input-reward-title" name="text-input" placeholder="Title" class="form-control" th:field="*{optionName}">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label"><b>Amount</b></label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" id="input-reward-amount" name="text-input" class="form-control" th:field="*{fundMin}">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label"><b>Description</b></label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <textarea name="textarea-input" id="input-reward-description" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
-                        </div>
-                    </div>
-                    <div class="row form-group" id="item-list">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label"><b>Item</b></label>
-                        </div>
-                        <div class="col-12 col-md-9" >
-                            <div class="row" th:each="item,i : ${option.itemDtoEntitiess}">
-                                <div style="display: none;">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemId}">
-                                </div>
-                                <div class="col-12 col-md-7">
-                                    <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].itemName}">
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <input type="text" id="text-input" placeholder="Quantity" name="text-input" class="form-control" th:field="*{itemDtoEntitiess[__${i.index}__].quantity}">
-                                </div>
-                                <div class="col-12 col-md-2">
-                                    <button type="button" class="btn" data-toggle="modal" style="background-color: black; color: white;">
-                                        remove
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-12 col-md-3"></div>
-                        <div class="col-12 col-md-9">
-                            <button type="button" class="btn"  style="width: 100%;color: white;background-color: black;"
-                                    th:onclick="'openAddItemModal(\'' + *{projectId} + '\',\'' + *{optionId} + '\');'">
-                                Add items
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" value="save" name="action" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
 <!-- add option modal  -->
 <div class="row" id="createRewardArea" th:fragment="createRewardArea">
     <div class="col-lg-12">
@@ -90,6 +11,7 @@
                 <form action="" th:action="@{/creator/save-reward}" th:object = "${option}" method="post" enctype="multipart/form-data" class="form-horizontal">
                     <div class="row form-group" style="display: none;">
                         <input type="text" id="input-project-id" name="text-input" placeholder="Title" class="form-control" th:field="*{projectId}">
+                        <input type="text" id="input-option-id" name="text-input" placeholder="Title" class="form-control" th:field="*{optionId}">
                     </div>
                     <!-- Project title and subtitle -->
                     <div class="row form-group">
@@ -113,14 +35,14 @@
                             <label class=" form-control-label"><b>Description</b></label>
                         </div>
                         <div class="col-12 col-md-7">
-                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
+                            <textarea id="description-input" rows="9" placeholder="Content..." class="form-control" th:field="*{optionDescription}"></textarea>
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-5">
                             <label  class=" form-control-label"><b>Item</b></label>
                         </div>
-                        <div class="col-12 col-md-7" >
+                        <div class="col-12 col-md-7" th:fragment="items-new-option-div">
                             <div class="row" th:each="item,i : ${option.itemDtoEntities}">
                                 <div style="display: none;">
                                     <input type="text" placeholder="Item" id="text-input" name="text-input" class="form-control" th:field="*{itemDtoEntities[__${i.index}__].itemId}">
@@ -151,7 +73,7 @@
                     </div>
                     <div class="custom-modal-button-container">
                         <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" th:onclick="'btn_cancelCreateNewOption_onclick()'">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -159,14 +81,41 @@
     </div>
 </div>
 
-<!-- edit reward modal -->
+<!--&lt;!&ndash; add item modal new reward&ndash;&gt;-->
+<div class="modal fade" id="addItemModalNewOption" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" th:fragment="addItemModalNewOption">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="smallmodalLabel">Edit your item</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <label for="text-input" class=" form-control-label"><b>Choose one</b></label>
+                            <select name="" id="itemListInput"  class="form-control" >
+                                <option th:each="item : ${items}"
+                                        th:value="${item.itemId}"
+                                        th:text="${item.itemName}">Please select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" th:onclick="'javascript:addToItemListNewOption();'">Choose this</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!--edit reward area-->
 <div class="row" id="editRewardArea" th:fragment="editRewardArea">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <strong>Add a rewards</strong>
+                <strong>Edit the rewards</strong>
                 <small class="form-text text-muted">Offer tangible or intangible things that bring backers closer to your project.</small>
             </div>
             <div class="card-body card-block custom-col">
@@ -235,7 +184,7 @@
                     </div>
                     <div class="custom-modal-button-container">
                         <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" th:onclick="'btn_cancelEdit_onclick()'">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -364,6 +313,25 @@
                 </div>
             </div>
             <!-- </form> -->
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="removeRewardModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" th:fragment="removeRewardModal"
+     data-backdrop="static">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticModalLabel">Are you sure to delete this reward?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger"
+                        th:onclick="'deleteReward(\'' + ${projectId} + '\',\'' + ${optionId} +  '\');'">Delete</button>
+            </div>
         </div>
     </div>
 </div>

@@ -24,7 +24,10 @@ public class OptionEntity {
     @Column(name = "fund_min", nullable = true, precision = 0)
     private Long fundMin;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Column(name = "is_temp", nullable = true)
+    private Integer isTemp;
+
+    @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private ProjectEntity project;
 

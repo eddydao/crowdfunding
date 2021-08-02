@@ -16,20 +16,45 @@ function showCreateRewardArea(projectId){
         }
     })
 }
-//  oepn add item form
+
+function btn_cancelCreateNewOption_onclick(){
+    var optionId = $("#input-option-id").val();
+    var projectId = $("#input-project-id").val();
+    var data  = {
+        "projectId": projectId,
+        "optionId" : optionId
+    }
+    $("#createRewardHolder").html("");
+    $("#addItemModalNewOption").modal("hide");
+    $.ajax({
+        url: "/creator/project/reward/cancel-create-new",
+        data: data,
+        success: function(data){
+            debugger
+            console.log(data);
+            $("#reward-list-div").html(data);
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+
+//  open add item form
 function openNewOptionAddItemModal(projectId){
     var dataForm = new FormData();
     dataForm.append("projectId", projectId);
     $.ajax({
-        url:"/creator/project/reward/addItemModal",
+        url:"/creator/project/reward/addItemModalNewOption",
         ache: false,
         contentType : false,
         processData: false,
         data: dataForm,
         type: "POST",
         success: function(data){
-            $("#addItemModalHolder").html(data);
-            $("#addItemModal").modal("show");
+            $("#addItemModalNewRewardHolder").html(data);
+            $("#addItemModalNewOption").modal("show");
         },
         error: function(data){
             console.log(data);
@@ -55,8 +80,12 @@ function showEditRewardArea(projectId, optionId){
     })
 }
 
+function btn_cancelEdit_onclick(){
+    $("#editRewardHolder").html("");
+    $("#editRewardArea").modal("hide");
+}
+
 function openAddItemModal(projectId, optionId, items){
-    debugger
     var dataForm = new FormData();
     dataForm.append("projectId", projectId);
     dataForm.append("optionId", optionId);
@@ -72,6 +101,38 @@ function openAddItemModal(projectId, optionId, items){
         success: function(data){
             $("#addItemModalHolder").html(data);
             $("#addItemModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function addToItemListNewOption(){
+    var itemId = $("#itemListInput option:selected").val();
+    var optionId = $("#input-option-id").val();
+    var projectId = $("#input-project-id").val();
+    var optionTitle = $("#title-inp").val();
+    var optionMinFund = $("#amount-inp").val();
+    var optionDes = $("#description-input").val();
+    var data  = {
+        "projectId": projectId,
+        "newItemId": itemId,
+        "optionId" : optionId,
+        "optionName" : optionTitle,
+        "fundMin": optionMinFund,
+        "optionDescription": optionDes,
+        "isTemp": 1,
+    }
+    $("#addItemModalNewOption").modal("hide");
+    $("#createRewardArea").html("");
+    $.ajax({
+        url: "/creator/project/reward/addItemToListNewOption",
+        data: data,
+        success: function(data){
+            debugger
+            console.log(data);
+            $("#createRewardHolder").html(data);
         },
         error: function(data){
             console.log(data);
@@ -150,6 +211,48 @@ function removeFromItemList(){
         error: function(data){
             console.log(data);
             toastr.success("Remove failed");
+        }
+    })
+}
+
+function showDeleteOptionModal(projectId, optionId){
+    var data = {
+        "projectId" : projectId,
+        "optionId"  : optionId
+    };
+
+    $.ajax({
+        url: "/creator/project/reward/remove-confirmation",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#removeRewardHolder").html(data);
+            $("#removeRewardModal").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function deleteReward(projectId, optionId){
+    var data = {
+        "projectId" : projectId,
+        "optionId"  : optionId
+    };
+    $("#removeRewardModal").modal("hide");
+    $.ajax({
+        url: "/creator/project/reward/remove",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#reward-list-div").html(data);
+            toastr.success('Delete successfully');
+        },
+        error: function(data){
+            console.log(data);
+            toastr.warning('Delete failed');
         }
     })
 }

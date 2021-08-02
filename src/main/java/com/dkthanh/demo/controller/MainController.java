@@ -791,6 +791,24 @@ public class MainController {
     /*
     Open select item modal
      */
+    @PostMapping(value = "/creator/project/reward/addItemModalNewOption")
+    public String openItemSelectionModalNewOption(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
+                                         BindingResult result, final RedirectAttributes redirectAttributes){
+        Integer optionId = dto.getOptionId();
+        Integer projectId = dto.getProjectId();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        OptionEntity optionEntity ;
+        if(optionId != null){
+            optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+            List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+            dto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+        }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", dto);
+        model.addAttribute("items", projectEntity.getItems() != null ? projectEntity.getItems() : null);
+        return "/creator/fragments/modal :: addItemModalNewOption";
+    }
+
 
     @PostMapping(value = "/creator/project/reward/addItemModal")
     public String openItemSelectionModal(HttpServletRequest request,Model model, @ModelAttribute("option") @Validated OptionDto dto,
@@ -810,13 +828,70 @@ public class MainController {
         return "/creator/fragments/modal :: addItemModal";
     }
 
+    @GetMapping(value = "creator/project/reward/addItemToListNewOption")
+    public String addItemToListNewOption( Model model, OptionDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getNewItemId();
+        Integer optionId = dto.getOptionId();
+        String optionName = dto.getOptionName();
+        Long fundMin = dto.getFundMin();
+        String description = dto.getOptionDescription();
 
+        // create temporary option entity if optionId is null
+        OptionEntity tempOption = null;
+        if(optionId == null){
+            tempOption = new OptionEntity();
+            tempOption.setOptionName(optionName);
+            tempOption.setFundMin(fundMin);
+            tempOption.setOptionDescription(description);
+            tempOption.setIsTemp(Constant.IS_TEMPORARY.TEMPORARY.getId());
+
+
+            ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+            tempOption.setProject(projectEntity);
+            optionService.save(tempOption);
+            optionId = tempOption.getOptionId();
+        }
+
+
+        Map<String, Object> map = new HashMap<>();
+        map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
+        map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
+        map.put(Constant.PROJECT_KEY.QUANTITY, 1);
+
+
+
+        optionItemService.saveOptionItem(map);
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(),
+                optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null, Constant.IS_TEMPORARY.TEMPORARY.getId());
+
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: createRewardArea";
+    }
 
     @GetMapping(value = "creator/project/reward/addItemToList")
     public String addItemToList( Model model, OptionDto dto){
         Integer projectId = dto.getProjectId();
         Integer itemId = dto.getNewItemId();
         Integer optionId = dto.getOptionId();
+
+        // create temporary option entity if optionId is null
+        OptionEntity tempOption = null;
+        if(optionId == null){
+            tempOption = new OptionEntity();
+            tempOption.setOptionName(dto.getOptionName());
+            tempOption.setIsTemp(Constant.IS_TEMPORARY.TEMPORARY.getId());
+            ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+            tempOption.setProject(projectEntity);
+            optionService.save(tempOption);
+            optionId = tempOption.getOptionId();
+        }
+
         Map<String, Object> map = new HashMap<>();
         map.put(Constant.PROJECT_KEY.ITEM_ID, itemId);
         map.put(Constant.PROJECT_KEY.OPTION_ID, optionId);
@@ -882,6 +957,7 @@ public class MainController {
             optionEntity.setOptionDescription(optionDto.getOptionDescription());
             optionEntity.setFundMin(optionDto.getFundMin());
             optionEntity.setProject(projectEntity);
+            optionEntity.setIsTemp(Constant.IS_TEMPORARY.NOT_TEMPORARY.getId());
         }
         projectEntity.getOptions().add(optionEntity);
         projectService.saveProjectEntity(projectEntity);
@@ -902,6 +978,106 @@ public class MainController {
         }
 
         return "redirect:/creator/project/" +projectId + "/reward" ;
+    }
+
+    @GetMapping(value = "/creator/project/reward/cancel-create-new")
+    public String cancelCreateNewOption(Model model, OptionDto inpOptionDto){
+        Integer projectId = inpOptionDto.getProjectId();
+        Integer optionId = inpOptionDto.getOptionId();
+
+        optionService.removeOption(projectId, optionId);
+
+        // return to screen
+        ProjectDto dto = new ProjectDto();
+
+        dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
+
+        if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
+        }
+        List<OptionDto> optionDtos = new ArrayList<>();
+
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
+        model.addAttribute("options", optionDtos);
+        model.addAttribute("project_dto", dto);
+        model.addAttribute("projectId", projectId);
+        return "/creator/project-reward::reward-list-div";
+    }
+
+    @GetMapping(value = "/creator/project/reward/remove-confirmation")
+    public String removeRewardConfirmation(Model model,OptionDto dto){
+        model.addAttribute("projectId", dto.getProjectId());
+        model.addAttribute("optionId", dto.getOptionId());
+        return "/creator/fragments/modal::removeRewardModal";
+    }
+
+    @PostMapping(value = "/creator/project/reward/remove")
+    public String removeReward(Model model, OptionDto inpOptionDto){
+        Integer projectId = inpOptionDto.getProjectId();
+        Integer optionId = inpOptionDto.getOptionId();
+
+        optionService.removeOption(projectId, optionId);
+
+        // return to screen
+        ProjectDto dto = new ProjectDto();
+//        ProjectFullInfoEntity fullInfoEntity = projectService.getProjectDetail(projectId);
+
+        dto.setProjectId(projectId);
+        dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        List<OptionEntity> optionList = null;
+//        List<ItemEntity> itemList = null;
+
+        if(projectEntity != null){
+            optionList = optionService.getOptionListByProjectId(projectId);
+//            itemList= itemService.getItemsOfProject(projectId);
+        }
+        List<OptionDto> optionDtos = new ArrayList<>();
+
+        if(optionList != null && !optionList.isEmpty()){
+            for(int i = 0; i < optionList.size(); i++){
+                OptionEntity option = optionList.get(i);
+
+                List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, option.getOptionId());
+                OptionDto optionDto = new OptionDto(option.getOptionId(),
+                        option.getOptionName(),
+                        option.getOptionDescription(),
+                        option.getFundMin(),
+                        listItem,
+                        option.getProject().getProjectId(),
+                        null);
+                optionDtos.add(optionDto);
+            }
+        }
+//        OptionDto optionDto = new OptionDto(null, null,
+//                null, null, null, projectId, null);
+
+//        model.addAttribute("allCategory", categoryService.getAllCategory());
+        model.addAttribute("options", optionDtos);
+//        model.addAttribute("items", itemList);
+        model.addAttribute("project_dto", dto);
+//        model.addAttribute("option", optionDto);
+        model.addAttribute("projectId", projectId);
+        return "/creator/project-reward::reward-list-div";
     }
 
     /*
@@ -1025,7 +1201,12 @@ public class MainController {
             story.setProject(projectEntity);
             storyService.save(story);
         }
-        StoryDto storyDto = new StoryDto(projectId, modifiedResourceRelativePath(story.getStoryDes(), true) );
+        StoryDto storyDto = new StoryDto();
+        storyDto.setProjectId(projectId);
+        if(story.getStoryDes() != null && !story.getStoryDes().isEmpty()){
+            storyDto.setStoryDes(modifiedResourceRelativePath(story.getStoryDes(), true) );
+        }
+
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
         model.addAttribute("story_dto", storyDto);
