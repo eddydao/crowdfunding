@@ -2,15 +2,9 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Forms</title>
+    <title>Pending approve project detail</title>
 
     <!-- Fontfaces CSS-->
     <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
@@ -48,21 +42,37 @@
         <div class="menu-sidebar__content js-scrollbar1">
             <nav class="navbar-sidebar">
                 <ul class="list-unstyled navbar__list">
-                    <li class="active">
+                    <li class="has-sub" sec:authorize="!hasRole('ADMIN')">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li  sec:authorize="hasRole('ADMIN')">
                         <a class="js-arrow" th:href="@{/admin}">
                             <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                     </li>
-                    <li >
+                    <li class="active" sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/admin/project/pending-list}">
                             <i class="fas fa-check"></i>Pending approval project</a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/admin/user/list}">
-                            <i class="fas fa-user"></i>Account management</a>
+                            <i class="fas fa-user"></i>Admin account management</a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/admin/category/list}">
                             <i class="fas fa-tag"></i>Category management</a>
+                    </li>
+                    <li >
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
                     </li>
                 </ul>
             </nav>
