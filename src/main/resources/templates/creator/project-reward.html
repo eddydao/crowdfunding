@@ -22,12 +22,12 @@
     <link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <link href="/creator/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
 
     <!-- Main CSS-->
     <!-- <link href="../../css/theme.css" rel="stylesheet" media="all"> -->
     <link href="../../css/custom-style.css" rel="stylesheet" media="all">
-    <link href="/admin/css/toastr.css" rel="stylesheet"/>
+    <link href="/creator/css/toastr.css" rel="stylesheet"/>
 </head>
 
 <body class="animsition">
@@ -170,7 +170,7 @@
                                                                     th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
                                                                     Edit
                                                                 </button>
-                                                                <button type="button" data-toggle="modal" data-target="#deleteRewardModal" style="margin-right: 30px" th:attrappend="data-target=${option.optionId}">
+                                                                <button type="button" >
                                                                     Delete
                                                                 </button>
                                                             </div>
@@ -191,9 +191,6 @@
                                                     <div  th:fragment="item-list-div" id="item-list-div" >
                                                         <div class="card border  border-secondary">
                                                             <div class="card-header" th:each="item: ${items}">
-<!--                                                                <div>-->
-<!--                                                                    <input th:value="">-->
-<!--                                                                </div>-->
                                                                 <div class1="fl" style="float:left">
                                                                     <strong class="card-title" th:text="${item.itemName}"></strong>
                                                                 </div>
@@ -250,8 +247,8 @@
     <script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="../../vendor/select2/select2.min.js">
     </script>
-    <script src="/admin/js/jquery.toast.min.js"></script>
-    <script src="/admin/js/toastr.min.js"></script>
+    <script src="/creator/js/jquery.toast.min.js"></script>
+    <script src="/creator/js/toastr.min.js"></script>
 
     <!-- Main JS-->
     <script src="../../js/main.js"></script>
