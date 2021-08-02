@@ -12,29 +12,11 @@
     <link rel="stylesheet" href="css/animate.min.css"/>
     <link rel="stylesheet" href="css/md-slider.css"/>
     <link rel="stylesheet" href="css/style.css"/>
-    <!--[if lte IE 7]>
     <link rel="stylesheet" href="css/ie7.css"/>
-    <![endif]-->
-    <!--[if lte IE 8]>
     <link rel="stylesheet" href="css/ie8.css"/>
-    <![endif]-->
     <link rel="stylesheet" href="css/responsive.css"/>
     <link rel="stylesheet" href="css/index.css"/>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="js/html5.js"></script>
-    <![endif]-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/raphael-min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.touchwipe.min.js"></script>
-    <script type="text/javascript" src="js/md_slider.min.js"></script>
-    <script type="text/javascript" src="js/jquery.sidr.min.js"></script>
-    <script type="text/javascript" src="js/jquery.tweet.min.js"></script>
-    <script type="text/javascript" src="js/pie.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
+
 
 </head>
 <body>
@@ -180,7 +162,7 @@
         <div class="container_12">
             <div class="grid_12 wrap-title">
                 <h2 class="common-title">Popular</h2>
-                <a class="be-fc-orange" href="category.html">View all</a>
+                <a class="be-fc-orange" th:href="@{/project/all}">View all</a>
             </div>
             <div class="clear"></div>
             <div class="lst-popular-project clearfix">
@@ -194,7 +176,7 @@
                                 <div class="wrap-short-detail">
                                     <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
                                     <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></a></p>
-                                    <p class="rs title-description text-wrap" th:text="${project.projectShortDes}"></p>
+                                    <p class="rs title-description overflow" th:text="${project.projectShortDes}"></p>
                                 </div>
                             </div>
                         </div>
@@ -253,5 +235,19 @@
     </footer><!--end: #footer -->
 
 </div>
+
+<script type="text/javascript" src="js/html5.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/raphael-min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.touchwipe.min.js"></script>
+<script type="text/javascript" src="js/md_slider.min.js"></script>
+<script type="text/javascript" src="js/jquery.sidr.min.js"></script>
+<script type="text/javascript" src="js/jquery.tweet.min.js"></script>
+<script type="text/javascript" src="js/pie.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

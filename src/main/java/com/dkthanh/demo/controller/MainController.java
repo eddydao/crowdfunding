@@ -432,8 +432,11 @@ public class MainController {
     @GetMapping(value = "/category/{id}")
     public String getListProjectById(Model model, @PathVariable("id") Integer id){
         List<ProjectFullInfoEntity> list = projectService.getProjectListByCategoryId(id);
-        for (ProjectFullInfoEntity p: list) {
-            p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+
+        if(list != null && !list.isEmpty()){
+            for (ProjectFullInfoEntity p: list) {
+                p.setThumbnailPath(RELATIVE_PATH+ p.getThumbnailPath());
+            }
         }
         model.addAttribute("projects", list);
         model.addAttribute("categories", categoryService.getAllCategory());
