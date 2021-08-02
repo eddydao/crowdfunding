@@ -102,7 +102,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         }
 
         if(popular != null){
-            sql.append("LIMIT 4\n");
+            sql.append("LIMIT 8\n");
         }
 
 

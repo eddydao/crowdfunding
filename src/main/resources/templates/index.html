@@ -126,7 +126,7 @@
                             </a>
                             <div class="wrap-short-detail">
                                 <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${recommended_project.projectId}" ><span th:text="${recommended_project.projectName}"></span></a></h3>
-                                <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></a> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
+                                <p class="rs tiny-desc">by <span class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></span> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
                                 <p class="rs title-description " th:text="${recommended_project.projectShortDes}"></p>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                 </a>
                                 <div class="wrap-short-detail">
                                     <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
-                                    <p class="rs tiny-desc">by <a href="profile.html" class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></a></p>
+                                    <p class="rs tiny-desc">by <span class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></span></p>
                                     <p class="rs title-description overflow" th:text="${project.projectShortDes}"></p>
                                 </div>
                             </div>
