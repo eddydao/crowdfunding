@@ -200,9 +200,10 @@
 <!--                            <img src="../images/ex/th-90x90-1.jpg" alt="$USER_NAME"/>-->
 <!--                        </a>-->
                         <div class="media-body">
-                            </span><h4 class="rs pb10 fa-user"><a th:href="@{/get-creator-info/} + ${project.userId}" class="be-fc-orange fw-b" ><span th:text="${project.userFullName}"></span></a></h4>
-                            <p class="rs" >From: <span th:text="${project.countryName}"></span></p>
-                            <p class="rs fc-gray" ><span th:text="${creator.email}"></span></p>
+                            </span><h3 class="rs pb10 fa-user"><a th:href="@{/get-creator-info/} + ${project.userId}" class="be-fc-orange fw-b" ><span th:text="${project.userFullName}"></span></a></h3>
+<!--                            <p class="rs" >From: <span th:text="${creator.countryName}"></span></p>-->
+                            <p  class="rs fc-gray" ><span th:text="${creator.email}"></span></p>
+                            <br>
                             <p class="rs"><span th:text="${creator.biography}"></span></p>
                         </div>
                     </div>
@@ -223,7 +224,7 @@
                                     <p class="rs pledge-description" th:text="${option.optionDescription}"></p>
                                     <ul th:each="item,i : ${option.itemDtoEntities}">
 <!--                                        <li th:value="${items[__${i.index}__].itemId}"></li>-->
-                                        <li th:text="${option.itemDtoEntities[__${i.index}__].itemName}"></li>
+                                        <li th:text="${option.itemDtoEntities[__${i.index}__].quantity} + 'x' + ${option.itemDtoEntities[__${i.index}__].itemName}"></li>
                                     </ul>
                                     <p class="rs fw-thin fc-gray pb20"></p>
                                     <form action="#" th:action = "@{/fund-project}" method="post" th:object="${option}" enctype="multipart/form-data">

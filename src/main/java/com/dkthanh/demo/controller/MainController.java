@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -547,6 +550,15 @@ public class MainController {
             user.setRoles(roleEntities);
             userService.saveUser(user);
         }
+
+        // re-setup authority of user
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(Constant.Roles.INVESTOR.getName()));
+        authorities.add(new SimpleGrantedAuthority(Constant.Roles.CREATOR.getName()));
+
+        Authentication reAuth = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), user.getPassword(),authorities);
+
+        SecurityContextHolder.getContext().setAuthentication(reAuth);
 
         return "redirect:/creator/create-project";
     }

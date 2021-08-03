@@ -157,7 +157,7 @@
                                                                         <label for="text-input" class=" form-control-label">Project subtitle</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white;" th:value="${project.projectShortDes}"></textarea>
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${project.projectShortDes}"></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <hr>
@@ -174,7 +174,7 @@
                                                                         <label for="text-input" class=" form-control-label">Target launch date</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.startDate}">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#temporals.format(project.startDate, 'dd/MM/yyyy')}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row form-group">
@@ -182,7 +182,7 @@
                                                                         <label for="text-input" class=" form-control-label">Duration</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.endDate}">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#temporals.format(project.endDate, 'dd/MM/yyyy')}">
                                                                     </div>
                                                                 </div>
                                                             </div>
