@@ -85,6 +85,7 @@
                                 <a class="dropdown-item" th:href="@{/user/account}">Account</a>
                                 <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Your Project</a>
                                 <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/backed-project}">Backed project</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin dashboard</a>
                                 <a class="dropdown-item" th:href="@{/logout}">Log out</a>
                             </div>
                         </div>

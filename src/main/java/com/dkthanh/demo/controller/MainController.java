@@ -16,11 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -106,6 +109,7 @@ public class MainController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     public static final String RELATIVE_PATH = "../../../";
     public static final String REPLACE_THUMBNAIL_PATH = "/creator/images/bg-title-01.jpg";
@@ -190,7 +194,7 @@ public class MainController {
 
     //    Save new user
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerNewAccount(Model model, @ModelAttribute("newUserForm") @Validated NewUserDTO newUserDTO, BindingResult result, final RedirectAttributes redirectAttributes){
+    public String registerNewAccount(Model model, @ModelAttribute("newUserForm") @Validated NewUserDTO newUserDTO, BindingResult result, HttpServletRequest request, final RedirectAttributes redirectAttributes){
         // Validate result
         if (result.hasErrors()) {
             return "404";
@@ -202,6 +206,12 @@ public class MainController {
         }catch (Exception e){
             return "register";
         }
+//        try{
+//            request.login(newUser.getUsername(), newUser.getPassword());
+//        }catch (ServletException e){
+//            e.printStackTrace();
+//        }
+
         return "registerSucceed";
     }
 
@@ -209,6 +219,21 @@ public class MainController {
     @GetMapping(value = "/signin")
     public String login() {
         return "/login-page";
+    }
+
+    @GetMapping(value = "/login-error")
+    public String loginError(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession(false);
+        String errorMessage = null;
+        if (session != null) {
+            AuthenticationException ex = (AuthenticationException) session
+                    .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+            if (ex != null) {
+                errorMessage = ex.getMessage();
+            }
+        }
+        model.addAttribute("errorMessage", errorMessage);
+        return "login-page";
     }
 
     // search function
