@@ -127,6 +127,8 @@
                                                    aria-selected="false">Rewards</a>
                                                 <a class="nav-item nav-link" id="nav-story-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-story"
                                                    aria-selected="false">Story</a>
+                                                <a class="nav-item nav-link" id="nav-user-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-user"
+                                                   aria-selected="false">User information</a>
                                             </div>
                                         </nav>
                                         <div class="tab-content pl-3 pt-2" id="nav-tabContent">
@@ -238,6 +240,57 @@
                                             </div>
                                             <div class="tab-pane fade" id="nav-story" role="tabpanel" aria-labelledby="nav-story-tab">
                                                 <p th:utext="${story != null ? story.storyDes : null}"></p>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">User full name</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user eq null ? user.firstName : 'Empty'}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Email</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${user.mail ?: 'Empty'}"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Address</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.address ?: 'Empty'}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Phone number</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.phoneNum ?: 'Empty}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Biography</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.biography ?: ''}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

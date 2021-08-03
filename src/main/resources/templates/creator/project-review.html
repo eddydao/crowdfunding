@@ -108,11 +108,16 @@
                                 </div>
                                 <div class="au-inbox-wrap js-inbox-wrap" id="project-review-div" th:fragment="project-review-div" th:if="${statusId} == '7'">
                                     <div class="au-message js-list-load">
-                                        <div class="au-message__noti">
+                                        <div class="au-message__noti" th:if="${disabled != 1}">
                                             <p>We'll review your project and get back to you soon
                                             </p>
                                         </div>
-                                        <div class="au-message__footer">
+                                        <div th:if="${disabled == 1}">
+                                            <div class="alert alert-danger">
+                                                You need to update your personal information before submit the project to review.
+                                            </div>
+                                        </div>
+                                        <div class="au-message__footer" th:if="${disabled != 1}">
                                             <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_submitReview_onclick()'">Submit to review</button>
                                         </div>
                                     </div>

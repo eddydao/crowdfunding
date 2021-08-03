@@ -1,7 +1,6 @@
 package com.dkthanh.demo.controller;
 
 import com.dkthanh.demo.dao.MaterialTypeRepository;
-import com.dkthanh.demo.domain.Package;
 import com.dkthanh.demo.domain.*;
 import com.dkthanh.demo.domain.dto.*;
 import com.dkthanh.demo.dto.ProjectDto;
@@ -36,7 +35,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -104,6 +102,9 @@ public class MainController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PaymentService paymentService;
 
 
     public static final String RELATIVE_PATH = "../../../";
@@ -490,45 +491,45 @@ public class MainController {
             return new ChargeRequestEntity(false, "Stripe payment token is missing. Please, try again later.");
         }
 
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        UserEntity user = null;
-
-        // in real run, uncomment this block
-        if(authentication != null) {
-
-            username = ((UserDetails) authentication.getPrincipal()).getUsername();
-        }
-        if(!"".equals(username)){
-            user = userService.findUserByUsername(username);
-        }
-
-        Integer userId  = user.getId();
-
-        // update info of project
-        ProjectEntity projectEntity = projectService.getProjectEntityById(Integer.parseInt(projectId));
-        projectEntity.setPledged(projectEntity.getPledged() != null ? projectEntity.getPledged() + pledge : pledge);
-
-        int count = 0;
-        List<Package> listExistPack = packageService.getAllPackageByProjectId(Integer.parseInt(projectId));
-        for(int i = 0; i< listExistPack.size(); i++){
-            if(username.equals(listExistPack.get(i).getUser().getUsername()) ){
-                count++;
-            }
-        }
-
-        if(count == 0){
-            projectEntity.setInvestorCount(projectEntity.getInvestorCount() + 1);
-        }
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        PackageDto dto = new PackageDto(userId, Integer.parseInt(projectId), Integer.parseInt(optionId), new Long(pledge),timestamp);
-
-        int rowCount = packageService.customSavePackage(dto);
-        System.out.println("ROWCOUNT..........." + rowCount);
-
-        String chargeId = stripeService.createCharge(email, token, pledge * CENT_TRANSFER);
+        String chargeId = paymentService.createCharge( email,  token,  optionId,  projectId,  pledge);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = null;
+//        UserEntity user = null;
+//
+//        // in real run, uncomment this block
+//        if(authentication != null) {
+//
+//            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+//        }
+//        if(!"".equals(username)){
+//            user = userService.findUserByUsername(username);
+//        }
+//
+//        Integer userId  = user.getId();
+//
+//        // update info of project
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(Integer.parseInt(projectId));
+//        projectEntity.setPledged(projectEntity.getPledged() != null ? projectEntity.getPledged() + pledge : pledge);
+//
+//        int count = 0;
+//        List<Package> listExistPack = packageService.getAllPackageByProjectId(Integer.parseInt(projectId));
+//        for(int i = 0; i< listExistPack.size(); i++){
+//            if(username.equals(listExistPack.get(i).getUser().getUsername()) ){
+//                count++;
+//            }
+//        }
+//
+//        if(count == 0){
+//            projectEntity.setInvestorCount(projectEntity.getInvestorCount() + 1);
+//        }
+//
+//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//        PackageDto dto = new PackageDto(userId, Integer.parseInt(projectId), Integer.parseInt(optionId), new Long(pledge),timestamp);
+//
+//        int rowCount = packageService.customSavePackage(dto);
+//        System.out.println("ROWCOUNT..........." + rowCount);
+//
+//        String chargeId = stripeService.createCharge(email, token, pledge * CENT_TRANSFER);
         if (chargeId == null) {
             return new ChargeRequestEntity(false, "An error occurred while trying to create a charge.");
         }
@@ -1342,6 +1343,18 @@ public class MainController {
 
             username = ((UserDetails) authentication.getPrincipal()).getUsername();
         }
+
+        UserEntity user = userService.findUserByUsername(username);
+        Integer userId = user.getId();
+
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        if(userDetailEntity == null ){
+            model.addAttribute("disabled", 1);
+        }else{
+            model.addAttribute("disabled", 0);
+        }
+
         model.addAttribute("statusId", statusId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("username", username);
@@ -1628,6 +1641,8 @@ public class MainController {
             }
         }
 
+        UserDetailEntity userDetailEntity = userDetailService.getUserDetailByUserId(projectEntity.getUser().getId());
+
         if(count > 0 ){
             commentMap.put("isClosed", "1");
         }else{
@@ -1638,6 +1653,7 @@ public class MainController {
         model.addAttribute("items", itemList);
         model.addAttribute("project", projectFullInfoEntity);
         model.addAttribute("story", story);
+        model.addAttribute("user", userDetailEntity);
         model.addAllAttributes(commentMap);
 
         return "/admin/pending-project-detail";
