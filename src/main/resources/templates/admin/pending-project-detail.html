@@ -127,7 +127,7 @@
                                                    aria-selected="false">Rewards</a>
                                                 <a class="nav-item nav-link" id="nav-story-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-story"
                                                    aria-selected="false">Story</a>
-                                                <a class="nav-item nav-link" id="nav-user-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-user"
+                                                <a class="nav-item nav-link" id="nav-user-tab" data-toggle="tab" href="#nav-user" role="tab" aria-controls="nav-user"
                                                    aria-selected="false">User information</a>
                                             </div>
                                         </nav>
@@ -251,7 +251,7 @@
                                                                         <label for="text-input" class=" form-control-label">User full name</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user eq null ? user.firstName : 'Empty'}">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.firstName?: ''} + ' ' + ${user.lastName?: ''}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row form-group">
@@ -259,7 +259,7 @@
                                                                         <label for="text-input" class=" form-control-label">Email</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${user.mail ?: 'Empty'}"></textarea>
+                                                                        <input rows="3" class="form-control" readonly style="background-color: white;" th:value="${user.email?: ''}"></input>
                                                                     </div>
                                                                 </div>
                                                                 <hr>
@@ -268,7 +268,7 @@
                                                                         <label for="text-input" class=" form-control-label">Address</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.address ?: 'Empty'}">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.address?: ''}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row form-group">
@@ -276,7 +276,7 @@
                                                                         <label for="text-input" class=" form-control-label">Phone number</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.phoneNum ?: 'Empty}">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.phoneNum != null ? user.phoneNum : ''}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row form-group">
@@ -284,7 +284,7 @@
                                                                         <label for="text-input" class=" form-control-label">Biography</label>
                                                                     </div>
                                                                     <div class="col-12 col-md-9">
-                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.biography ?: ''}">
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${user.biography?: ''}"></textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
