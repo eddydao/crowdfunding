@@ -16,13 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -34,7 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -221,19 +218,9 @@ public class MainController {
         return "/login-page";
     }
 
-    @GetMapping(value = "/login-error")
+    @GetMapping(value = "/login-success")
     public String loginError(HttpServletRequest request, Model model){
-        HttpSession session = request.getSession(false);
-        String errorMessage = null;
-        if (session != null) {
-            AuthenticationException ex = (AuthenticationException) session
-                    .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-            if (ex != null) {
-                errorMessage = ex.getMessage();
-            }
-        }
-        model.addAttribute("errorMessage", errorMessage);
-        return "login-page";
+        return "login-success";
     }
 
     // search function
