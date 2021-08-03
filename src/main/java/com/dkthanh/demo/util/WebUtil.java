@@ -1,13 +1,14 @@
 package com.dkthanh.demo.util;
 
+import com.dkthanh.demo.domain.dto.UploadFormDto;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 
 public class WebUtil {
@@ -44,5 +45,43 @@ public class WebUtil {
             url.append("/");
         }
         return url.toString();
+    }
+
+    public static String doUpload(UploadFormDto myUploadForm) {
+
+        String description = myUploadForm.getImageName();
+        System.out.println("Description: " + description);
+
+        // Thư mục gốc upload file.
+        String path = System.getProperty("user.dir");
+        String uploadRelativePath = "images/project-assets/" + myUploadForm.getProjectId();
+        String uploadRootPath = path + "/src/main/resources/static/" + uploadRelativePath;
+        System.out.println("uploadRootPath=" + uploadRootPath);
+
+        File uploadRootDir = new File(uploadRootPath);
+        // Tạo thư mục gốc upload nếu nó không tồn tại.
+        if (!uploadRootDir.exists()) {
+            uploadRootDir.mkdirs();
+        }
+        MultipartFile fileDatas = myUploadForm.getFileDatas();
+        // Tên file gốc tại Client.
+        String name = fileDatas.getOriginalFilename();
+        System.out.println("Client File Name = " + name);
+
+        if (name != null && name.length() > 0) {
+            try {
+                // Tạo file tại Server.
+                File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+                stream.write(fileDatas.getBytes());
+                stream.close();
+                System.out.println("Write file: " + serverFile);
+            } catch (Exception e) {
+                System.out.println("Error Write file: " + name);
+            }
+        }
+        System.out.println("File location = " + uploadRelativePath +  File.separator + name);
+        return uploadRelativePath +  File.separator + name;
     }
 }

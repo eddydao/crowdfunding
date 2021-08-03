@@ -1,15 +1,23 @@
 package com.dkthanh.demo.service;
 
 import com.dkthanh.demo.dao.ProjectRepository;
+import com.dkthanh.demo.domain.CategoryEntity;
 import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
+import com.dkthanh.demo.domain.dto.UploadFormDto;
+import com.dkthanh.demo.dto.ProjectDto;
 import com.dkthanh.demo.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
+
+import static com.dkthanh.demo.util.WebUtil.doUpload;
 
 @Service
 @Transactional
@@ -83,11 +91,6 @@ public class ProjectService {
 
         return project;
     }
-
-    // get project thumbnail path
-//    public String getProjectThumbnailPath(int projectId){
-//        return null;
-//    }
 
     //search project by name
     public List<ProjectFullInfoEntity> searchProjectByNameContaining(String keyword){
@@ -211,6 +214,34 @@ public class ProjectService {
     public List<ProjectFullInfoEntity> getAllBackedProjectByUserId(Integer userId){
         List<ProjectFullInfoEntity> list = projectRepository.gteBackedProjectByUserId(userId);
         return list;
+    }
+
+    public ProjectEntity saveBasicInfo(ProjectDto dto ){
+        ProjectEntity projectEntity = this.getProjectEntityById(dto.getProjectId());
+        String thumbnailPath = projectEntity.getThumbnailPath();
+        int step = dto.getStep();
+        // insert basic information
+        if(step == 1){
+            // get category detail
+            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
+            UploadFormDto uploadDto = new UploadFormDto(dto.getProjectId(), dto.getImageName(), dto.getFileDatas());
+            projectEntity.setProjectId(dto.getProjectId());
+            projectEntity.setProjectName(dto.getProjectName());
+            projectEntity.setProjectShortDes(dto.getSubTitle());
+            projectEntity.setCategory(category);
+            projectEntity.setGoal(dto.getGoal());
+            projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? doUpload(uploadDto) : thumbnailPath);
+
+            if(dto.getStartDate() != null ){
+                projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIN, ZoneOffset.UTC));
+            }
+            if(dto.getEndDate() != null ){
+                projectEntity.setEndDate(OffsetDateTime.of(dto.getEndDate(), LocalTime.MIN, ZoneOffset.UTC));
+            }
+        }
+
+        this.saveProjectEntity(projectEntity);
+        return projectEntity;
     }
 
 }

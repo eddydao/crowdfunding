@@ -165,6 +165,28 @@ function addToItemList(){
     })
 }
 
+function openRemoveItemModalNewOption(projectId, optionId, itemId){
+    debugger
+    var data = {
+        "projectId" : projectId,
+        "optionId" : optionId,
+        "newItemId" : itemId
+    }
+    $.ajax({
+        url: "/creator/project/confirm-remove-item-new-option/",
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#removeItemModalHolderNewOption").html(data);
+            $("#removeItemModalNewOption").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+
+    })
+}
+
 function openRemoveItemModal(projectId, optionId, itemId){
     debugger
     var data = {
@@ -184,6 +206,33 @@ function openRemoveItemModal(projectId, optionId, itemId){
             console.log(data);
         }
 
+    })
+}
+ád
+function removeFromItemListNewOption(){
+    var itemId = $("#item_id_input").val();
+    var optionId = $("#option_id_input").val();
+    var projectId = $("#project_id_input").val();
+    var data  = {
+        "projectId": projectId,
+        "newItemId": itemId,
+        "optionId" : optionId
+    }
+    $("#removeItemModalNewOption").modal("hide");
+    $("#createRewardHolder").html("");
+    $.ajax({
+        url: "/creator/project/reward/remove-item-new-option",
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#createRewardHolder").html(data);
+            toastr.success("Remove successfully");
+        },
+        error: function(data){
+            console.log(data);
+            toastr.success("Remove failed");
+        }
     })
 }
 

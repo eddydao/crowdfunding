@@ -38,9 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
 
 @CrossOrigin("*")
@@ -707,25 +705,31 @@ public class MainController {
             return "redirect:/index";
         }
         // ProjectEntity projectEntity = new ProjectEntity();
-        ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
-        String thumbnailPath = projectEntity.getThumbnailPath();
-        int step = dto.getStep();
-        // insert basic information
-        if(step == 1){
-            // get category detail
-            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
-            UploadFormDto uploadDto = new UploadFormDto(dto.getProjectId(), dto.getImageName(), dto.getFileDatas());
-            projectEntity.setProjectId(dto.getProjectId());
-            projectEntity.setProjectName(dto.getProjectName());
-            projectEntity.setProjectShortDes(dto.getSubTitle());
-            projectEntity.setCategory(category);
-            projectEntity.setGoal(dto.getGoal());
-            projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? this.doUpload(uploadDto) : thumbnailPath);
-            projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIN, ZoneOffset.UTC));
-            projectEntity.setEndDate(OffsetDateTime.of(dto.getEndDate(), LocalTime.MIN, ZoneOffset.UTC));
-        }
-
-        projectService.saveProjectEntity(projectEntity);
+//        ProjectEntity projectEntity = projectService.getProjectEntityById(dto.getProjectId());
+//        String thumbnailPath = projectEntity.getThumbnailPath();
+//        int step = dto.getStep();
+//        // insert basic information
+//        if(step == 1){
+//            // get category detail
+//            CategoryEntity category = categoryService.getCategoryById(dto.getCategoryId());
+//            UploadFormDto uploadDto = new UploadFormDto(dto.getProjectId(), dto.getImageName(), dto.getFileDatas());
+//            projectEntity.setProjectId(dto.getProjectId());
+//            projectEntity.setProjectName(dto.getProjectName());
+//            projectEntity.setProjectShortDes(dto.getSubTitle());
+//            projectEntity.setCategory(category);
+//            projectEntity.setGoal(dto.getGoal());
+//            projectEntity.setThumbnailPath(  (uploadDto.getFileDatas() != null && !uploadDto.getFileDatas().isEmpty()) ? this.doUpload(uploadDto) : thumbnailPath);
+//
+//            if(dto.getStartDate() != null ){
+//                projectEntity.setStartDate(OffsetDateTime.of(dto.getStartDate(), LocalTime.MIN, ZoneOffset.UTC));
+//            }
+//            if(dto.getEndDate() != null ){
+//                projectEntity.setEndDate(OffsetDateTime.of(dto.getEndDate(), LocalTime.MIN, ZoneOffset.UTC));
+//            }
+//        }
+//
+//        projectService.saveProjectEntity(projectEntity);
+        projectService.saveBasicInfo(dto);
         return "redirect:/creator/project/"+ dto.getProjectId();
     }
     //==================================================================================================================
@@ -933,11 +937,37 @@ public class MainController {
         return "/creator/fragments/modal :: editRewardArea";
     }
 
+    @GetMapping(value = "/creator/project/confirm-remove-item-new-option/")
+    public String confirmRemoveItemFromListNewoption(Model model, OptionDto dto){
+
+        model.addAttribute("dto" , dto);
+        return "/creator/fragments/modal :: removeItemModalNewOption";
+    }
+
     @GetMapping(value = "/creator/project/confirm-remove-item/")
     public String confirmRemoveItemFromList(Model model, OptionDto dto){
 
         model.addAttribute("dto" , dto);
         return "/creator/fragments/modal :: removeItemModal";
+    }
+
+    @PostMapping(value = "/creator/project/reward/remove-item-new-option")
+    public String removeItemFromListNewOption(Model model, OptionDto dto){
+        Integer projectId = dto.getProjectId();
+        Integer itemId = dto.getNewItemId();
+        Integer optionId = dto.getOptionId();
+
+        boolean isDeleted = optionItemService.removeOptionItemById(optionId, itemId);
+
+        OptionEntity optionEntity = optionService.getOptionByProjectIdAndOptionId(projectId, optionId);
+        List<ItemDtoEntity> listItem = optionItemService.getItemDtoListByProjectIdAndOptionId(projectId, optionId);
+        OptionDto optionDto = new OptionDto(optionEntity.getOptionId(), optionEntity.getOptionName(), optionEntity.getOptionDescription(), optionEntity.getFundMin(), listItem, projectId, null);
+
+
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("option", optionDto);
+        model.addAttribute("items", optionEntity.getItems());
+        return "/creator/fragments/modal :: editRewardArea";
     }
 
     @PostMapping(value = "/creator/project/reward/remove-item")
