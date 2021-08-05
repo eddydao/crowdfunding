@@ -44,6 +44,7 @@ import java.time.OffsetDateTime;
                                 columns = {
                                         @ColumnResult(name = "timestamp", type = OffsetDateTime.class),
                                         @ColumnResult(name = "username", type = String.class),
+                                        @ColumnResult(name = "email", type = String.class),
                                         @ColumnResult(name = "option_name", type = String.class),
                                         @ColumnResult(name = "pledged", type = Long.class)
                                 }

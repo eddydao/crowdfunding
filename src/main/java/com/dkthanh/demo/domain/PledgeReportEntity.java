@@ -17,6 +17,7 @@ public class PledgeReportEntity {
     private Integer month;
     private String timestamp;
     private String username;
+    private String email;
     private OffsetDateTime timestampOffset;
 
     private Integer optionId;
@@ -37,9 +38,10 @@ public class PledgeReportEntity {
         this.optionPercent = optionPercent;
     }
 
-    public PledgeReportEntity( OffsetDateTime timestamp, String username, String optionName, Long pledge) {
+    public PledgeReportEntity( OffsetDateTime timestamp, String username,String email,  String optionName, Long pledge) {
         this.timestampOffset = timestamp;
         this.username = username;
+        this.email = email;
         this.optionName = optionName;
         this.pledge = pledge;
     }

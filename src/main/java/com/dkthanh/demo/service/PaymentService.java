@@ -61,7 +61,7 @@ public class PaymentService {
         }
 
         if(count == 0){
-            projectEntity.setInvestorCount(projectEntity.getInvestorCount() + 1);
+            projectEntity.setInvestorCount(projectEntity.getInvestorCount() != null ? projectEntity.getInvestorCount() + 1 : 0 + 1);
         }
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

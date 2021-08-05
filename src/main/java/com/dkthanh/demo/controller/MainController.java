@@ -1325,6 +1325,7 @@ public class MainController {
         // overview information
         model.addAttribute("investor_count" , projectEntity.getInvestorCount());
         model.addAttribute("pledge", projectEntity.getPledged());
+        model.addAttribute("goal", projectEntity.getGoal());
 
         return "/creator/creator-report";
     }
@@ -1537,11 +1538,11 @@ public class MainController {
 
         List<ProjectFullInfoEntity> listPendingProject = projectService.getProjectListByStatus(Constant.ProjectStatus.WAITING.getId());
         List<ProjectFullInfoEntity> listRunningProject = projectService.getProjectListByStatus(Constant.ProjectStatus.RUNNING.getId());
-
+        Integer creatorCount = userRoleService.countUserByRole(Constant.Roles.CREATOR.getId());
 
         model.addAttribute("pending_project_count", listPendingProject != null ? listPendingProject.size() : null);
         model.addAttribute("running_project_count", listRunningProject != null ? listRunningProject.size() : null);
-        model.addAttribute("creator_count", userRoleService.countUserByRole(Constant.Roles.CREATOR.getId()));
+        model.addAttribute("creator_count", creatorCount);
         return "admin/admin-dashboard";
     }
 
@@ -1710,6 +1711,11 @@ public class MainController {
             projectService.saveProjectEntity(projectEntity);
         }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
+            projectEntity.setProjectStatus(st);
+            projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
+            projectService.saveProjectEntity(projectEntity);
+        }else if(reviewResult == 3){
+            st = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
             projectService.saveProjectEntity(projectEntity);

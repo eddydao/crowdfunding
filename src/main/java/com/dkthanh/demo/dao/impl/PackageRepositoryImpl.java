@@ -64,9 +64,10 @@ public class PackageRepositoryImpl implements PackageRepositoryCustom {
     @Override
     public List<PledgeReportEntity> getPackageInfoByProjectId(Integer projectId) {
         StringBuilder sb = new StringBuilder();
-        sb.append(  "SELECT A.timestamp, B.username, C.option_name, A.pledged\n" +
+        sb.append(  "SELECT A.timestamp, B.username, D.email, C.option_name, A.pledged\n" +
                     "FROM package A\n" +
                     "JOIN user B ON A.user_id = B.id\n" +
+                    "JOIN user_detail D ON B.id = D.user_id\n" +
                     "JOIN option C on A.option_id = C.option_id\n" +
                     "WHERE \n" +
                     "A.project_id = :id\n" +
