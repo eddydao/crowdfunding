@@ -1712,11 +1712,6 @@ public class MainController {
         }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
             projectEntity.setProjectStatus(st);
-            projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
-            projectService.saveProjectEntity(projectEntity);
-        }else if(reviewResult == 3){
-            st = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
-            projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
             projectService.saveProjectEntity(projectEntity);
         }
