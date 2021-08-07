@@ -426,25 +426,29 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div style="display: none">
+                    <input type="text" id="inp-project-id" th:value="${projectId}">
+                </div>
                 <div th:if="${basicTab} != null">
-                    <h5 >Basic information</h5>
+                    <h5 >Basic information section</h5>
                     <p th:text="${basicTab}">
                     </p>
                 </div>
                 <br>
                 <div th:if="${rewardTab} != null">
-                    <h5 >Rewards and Items</h5>
+                    <h5 >Rewards and Items section</h5>
                     <p th:text="${rewardTab}">
                     </p>
                 </div>
                 <br>
                 <div th:if="${storyTab} != null">
-                    <h5 >Project story</h5>
+                    <h5 >Project story section</h5>
                     <p th:text="${storyTab}">
                     </p>
                 </div>
             </div>
             <div class="modal-footer">
+<!--                <button type="button" class="btn btn-primary" th:onclick="btn_editProject_onclick()">Edit the project</button>-->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

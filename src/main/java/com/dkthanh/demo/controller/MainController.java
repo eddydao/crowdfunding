@@ -1405,6 +1405,7 @@ public class MainController {
                 commentMap.put("storyTab", listCom.get(i).getCommentText());
             }
         }
+        commentMap.put("projectId", projectId.toString());
 
         model.addAllAttributes(commentMap);
         return "/creator/fragments/modal::commentModal";
@@ -1414,7 +1415,7 @@ public class MainController {
     public ResponseEntity<?> returnToEditProject(Model model, @PathVariable("projectId") Integer projectId){
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
 
-        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
+//        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
         projectService.saveProjectEntity(projectEntity);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }

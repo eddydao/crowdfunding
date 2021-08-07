@@ -1672,7 +1672,3 @@
   }
 
 })(jQuery);
-
-$(document).ready( function () {
-    $('#project-lst-tbl').DataTable();
-} );
