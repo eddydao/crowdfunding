@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Title Page-->
@@ -124,7 +125,7 @@
                                                             <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
                                                         </div>
                                                         <div class = "" style="float:right">
-                                                            <button type="button" class="btn btn-primary"
+                                                            <button type="button" class="btn btn-primary" id="btn-add-reward"
                                                                     th:onclick="'showCreateRewardArea(\'' + ${project_dto.projectId} +  '\');'">
                                                                 Add your reward
                                                             </button>
@@ -143,8 +144,8 @@
                                                         </div>
                                                     </div>
                                                     <div  th:fragment="reward-list-div" id="reward-list-div" >
-                                                        <div class="card" th:each="option : ${options}">
-                                                            <div class="card-body">
+                                                        <div class="card" th:each="option : ${options}" th:id="'card' + ${option.optionId}">
+                                                            <div class="card-body" >
                                                                 <div class="mx-auto d-block">
                                                                     <div class="row">
                                                                         <div class="col-lg-3">
@@ -167,11 +168,11 @@
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div style="float:right">
-                                                                    <button type="button" style="margin-right: 30px"
+                                                                    <button type="button" style="margin-right: 30px" th:id="'btn-card-edit' + ${option.optionId}"
                                                                         th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
                                                                         Edit
                                                                     </button>
-                                                                    <button type="button" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
+                                                                    <button th:id="'btn-card-del' + ${option.optionId}" type="button" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
                                                                         Delete
                                                                     </button>
                                                                 </div>
@@ -185,7 +186,7 @@
                                                             <span>We recommend you list your items below before creating your reward tiers </br>and add-ons in the other tabs. Items are optional, reusable building blocks for your reward tiers </br>to help clearly present what you’re offering.</span>
                                                         </div>
                                                         <div class = "" style="float:right">
-                                                            <button type="button" class="btn btn-primary"  th:onclick="'showCreateItemModal(\'' + ${project_dto.projectId} +  '\');'">
+                                                            <button type="button" class="btn btn-primary" id="btn-add-item" th:onclick="'showCreateItemModal(\'' + ${project_dto.projectId} +  '\');'">
                                                                 Add new Item
                                                             </button>
                                                         </div>
@@ -197,10 +198,10 @@
                                                                     <strong class="card-title" th:text="${item.itemName}"></strong>
                                                                 </div>
                                                                 <div class="fr" style="float: right;">
-                                                                    <button type="button" class="btn" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                    <button type="button" th:id="'btn-item-edit' + ${item.itemId}" class="btn" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Edit
                                                                     </button>
-                                                                    <button type="button" class="btn" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                    <button type="button" th:id="'btn-item-del' + ${item.itemId}" class="btn" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Delete
                                                                     </button>
                                                                 </div>
@@ -258,6 +259,11 @@
     <!-- Main JS-->
     <script src="../../js/main.js"></script>
     <script src="../../js/custom-proj.js"></script>
+<!--    <script th:inline="javascript">-->
+<!--        var projectEditable = [[${project_dto.isEditable}]];-->
+<!--        var options = [[${options}]]-->
+<!--        var items = [[${items}]]-->
+<!--    </script>-->
     <script src="../../js/project-reward.js"></script>
 </body>
 

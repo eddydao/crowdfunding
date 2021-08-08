@@ -692,6 +692,7 @@ public class MainController {
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+        model.addAttribute("project_entity", projectEntity);
         return "/creator/project-basic";
     }
 
@@ -745,6 +746,7 @@ public class MainController {
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+//        dto.setIsEditable(fullInfoEntity.getIsEditable() != null ? fullInfoEntity.getIsEditable() : 0);
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         List<OptionEntity> optionList = null;
@@ -780,6 +782,7 @@ public class MainController {
         model.addAttribute("project_dto", dto);
         model.addAttribute("option", optionDto);
         model.addAttribute("projectId", projectId);
+//        model.addAttribute("fullInfoEntity", fullInfoEntity);
         return "/creator/project-reward";
     }
 
@@ -1712,6 +1715,11 @@ public class MainController {
             projectService.saveProjectEntity(projectEntity);
         }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
+            projectEntity.setProjectStatus(st);
+            projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
+            projectService.saveProjectEntity(projectEntity);
+        }else if(reviewResult == 3){
+            st = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
             projectService.saveProjectEntity(projectEntity);

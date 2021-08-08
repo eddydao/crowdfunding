@@ -1,26 +1,6 @@
 // custom js of dev
 
-$( document ).ready(function() {
 
-    $('#editor').summernote({
-        height: 550,
-        maxHeight: 550,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'italic','clear']],
-            ['fontname', ['fontname']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']]
-        ],
-        callbacks:{
-            onImageUpload: function(image){
-                uploadImage(image[0], projectId);
-            }
-        }
-    });
-});
 
 function uploadImage(image, projectId){
     var data = new FormData();
@@ -76,37 +56,6 @@ function showSpecEndDateInput() {
     else { document.getElementById('inp-spec-date').style.visibility = 'hidden';}
 
 }
-
-// function openAddRewardModal(projectId){
-//     $.ajax({
-//         url: "/creator/project/" + projectId + "/create-reward-form",
-//         success: function(data){
-//             console.log(data);
-//             // $("#createRewardModalHolder").html(data);
-//             // $("#createRewardModal").modal("show");
-//
-//         },
-//         error: function(data){
-//             console.log(data);
-//         }
-//
-//     })
-// }
-
-// function openEditRewardModal(projectId, optionId){
-//     $.ajax({
-//         url: "/creator/project/" + projectId + "/reward/" + optionId,
-//         success: function(data){
-//             console.log(data);
-//             $("#editRewardModalHolder").html(data);
-//             $("#editRewardModal").modal("show");
-//         },
-//         error: function(data){
-//             console.log(data);
-//         }
-//
-//     })
-// }
 
 
 
