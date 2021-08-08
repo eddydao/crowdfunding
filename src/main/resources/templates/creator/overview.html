@@ -107,6 +107,11 @@
                                     <div class="alert alert-info" th:if="${project_full_entity.statusId} == '1'">
                                         Your project is on the review. We'll look over your project and get back to you soon.
                                     </div>
+
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '6'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
+                                        <small class="form-text text-muted">We recommend you review out Rules and comments of our reviewer about the project</small>
+                                    </div>
                                     <div class="table-responsive" >
                                         <table class="table custom-table-top-campaign">
                                             <tbody>
@@ -157,10 +162,8 @@
                                                 </tr>
                                                 <tr th:if="${project_full_entity.statusId} == '6'">
                                                     <td>
-                                                        <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
-                                                        <small class="form-text text-muted">We recommend you review out Rules and <a href="#" th:onclick="showComment()" > comment </a> of our reviewer about the project</small>
-<!--                                                        <button class="btn btn-outline-info btn-sm" th:onclick="'showComment()'">Checkout the comments</button>-->
-                                                        <button class="btn btn-outline-info btn-sm" th:onclick="'btn_submitReview_onclick()'">Submit to review again</button>
+                                                        <button class="btn btn-outline-info btn-sm" th:onclick="'showComment()'">Reviewer comment</button>
+                                                        <button class="btn btn-success btn-sm" th:onclick="'btn_submitReview_onclick()'">Submit to review again</button>
                                                     </td>
                                                 </tr>
                                                 <tr th:if="${project_full_entity.statusId} == '3'">
