@@ -746,6 +746,7 @@ public class MainController {
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+        dto.setIsEditable(fullInfoEntity.getIsEditable() != null ? fullInfoEntity.getIsEditable() : 0);
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         List<OptionEntity> optionList = null;
@@ -1041,7 +1042,10 @@ public class MainController {
         Integer projectId = inpOptionDto.getProjectId();
         Integer optionId = inpOptionDto.getOptionId();
 
-        optionService.removeOption(projectId, optionId);
+        if(optionId != null ){
+            optionService.removeOption(projectId, optionId);
+        }
+
 
         // return to screen
         ProjectDto dto = new ProjectDto();

@@ -1,4 +1,33 @@
+$(document).ready(function(){
+    debugger
+    // if project editable is set to close - cannot be able to edit the information of project
+    if (projectEditable == '1') {
+        $("#btn-add-reward").attr('disabled', true);
+        $("#btn-add-item").attr('disabled', true);
 
+
+        $(".btn_edit_reward").attr('disabled', true);
+        $(".btn_del_reward").attr('disabled', true);
+        $(".btn-edit-item").attr('disabled', true);
+        $(".btn-edit-item").attr('disabled', true);
+
+
+
+        // for(let i = 0 ; i < options.length; i++){
+        //     let btnCardEdit = "#btn-card-edit" + options[i].optionId;
+        //     let btnCarDel = "#btn-card-del" + options[i].optionId;
+        //     $(btnCardEdit).attr('disabled', true);
+        //     $(btnCarDel).attr('disabled', true);
+        // }
+        //
+        // for(let i = 0 ; i < items.length; i++){
+        //     let btnCardEdit = "#btn-item-edit" + items[i].itemId;
+        //     let btnCarDel = "#btn-item-del" + items[i].itemId;
+        //     $(btnCardEdit).attr('disabled', true);
+        //     $(btnCarDel).attr('disabled', true);
+        // }
+    }
+})
 // create new option form
 function showCreateRewardArea(projectId){
     $.ajax({
@@ -208,7 +237,7 @@ function openRemoveItemModal(projectId, optionId, itemId){
 
     })
 }
-ád
+
 function removeFromItemListNewOption(){
     var itemId = $("#item_id_input").val();
     var optionId = $("#option_id_input").val();

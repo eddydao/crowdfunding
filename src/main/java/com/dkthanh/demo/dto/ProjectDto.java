@@ -27,7 +27,7 @@ public class ProjectDto {
     protected LocalDate endDate;
     protected Integer duration;
     protected Long goal;
-
+    protected Integer isEditable;
     // reward
 
     public ProjectDto(){}
