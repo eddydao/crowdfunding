@@ -108,7 +108,7 @@
                                         Your project is on the review. We'll look over your project and get back to you soon.
                                     </div>
 
-                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '6'">
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '10'">
                                         <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
                                         <small class="form-text text-muted">We recommend you review out Rules and comments of our reviewer about the project</small>
                                     </div>
@@ -160,7 +160,7 @@
                                                         <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_launchProject_onclick()'">Continue to launch</button>
                                                     </td>
                                                 </tr>
-                                                <tr th:if="${project_full_entity.statusId} == '6'">
+                                                <tr th:if="${project_full_entity.statusId} == '10'">
                                                     <td>
                                                         <button class="btn btn-outline-info btn-sm" th:onclick="'showComment()'">Reviewer comment</button>
                                                         <button class="btn btn-success btn-sm" th:onclick="'btn_submitReview_onclick()'">Submit to review again</button>
