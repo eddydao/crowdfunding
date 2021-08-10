@@ -1244,11 +1244,12 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/story")
     public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
-
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        dto.setIsEditable(projectEntity.getIsEditable() != null ? projectEntity.getIsEditable() : 0);
+        dto.setStatusId(projectEntity.getProjectStatus().getStatusId());
         StoryEntity story = null;
 
         if(projectEntity != null){

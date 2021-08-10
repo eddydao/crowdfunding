@@ -28,6 +28,7 @@ public class ProjectDto {
     protected Integer duration;
     protected Long goal;
     protected Integer isEditable;
+    protected Integer statusId;
     // reward
 
     public ProjectDto(){}

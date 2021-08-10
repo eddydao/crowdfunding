@@ -4,7 +4,6 @@ function returnToOverviewPage(){
 }
 
 $( document ).ready(function() {
-
     $('#editor').summernote({
         height: 550,
         maxHeight: 550,
@@ -23,4 +22,9 @@ $( document ).ready(function() {
             }
         }
     });
+
+    if(projectEditable == '1' && projectStatusId == '6'){
+        $('#editor').summernote('disable');
+        $('#btn-save-story').attr("disabled", true);
+    }
 });

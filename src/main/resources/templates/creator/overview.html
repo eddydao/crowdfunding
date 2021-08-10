@@ -108,10 +108,15 @@
                                         Your project is on the review. We'll look over your project and get back to you soon.
                                     </div>
 
-                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '10'">
+                                    <div class="alert alert-warning" th:if="${project_full_entity.statusId} == '10'">
                                         <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
                                         <small class="form-text text-muted">We recommend you review out Rules and comments of our reviewer about the project</small>
                                     </div>
+
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '6'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us.<br> We're carefully reviewed it against our Rules and we're unable to approve it to launch.</small>
+                                    </div>
+
                                     <div class="table-responsive" >
                                         <table class="table custom-table-top-campaign">
                                             <tbody>
@@ -139,14 +144,6 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-    <!--                                                <tr>-->
-    <!--                                                    <td>-->
-    <!--                                                        <a th:href="@{/creator/project/{projectId}/project-review (projectId = ${project_dto.projectId})} " >-->
-    <!--                                                        <label class=" form-control-label"><b>Project review</b></label>-->
-    <!--                                                        <small class="form-text text-muted">We'll check to make sure it follows our rules and guidelines</small>-->
-    <!--                                                        </a>-->
-    <!--                                                    </td>-->
-    <!--                                                </tr>-->
 
                                                 <tr th:if="${project_full_entity.statusId} == '7'">
                                                     <td>
