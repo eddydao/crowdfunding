@@ -117,6 +117,18 @@
                                         <small class="form-text text-muted">Thanks for sharing your project with us.<br> We're carefully reviewed it against our Rules and we're unable to approve it to launch.</small>
                                     </div>
 
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '4'">
+                                        <small class="form-text text-muted">This project has been suspended</small>
+                                    </div>
+
+                                    <div class="alert alert-success" th:if="${project_full_entity.statusId} == '2'">
+                                        <small class="form-text text-muted">Your project has been approved. Launch it when you ready!</small>
+                                    </div>
+
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '3'">
+                                        <small class="form-text text-muted">Project is live.</small>
+                                    </div>
+
                                     <div class="table-responsive" >
                                         <table class="table custom-table-top-campaign">
                                             <tbody>

@@ -272,7 +272,7 @@ public class ProjectService {
         }
 
         try{
-            StatusEntity status = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
+            StatusEntity status = statusService.getStatusById(Constant.ProjectStatus.STOP.getId());
             entity.setProjectStatus(status);
             this.saveProjectEntity(entity);
         }catch (Exception e){
