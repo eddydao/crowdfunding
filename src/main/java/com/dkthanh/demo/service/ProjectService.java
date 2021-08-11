@@ -260,4 +260,21 @@ public class ProjectService {
         return 1;
     }
 
+    public int suspendProject(Integer projectId){
+        ProjectEntity entity = this.getProjectEntityById(projectId);
+
+        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.EDITING.getId()){
+            return -2;
+        }
+
+        try{
+            entity.getProjectStatus().setStatusId(Constant.ProjectStatus.SUSPEND.getId());
+            projectRepository.save(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
+    }
+
 }

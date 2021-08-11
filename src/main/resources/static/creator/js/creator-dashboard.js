@@ -67,3 +67,41 @@ function submitDeleteProject(projectId){
         }
     })
 }
+
+function btn_suspendProject_onclick(projectId){
+    let data = {
+        "projectId": projectId
+    };
+    $.ajax({
+        url: "/creator/project/suspend-confirmation" ,
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#projectSuspendConfirmationModalHolder").html(data);
+            $("#projectSuspendConfirmation").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function submitSuspendProject(projectId){
+    let data = {
+        "projectId": projectId
+    };
+    $("#projectDelConfirmation").modal("hide");
+    $.ajax({
+        url: "/creator/project/suspend-project" ,
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#project-table").html(data);
+            toastr.success('Suspend successfully');
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}

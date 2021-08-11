@@ -693,6 +693,48 @@ public class MainController {
         return "/creator/creator-dashboard :: project-table";
     }
 
+    /*
+    Suspend running project confirmation
+     */
+
+    @GetMapping(value = "/creator/project/suspend-confirmation")
+    public String openProjectSuspendConfirmationModal(Model model, ProjectDto dto){
+        model.addAttribute("projectId", dto.getProjectId());
+        ProjectFullInfoEntity projectFullInfoEntity = projectService.getProjectDetail(dto.getProjectId());
+        model.addAttribute("project", projectFullInfoEntity);
+        return "/creator/fragments/modal :: projectSuspendConfirmation";
+    }
+
+    /*
+    Suspend project
+     */
+    @PostMapping(value = "/creator/project/suspend-project")
+    public String suspendProject(Model model, ProjectDto dto, Authentication authentication){
+        Integer projectId = dto.getProjectId();
+
+        Integer result = projectService.suspendProject(projectId);
+
+        String username = null;
+        UserDetailEntity userDetailEntity = null;
+        UserEntity user = null;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
+
+        model.addAttribute("projects", list);
+        model.addAttribute("creator", userDetailEntity);
+        model.addAttribute("result", result);
+        return "/creator/creator-dashboard :: project-table";
+    }
 
     /*
     *   redirect all request of edit or create a new project to this
