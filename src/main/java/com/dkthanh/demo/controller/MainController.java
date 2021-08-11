@@ -1393,8 +1393,8 @@ public class MainController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         for(int i = 0; i < listPLedge.size(); i++){
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.WEEK_OF_YEAR, listPLedge.get(i).getWeekNumber());
-            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            cal.set(Calendar.WEEK_OF_YEAR, listPLedge.get(i).getWeekNumber()+1);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             String date = sdf.format(cal.getTime()).toString();
             String formatedDate = date.replace(" ", "/");
             pledgeByWeek.put(formatedDate, listPLedge.get(i).getPledge());
