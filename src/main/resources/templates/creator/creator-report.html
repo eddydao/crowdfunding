@@ -184,6 +184,7 @@
                                 <tr>
                                     <th>date</th>
                                     <th>user</th>
+                                    <th>email</th>
                                     <th>option</th>
                                     <th class="text-right">pledge</th>
                                 </tr>
@@ -192,6 +193,7 @@
                                 <tr th:each=" package : ${packages}">
                                     <td th:text="${package.timestamp}"></td>
                                     <td th:text="${package.username}"></td>
+                                    <td th:text="${package.email}"></td>
                                     <td th:text="${package.optionName}"></td>
                                     <td class="text-right">$<span th:text="${#numbers.formatDecimal(package.pledge, 0, 'COMMA', 2, 'POINT')}"></span></td>
                                 </tr>

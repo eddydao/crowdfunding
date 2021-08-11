@@ -183,6 +183,14 @@
                                                         </a>
                                                     </td>
                                                 </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '4'">
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Project report</b></label>
+                                                            <small class="form-text text-muted">See how your project going</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
