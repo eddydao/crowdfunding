@@ -29,3 +29,41 @@ function btn_editProject_onclick(){
 
     })
 }
+
+function btn_deleteProject_onclick(projectId){
+    let data = {
+        "projectId": projectId
+    };
+    $.ajax({
+        url: "/creator/project/delete-confirmation" ,
+        data: data,
+        success: function(data){
+            console.log(data);
+            $("#projectDelConfirmationModalHolder").html(data);
+            $("#projectDelConfirmation").modal("show");
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}
+
+function submitDeleteProject(projectId){
+    let data = {
+        "projectId": projectId
+    };
+    $("#projectDelConfirmation").modal("hide");
+    $.ajax({
+        url: "/creator/project/delete-project" ,
+        data: data,
+        type: "POST",
+        success: function(data){
+            console.log(data);
+            $("#project-table").html(data);
+            toastr.success('Delete successfully');
+        },
+        error: function(data){
+            console.log(data);
+        }
+    })
+}

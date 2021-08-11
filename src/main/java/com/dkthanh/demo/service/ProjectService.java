@@ -244,4 +244,20 @@ public class ProjectService {
         return projectEntity;
     }
 
+    public int deleteProject(Integer projectId){
+        ProjectEntity entity = this.getProjectEntityById(projectId);
+
+        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.EDITING.getId()){
+            return -2;
+        }
+
+        try{
+            projectRepository.deleteById(projectId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
+    }
+
 }

@@ -122,6 +122,9 @@
     </header><!--end: #header -->
 
     <div class="layout-2cols">
+<!--        <div class="alert alert-info" >-->
+<!--            <small class="form-text text-muted">Test notification</small>-->
+<!--        </div>-->
         <div class="content grid_8">
             <div class="project-detail">
                 <h2 class="rs project-title"><span th:text="${project.projectName}"></span></h2>
@@ -140,10 +143,10 @@
                         </div>
                     </div><!--end: .top-project-info -->
                     <div class="bottom-project-info clearfix">
-                        <div class="project-progress sys_circle_progress" data-percent="">
-                            <div class="sys_holder_sector"></div>
-                        </div>
-                        <div class="group-fee clearfix">
+<!--                        <div class="project-progress sys_circle_progress" data-percent="">-->
+<!--                            <div class="sys_holder_sector"></div>-->
+<!--                        </div>-->
+                        <div class="group-fee clearfix" style="margin-bottom: 20px; margin-left: 100px">
                             <div class="fee-item">
                                 <p class="rs lbl">Bankers</p>
                                 <span class="val" th:text="${project.investorCount}"></span>

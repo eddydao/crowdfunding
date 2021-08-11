@@ -650,6 +650,50 @@ public class MainController {
         return "redirect:/creator/project/" + projectId + "/basic";
     }
 
+
+    /*
+    Delete project
+     */
+    @GetMapping(value = "/creator/project/delete-confirmation")
+    public String openProjectDelConfirmationModal(Model model, ProjectDto dto){
+        model.addAttribute("projectId", dto.getProjectId());
+        return "/creator/fragments/modal :: projectDelConfirmation";
+    }
+
+    /*
+    Delete project
+     */
+
+    @PostMapping(value = "/creator/project/delete-project")
+    public String deleteProject(Model model, ProjectDto dto, Authentication authentication){
+        Integer projectId = dto.getProjectId();
+
+        Integer result = projectService.deleteProject(projectId);
+
+
+        String username = null;
+        UserDetailEntity userDetailEntity = null;
+        UserEntity user = null;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
+
+        model.addAttribute("projects", list);
+        model.addAttribute("creator", userDetailEntity);
+        model.addAttribute("result", result);
+        return "/creator/creator-dashboard :: project-table";
+    }
+
+
     /*
     *   redirect all request of edit or create a new project to this
     *   send information of project modification to UI from here
