@@ -4,6 +4,7 @@ import com.dkthanh.demo.dao.ProjectRepository;
 import com.dkthanh.demo.domain.CategoryEntity;
 import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
+import com.dkthanh.demo.domain.StatusEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.domain.dto.UploadFormDto;
 import com.dkthanh.demo.dto.ProjectDto;
@@ -33,6 +34,9 @@ public class ProjectService {
 
     @Autowired
     private InvesmentOptionService optionService;
+
+    @Autowired
+    private StatusService statusService;
 
     // get lastest project id
     public Integer getLastestProjectId(){
@@ -242,6 +246,40 @@ public class ProjectService {
 
         this.saveProjectEntity(projectEntity);
         return projectEntity;
+    }
+
+    public int deleteProject(Integer projectId){
+        ProjectEntity entity = this.getProjectEntityById(projectId);
+
+        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.EDITING.getId()){
+            return -2;
+        }
+
+        try{
+            projectRepository.deleteById(projectId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
+    }
+
+    public int suspendProject(Integer projectId){
+        ProjectEntity entity = this.getProjectEntityById(projectId);
+
+        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.RUNNING.getId()){
+            return -2;
+        }
+
+        try{
+            StatusEntity status = statusService.getStatusById(Constant.ProjectStatus.STOP.getId());
+            entity.setProjectStatus(status);
+            this.saveProjectEntity(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
     }
 
 }

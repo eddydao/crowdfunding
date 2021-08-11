@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <!-- Title Page-->
-    <title>Forms</title>
+    <title>Project overview</title>
 
     <!-- Fontfaces CSS-->
     <link href="../css/font-face.css" rel="stylesheet" media="all">
@@ -104,10 +104,34 @@
                                     <strong th:text="${project_dto.projectName}"></strong> overview
                                 </div>
                                 <div class="card-body card-block custom-col">
-                                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                        <div class="table-responsive">
-                                            <table class="table custom-table-top-campaign">
-                                                <tbody>
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '1'">
+                                        Your project is on the review. We'll look over your project and get back to you soon.
+                                    </div>
+
+                                    <div class="alert alert-warning" th:if="${project_full_entity.statusId} == '10'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
+                                        <small class="form-text text-muted">We recommend you review out Rules and comments of our reviewer about the project</small>
+                                    </div>
+
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '6'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us.<br> We're carefully reviewed it against our Rules and we're unable to approve it to launch.</small>
+                                    </div>
+
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '4'">
+                                        <small class="form-text text-muted">This project has been suspended</small>
+                                    </div>
+
+                                    <div class="alert alert-success" th:if="${project_full_entity.statusId} == '2'">
+                                        <small class="form-text text-muted">Your project has been approved. Launch it when you ready!</small>
+                                    </div>
+
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '3'">
+                                        <small class="form-text text-muted">Project is live.</small>
+                                    </div>
+
+                                    <div class="table-responsive" >
+                                        <table class="table custom-table-top-campaign">
+                                            <tbody>
                                                 <tr>
                                                     <td>
                                                         <a th:href="@{/creator/project/{projectId}/basic (projectId = ${project_dto.projectId})} " >
@@ -132,22 +156,26 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                <tr>
+
+                                                <tr th:if="${project_full_entity.statusId} == '7'">
                                                     <td>
-                                                        <label class=" form-control-label"><b>Payment</b></label>
-                                                        <small class="form-text text-muted">Confirm your identity and link a bank account.</small>
+                                                        <small class="form-text text-muted">We'll to make sure it follows our rules and guidelines</small>
+                                                        <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_submitReview_onclick()'">Submit to review</button>
                                                     </td>
                                                 </tr>
-                                                <tr></tr>
-                                                <tr>
+                                                <tr th:if="${project_full_entity.statusId} == '2'">
                                                     <td>
-                                                        <a th:href="@{/creator/project/{projectId}/project-review (projectId = ${project_dto.projectId})} " >
-                                                        <label class=" form-control-label"><b>Project review</b></label>
-                                                        <small class="form-text text-muted">We'll check to make sure it follows our rules and guidelines</small>
-                                                        </a>
+                                                        <small class="form-text text-muted" >Your project is ready to launch</small>
+                                                        <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_launchProject_onclick()'">Continue to launch</button>
                                                     </td>
                                                 </tr>
-                                                <tr th:if="${project_full_entity.statusId == 3}">
+                                                <tr th:if="${project_full_entity.statusId} == '10'">
+                                                    <td>
+                                                        <button class="btn btn-outline-info btn-sm" th:onclick="'showComment()'">Reviewer comment</button>
+                                                        <button class="btn btn-success btn-sm" th:onclick="'btn_submitReview_onclick()'">Submit to review again</button>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '3'">
                                                     <td>
                                                         <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
                                                             <label class=" form-control-label"><b>Project report</b></label>
@@ -155,10 +183,17 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </form>
+                                                <tr th:if="${project_full_entity.statusId} == '4'">
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Project report</b></label>
+                                                            <small class="form-text text-muted">See how your project going</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +202,9 @@
             </div>
         </div>
     </div>
-
+    <div id="submitReviewConfirmationModalHolder"></div>
+    <div id="commentModalHolder"></div>
+    <div id="submitLaunchConfirmationModalHolder"></div>
 </div>
 
 <!-- Jquery JS-->
@@ -193,7 +230,11 @@
 
 <!-- Main JS-->
 <script src="../js/main.js"></script>
-<script src="../js/custom-proj.js"></script>
+<script src="../js/overview.js"></script>
+<!--<script src="../js/custom-proj.js"></script>-->
+<script th:inline="javascript">
+    var projectId = [[${project_full_entity.projectId}]];
+</script>
 </body>
 
 </html>

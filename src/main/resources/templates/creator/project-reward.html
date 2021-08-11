@@ -124,7 +124,7 @@
                                                             <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
                                                         </div>
                                                         <div class = "" style="float:right">
-                                                            <button type="button" class="btn btn-primary"
+                                                            <button type="button" class="btn btn-primary" id="btn-add-reward"
                                                                     th:onclick="'showCreateRewardArea(\'' + ${project_dto.projectId} +  '\');'">
                                                                 Add your reward
                                                             </button>
@@ -167,11 +167,11 @@
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div style="float:right">
-                                                                    <button type="button" style="margin-right: 30px"
+                                                                    <button type="button" style="margin-right: 30px" class="btn_edit_reward"
                                                                         th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
                                                                         Edit
                                                                     </button>
-                                                                    <button type="button" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
+                                                                    <button type="button" class= "btn_del_reward" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
                                                                         Delete
                                                                     </button>
                                                                 </div>
@@ -185,7 +185,7 @@
                                                             <span>We recommend you list your items below before creating your reward tiers </br>and add-ons in the other tabs. Items are optional, reusable building blocks for your reward tiers </br>to help clearly present what you’re offering.</span>
                                                         </div>
                                                         <div class = "" style="float:right">
-                                                            <button type="button" class="btn btn-primary"  th:onclick="'showCreateItemModal(\'' + ${project_dto.projectId} +  '\');'">
+                                                            <button type="button" class="btn btn-primary" id="btn-add-item" th:onclick="'showCreateItemModal(\'' + ${project_dto.projectId} +  '\');'">
                                                                 Add new Item
                                                             </button>
                                                         </div>
@@ -197,10 +197,10 @@
                                                                     <strong class="card-title" th:text="${item.itemName}"></strong>
                                                                 </div>
                                                                 <div class="fr" style="float: right;">
-                                                                    <button type="button" class="btn" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                    <button type="button" class="btn btn-edit-item" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Edit
                                                                     </button>
-                                                                    <button type="button" class="btn" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                    <button type="button" class="btn btn-edit-item" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
                                                                         Delete
                                                                     </button>
                                                                 </div>
@@ -259,6 +259,9 @@
     <script src="../../js/main.js"></script>
     <script src="../../js/custom-proj.js"></script>
     <script src="../../js/project-reward.js"></script>
+    <script th:inline="javascript">
+        var projectEditable = [[${project_dto.isEditable}]];
+    </script>
 </body>
 
 </html>

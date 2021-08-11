@@ -650,6 +650,92 @@ public class MainController {
         return "redirect:/creator/project/" + projectId + "/basic";
     }
 
+
+    /*
+    Delete project
+     */
+    @GetMapping(value = "/creator/project/delete-confirmation")
+    public String openProjectDelConfirmationModal(Model model, ProjectDto dto){
+        model.addAttribute("projectId", dto.getProjectId());
+        return "/creator/fragments/modal :: projectDelConfirmation";
+    }
+
+    /*
+    Delete project
+     */
+
+    @PostMapping(value = "/creator/project/delete-project")
+    public String deleteProject(Model model, ProjectDto dto, Authentication authentication){
+        Integer projectId = dto.getProjectId();
+
+        Integer result = projectService.deleteProject(projectId);
+
+
+        String username = null;
+        UserDetailEntity userDetailEntity = null;
+        UserEntity user = null;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
+
+        model.addAttribute("projects", list);
+        model.addAttribute("creator", userDetailEntity);
+        model.addAttribute("result", result);
+        return "/creator/creator-dashboard :: project-table";
+    }
+
+    /*
+    Suspend running project confirmation
+     */
+
+    @GetMapping(value = "/creator/project/suspend-confirmation")
+    public String openProjectSuspendConfirmationModal(Model model, ProjectDto dto){
+        model.addAttribute("projectId", dto.getProjectId());
+        ProjectFullInfoEntity projectFullInfoEntity = projectService.getProjectDetail(dto.getProjectId());
+        model.addAttribute("project", projectFullInfoEntity);
+        return "/creator/fragments/modal :: projectSuspendConfirmation";
+    }
+
+    /*
+    Suspend project
+     */
+    @PostMapping(value = "/creator/project/suspend-project")
+    public String suspendProject(Model model, ProjectDto dto, Authentication authentication){
+        Integer projectId = dto.getProjectId();
+
+        Integer result = projectService.suspendProject(projectId);
+
+        String username = null;
+        UserDetailEntity userDetailEntity = null;
+        UserEntity user = null;
+        if(authentication != null) {
+
+            username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        }
+        if(!"".equals(username)){
+            user = userService.findUserByUsername(username);
+        }
+
+        Integer userId  = user.getId();
+        userDetailEntity = userDetailService.getUserDetailByUserId(userId);
+
+        List<ProjectFullInfoEntity> list = projectService.getProjectListOfCreator(userId);
+
+        model.addAttribute("projects", list);
+        model.addAttribute("creator", userDetailEntity);
+        model.addAttribute("result", result);
+        return "/creator/creator-dashboard :: project-table";
+    }
+
     /*
     *   redirect all request of edit or create a new project to this
     *   send information of project modification to UI from here
@@ -692,6 +778,7 @@ public class MainController {
 
         model.addAttribute("allCategory", categoryService.getAllCategory());
         model.addAttribute("project_dto", dto);
+        model.addAttribute("project_entity", projectEntity);
         return "/creator/project-basic";
     }
 
@@ -745,6 +832,7 @@ public class MainController {
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.REWARD.getId());
+        dto.setIsEditable(fullInfoEntity.getIsEditable() != null ? fullInfoEntity.getIsEditable() : 0);
 
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
         List<OptionEntity> optionList = null;
@@ -1040,7 +1128,10 @@ public class MainController {
         Integer projectId = inpOptionDto.getProjectId();
         Integer optionId = inpOptionDto.getOptionId();
 
-        optionService.removeOption(projectId, optionId);
+        if(optionId != null ){
+            optionService.removeOption(projectId, optionId);
+        }
+
 
         // return to screen
         ProjectDto dto = new ProjectDto();
@@ -1239,11 +1330,12 @@ public class MainController {
     @GetMapping(value = "/creator/project/{projectId}/story")
     public String getProjectStoryForm(Model model, @PathVariable("projectId") Integer projectId){
         ProjectDto dto = new ProjectDto();
+        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
 
         dto.setProjectId(projectId);
         dto.setStep(Constant.ProjectFormStep.STORY.getId());
-
-        ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
+        dto.setIsEditable(projectEntity.getIsEditable() != null ? projectEntity.getIsEditable() : 0);
+        dto.setStatusId(projectEntity.getProjectStatus().getStatusId());
         StoryEntity story = null;
 
         if(projectEntity != null){
@@ -1301,8 +1393,8 @@ public class MainController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         for(int i = 0; i < listPLedge.size(); i++){
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.WEEK_OF_YEAR, listPLedge.get(i).getWeekNumber());
-            cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            cal.set(Calendar.WEEK_OF_YEAR, listPLedge.get(i).getWeekNumber()+1);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             String date = sdf.format(cal.getTime()).toString();
             String formatedDate = date.replace(" ", "/");
             pledgeByWeek.put(formatedDate, listPLedge.get(i).getPledge());
@@ -1405,6 +1497,7 @@ public class MainController {
                 commentMap.put("storyTab", listCom.get(i).getCommentText());
             }
         }
+        commentMap.put("projectId", projectId.toString());
 
         model.addAllAttributes(commentMap);
         return "/creator/fragments/modal::commentModal";
@@ -1414,7 +1507,7 @@ public class MainController {
     public ResponseEntity<?> returnToEditProject(Model model, @PathVariable("projectId") Integer projectId){
         ProjectEntity projectEntity = projectService.getProjectEntityById(projectId);
 
-        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
+//        projectEntity.setProjectStatus(statusService.getStatusById(Constant.ProjectStatus.EDITING.getId()));
         projectService.saveProjectEntity(projectEntity);
         return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
@@ -1711,6 +1804,11 @@ public class MainController {
             projectService.saveProjectEntity(projectEntity);
         }else if(reviewResult == 2){
             st = statusService.getStatusById(Constant.ProjectStatus.REJECT.getId());
+            projectEntity.setProjectStatus(st);
+            projectEntity.setIsEditable(Constant.IS_CLOSED.CLOSE.getId());
+            projectService.saveProjectEntity(projectEntity);
+        }else if(reviewResult == 3){
+            st = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
             projectEntity.setProjectStatus(st);
             projectEntity.setIsEditable(Constant.IS_CLOSED.OPEN.getId());
             projectService.saveProjectEntity(projectEntity);

@@ -144,7 +144,7 @@
                             <div class="sep"></div>
                             <div class="fee-item">
                                 <p class="rs lbl">Pledged</p>
-                                <span class="val">$<span th:text="${recommended_project.pledged}"></span></span>
+                                <span class="val">$<span th:text="${#numbers.formatDecimal(recommended_project.pledged, 0, 'COMMA', 2, 'POINT')}"></span></span>
                             </div>
                             <div class="sep"></div>
                             <div class="fee-item">
@@ -185,7 +185,7 @@
                             <div class="group-fee clearfix">
                                 <div class="fee-item">
                                     <p class="rs lbl">Pledged</p>
-                                    <span class="val">$<span th:text="${project.pledged}"></span></span>
+                                    <span class="val">$<span th:text="${#numbers.formatDecimal(project.pledged, 0, 'COMMA', 2, 'POINT')}"></span></span>
                                 </div>
                                 <div class="sep"></div>
                                 <div class="fee-item">

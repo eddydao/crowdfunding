@@ -50,7 +50,8 @@ public final class Constant {
         COMPLETE(5, "COMPLETE"),//
         REJECT(6, "REJECT"),//denied
         EDITING(7, "EDITING"),
-        READY(9, "READY_TO_REVIEW")
+        READY(9, "READY_TO_REVIEW"),
+        SUSPEND(10, "SUSPEND")
         ;
 
         private Integer id;
