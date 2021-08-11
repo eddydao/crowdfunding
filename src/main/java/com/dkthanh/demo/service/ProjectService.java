@@ -4,6 +4,7 @@ import com.dkthanh.demo.dao.ProjectRepository;
 import com.dkthanh.demo.domain.CategoryEntity;
 import com.dkthanh.demo.domain.OptionEntity;
 import com.dkthanh.demo.domain.ProjectEntity;
+import com.dkthanh.demo.domain.StatusEntity;
 import com.dkthanh.demo.domain.dto.ProjectFullInfoEntity;
 import com.dkthanh.demo.domain.dto.UploadFormDto;
 import com.dkthanh.demo.dto.ProjectDto;
@@ -33,6 +34,9 @@ public class ProjectService {
 
     @Autowired
     private InvesmentOptionService optionService;
+
+    @Autowired
+    private StatusService statusService;
 
     // get lastest project id
     public Integer getLastestProjectId(){
@@ -263,13 +267,14 @@ public class ProjectService {
     public int suspendProject(Integer projectId){
         ProjectEntity entity = this.getProjectEntityById(projectId);
 
-        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.EDITING.getId()){
+        if(entity.getProjectStatus().getStatusId() != Constant.ProjectStatus.RUNNING.getId()){
             return -2;
         }
 
         try{
-            entity.getProjectStatus().setStatusId(Constant.ProjectStatus.SUSPEND.getId());
-            projectRepository.save(entity);
+            StatusEntity status = statusService.getStatusById(Constant.ProjectStatus.SUSPEND.getId());
+            entity.setProjectStatus(status);
+            this.saveProjectEntity(entity);
         }catch (Exception e){
             e.printStackTrace();
             return -1;

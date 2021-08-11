@@ -90,7 +90,7 @@ function submitSuspendProject(projectId){
     let data = {
         "projectId": projectId
     };
-    $("#projectDelConfirmation").modal("hide");
+    $("#projectSuspendConfirmation").modal("hide");
     $.ajax({
         url: "/creator/project/suspend-project" ,
         data: data,
