@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Title Page-->
+    <title>Forms</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="../../css/font-face.css" rel="stylesheet" media="all">
+    <link href="../../vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="../../vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="../../vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="../../vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/creator/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Main CSS-->
+    <!-- <link href="../../css/theme.css" rel="stylesheet" media="all"> -->
+    <link href="../../css/custom-style.css" rel="stylesheet" media="all">
+    <link href="/creator/css/toastr.css" rel="stylesheet"/>
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a th:href="@{/}">
+                    <img src="/images/logo.png" alt="Kickstar" />
+                </a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-tachometer-alt"></i>Project management</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li sec:authorize="hasRole('CREATOR')">
+                                    <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                                </li>
+                                <li sec:authorize="isAuthenticated()">
+                                    <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a th:href="@{/user/account}">
+                                <i class="fas fa-user"></i>Account management</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <div>
+                            </div>
+                            <div class="header-button">
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="account-dropdown__footer">
+                                                <a th:href="@{/logout}">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <!-- Put page in here -->
+            <div class="custom-main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Add your rewards</strong>
+                                        <span style="float: right"><a th:href="@{/creator/project/} + ${project_dto.projectId}"> Return to overview </a></span>
+                                    </div>
+                                    <div class="card-body card-block custom-col">
+                                        <!-- Project title and subtitle -->
+                                        <div class="default-tab">
+                                            <nav>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                                                        aria-selected="true">Reward tiers</a>
+                                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile"
+                                                        aria-selected="false">Items</a>
+                                                </div>
+                                            </nav>
+                                            <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                    <div>
+                                                        <div class="" style="display: inline-block;">
+                                                            <span>Most creators offer 3-10 reward tiers, which can be physical items or special experiences. <br>Make sure to set reasonable backer expectations.</span>
+                                                        </div>
+                                                        <div class = "" style="float:right">
+                                                            <button type="button" class="btn btn-primary" id="btn-add-reward"
+                                                                    th:onclick="'showCreateRewardArea(\'' + ${project_dto.projectId} +  '\');'">
+                                                                Add your reward
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <span>Pledge amount</span>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <span>Details</span>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <span>Includes</span>
+                                                        </div>
+                                                    </div>
+                                                    <div  th:fragment="reward-list-div" id="reward-list-div" >
+                                                        <div class="card" th:each="option : ${options}">
+                                                            <div class="card-body">
+                                                                <div class="mx-auto d-block">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-3">
+                                                                            <span th:text="${option.fundMin}"></span>
+                                                                        </div>
+                                                                        <div class="col-lg-5">
+                                                                            <span th:text="${option.optionName}"></span>
+                                                                            <div th:text="${option.optionDescription}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-4">
+                                                                        <div>
+                                                                            <ul th:each="item : ${option.itemDtoEntities}">
+                                                                                <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <div style="float:right">
+                                                                    <button type="button" style="margin-right: 30px" class="btn_edit_reward"
+                                                                        th:onclick="'showEditRewardArea(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\');'">
+                                                                        Edit
+                                                                    </button>
+                                                                    <button type="button" class= "btn_del_reward" th:onclick="'showDeleteOptionModal(\'' + ${project_dto.projectId} + '\',\'' + ${option.optionId} + '\')'">
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                                    <div>
+                                                        <div class="" style="display: inline-block;">
+                                                            <span>We recommend you list your items below before creating your reward tiers </br>and add-ons in the other tabs. Items are optional, reusable building blocks for your reward tiers </br>to help clearly present what you’re offering.</span>
+                                                        </div>
+                                                        <div class = "" style="float:right">
+                                                            <button type="button" class="btn btn-primary" id="btn-add-item" th:onclick="'showCreateItemModal(\'' + ${project_dto.projectId} +  '\');'">
+                                                                Add new Item
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div  th:fragment="item-list-div" id="item-list-div" >
+                                                        <div class="card border  border-secondary">
+                                                            <div class="card-header" th:each="item: ${items}">
+                                                                <div class1="fl" style="float:left">
+                                                                    <strong class="card-title" th:text="${item.itemName}"></strong>
+                                                                </div>
+                                                                <div class="fr" style="float: right;">
+                                                                    <button type="button" class="btn btn-edit-item" th:onclick="'showEditItemModal(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                        Edit
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-edit-item" th:onclick="'showItemDeleteConfirmation(\'' + ${project_dto.projectId} + '\',\'' + ${item.itemId} +  '\');'">
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="createRewardHolder"></div>
+                        <div id="editRewardHolder"></div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- createReward -->
+            <div id="createRewardModalHolder"></div>
+            <div id="removeRewardHolder"></div>
+            <div id="addItemModalHolder"></div>
+            <div id="addItemModalNewRewardHolder"></div>
+            <div id="removeItemModalHolder"></div>
+            <div id="removeItemModalHolderNewOption"></div>
+            <div id="itemCreationModalHolder"></div>
+            <div id="itemDelConfirmationHolder"></div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="../../vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="../../vendor/slick/slick.min.js">
+    </script>
+    <script src="../../vendor/wow/wow.min.js"></script>
+    <script src="../../vendor/animsition/animsition.min.js"></script>
+    <script src="../../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="../../vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="../../vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="../../vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="../../vendor/select2/select2.min.js">
+    </script>
+    <script src="/creator/js/jquery.toast.min.js"></script>
+    <script src="/creator/js/toastr.min.js"></script>
+
+    <!-- Main JS-->
+    <script src="../../js/main.js"></script>
+    <script src="../../js/custom-proj.js"></script>
+    <script src="../../js/project-reward.js"></script>
+    <script th:inline="javascript">
+        var projectEditable = [[${project_dto.isEditable}]];
+    </script>
+</body>
+
+</html>
+<!-- end document-->

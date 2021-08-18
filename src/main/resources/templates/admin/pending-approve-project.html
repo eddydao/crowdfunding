@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Title Page-->
+    <title>Pending approve project</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="/admin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="/admin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
+    <!-- Main CSS-->
+    <link href="/admin/css/theme.css" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub" sec:authorize="!hasRole('ADMIN')">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li  sec:authorize="hasRole('ADMIN')">
+                        <a class="js-arrow" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li class="active" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/project/pending-list}">
+                            <i class="fas fa-check"></i>Pending approval project</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/user/list}">
+                            <i class="fas fa-user"></i>Admin account management</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/category/list}">
+                            <i class="fas fa-tag"></i>Category management</a>
+                    </li>
+                    <li >
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <div>
+                        </div>
+                        <div class="header-button">
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+                                    <div class="content">
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                    </div>
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="account-dropdown__footer">
+                                            <a th:href="@{/logout}">
+                                                <i class="zmdi zmdi-power"></i>Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Pending approve project list</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-top-campaign" id="pending-project-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Project name</th>
+                                            <th>Category</th>
+                                            <th>Short description</th>
+                                            <th>Creator</th>
+                                            <th>Goal</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="project: ${projects}">
+                                            <td >
+                                                <a th:href="@{/admin/project/} + ${project.projectId} + @{/detail}" th:text="${project.projectName}"></a>
+                                            </td>
+                                            <td th:text="${project.categoryName}"></td>
+                                            <td th:text="${project.projectShortDes}"></td>
+                                            <td th:text="${project.userFullName}"></td>
+                                            <td>$<span th:text="${#numbers.formatDecimal(project.goal, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Jquery JS-->
+<script src="/admin/vendor/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap JS-->
+<script src="/admin/vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="/admin/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="/admin/vendor/slick/slick.min.js">
+</script>
+<script src="/admin/vendor/wow/wow.min.js"></script>
+<script src="/admin/vendor/animsition/animsition.min.js"></script>
+<script src="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="/admin/vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="/admin/vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="/admin/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/admin/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/admin/vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="/admin/vendor/select2/select2.min.js">
+</script>
+<script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<!-- Main JS-->
+<script src="/admin/js/main.js"></script>
+<script src="/admin/js/pending-approve-project.js"></script>
+</body>
+
+</html>
+<!-- end document-->

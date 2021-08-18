@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Title Page-->
+    <title>Category management</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="/admin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="/admin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <!-- Main CSS-->
+    <link href="/admin/css/theme.css" rel="stylesheet" media="all">
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
+
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER MOBILE-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub" sec:authorize="!hasRole('ADMIN')">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li  sec:authorize="hasRole('ADMIN')">
+                        <a class="js-arrow" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/project/pending-list}">
+                            <i class="fas fa-check"></i>Pending approval project</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/user/list}">
+                            <i class="fas fa-user"></i>Admin account management</a>
+                    </li>
+                    <li class="active" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/category/list}">
+                            <i class="fas fa-tag"></i>Category management</a>
+                    </li>
+                    <li >
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <div>
+                        </div>
+                        <div class="header-button">
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+                                    <div class="content">
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                    </div>
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="account-dropdown__footer">
+                                            <a th:href="@{/logout}">
+                                                <i class="zmdi zmdi-power"></i>Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row"  >
+                        <div class="col-md-6" >
+                            <div class="card" >
+                                <!-- DATA TABLE -->
+                                <!-- <h3 class="title-5 m-b-35">data table</h3> -->
+                                <div class="card-header">
+                                    <strong>Category management</strong>
+                                </div>
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-left">
+                                    </div>
+                                    <div class="table-data__tool-right">
+                                        <button id="btn-create" class="au-btn au-btn-icon au-btn--green au-btn--small" style="margin: 20px 40px 20px 0;">
+                                            <i class="zmdi zmdi-plus"></i>add item</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table-responsive-data2" th:fragment="category-table" id="category-table">
+                                    <table class="table table-data2" id="category-table-content">
+                                        <thead>
+                                        <tr>
+                                            <th>Category Name</th>
+                                            <th>Number of project</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="tr-shadow" th:each="category: ${categories}">
+                                            <td style="display: none" th:text="${category.id}"> </td>
+                                            <td th:text="${category.name}"></td>
+                                            <td class="desc" th:text="${category.projects == null ? 0 : category.projects.size() } " ></td>
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <button class="item btn-edit" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete"
+                                                            th:onclick="'openDeleteModal(\'' + ${category.id} + '\');'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END DATA TABLE -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card" id="div-create-category" style="display: none">
+                                <div class="card-header">
+                                    <strong>Create new Category</strong>
+                                </div>
+<!--                                <form action="" method="post" class="form-horizontal">-->
+                                    <div class="card-body card-block">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label  class=" form-control-label">Category name</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="email" id="category-name" name="category-name" placeholder="Enter new category name..." class="form-control">
+                                                    <span class="help-block">Enter the category name</span>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                        th:onclick="'saveNewCategory();'">
+                                            <i class="fa fa-dot-circle-o"></i> Save
+                                        </button>
+                                        <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-add">
+                                            <i class="fa fa-ban"></i> Cancel
+                                        </button>
+                                    </div>
+<!--                                </form>-->
+                            </div>
+
+                            <div class="card" id="div-edit-category" style="display: none">
+                                <div class="card-header">
+                                    <strong>Edit Category</strong>
+                                </div>
+                                <div class="card-body card-block">
+                                    <form action="" method="post" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">Category name</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="email" id="category-edit-name" name="category-edit-name" placeholder="Enter category name..." class="form-control">
+                                                <input type="email" id="category-edit-id" name="category-edit-id" style="display: none" class="form-control">
+                                                <span class="help-block">Enter the category name</span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm" th:onclick="'saveEditCategory();'">
+                                        <i class="fa fa-dot-circle-o"></i> Save
+                                    </button>
+                                    <button type="reset" class="btn btn-danger btn-sm" id="btn-cancel-edit">
+                                        <i class="fa fa-ban"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="categoryDelConfirmationHolder"></div>
+
+</div>
+
+<!-- Jquery JS-->
+<script src="/admin/vendor/jquery-3.2.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<!--<script scr="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+<!-- Bootstrap JS-->
+<script src="/admin/vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="/admin/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="/admin/vendor/slick/slick.min.js">
+</script>
+<script src="/admin/vendor/wow/wow.min.js"></script>
+<script src="/admin/vendor/animsition/animsition.min.js"></script>
+<script src="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="/admin/vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="/admin/vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="/admin/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/admin/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/admin/vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="/admin/vendor/select2/select2.min.js">
+</script>
+<script src="/admin/js/jquery.toast.min.js"></script>
+<script src="/admin/js/toastr.min.js"></script>
+
+<!-- Main JS-->
+<script src="/admin/js/main.js"></script>
+<script src="/admin/js/category-management.js"></script>
+</body>
+</html>
+<!-- end document-->

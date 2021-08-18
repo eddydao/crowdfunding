@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Title Page-->
+    <title>Project review</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="../../css/font-face.css" rel="stylesheet" media="all">
+    <link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="../../vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="../../vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="../../vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="../../vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
+    <!-- Main CSS-->
+    <link href="../../css/theme.css" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER MOBILE-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <div>
+                        </div>
+                        <div class="header-button">
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+                                    <div class="content">
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                    </div>
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="account-dropdown__footer">
+                                            <a th:href="@{/logout}">
+                                                <i class="zmdi zmdi-power"></i>Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6" style="margin: auto">
+                            <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
+                                <div class="au-card-title" style="background-image:url('/creator/images/bg-title-02.jpg');">
+                                    <div class="bg-overlay bg-overlay--blue"></div>
+                                    <h3>
+                                        <i class="zmdi zmdi-comment-text"></i>Project Review</h3>
+                                </div>
+                                <div class="au-inbox-wrap js-inbox-wrap" id="project-review-div" th:fragment="project-review-div" th:if="${statusId} == '7'">
+                                    <div class="au-message js-list-load">
+                                        <div class="au-message__noti" th:if="${disabled != 1}">
+                                            <p>We'll review your project and get back to you soon
+                                            </p>
+                                        </div>
+                                        <div th:if="${disabled == 1}">
+                                            <div class="alert alert-danger">
+                                                You need to update your personal information before submit the project to review.
+                                            </div>
+                                        </div>
+                                        <div class="au-message__footer" th:if="${disabled != 1}">
+                                            <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_submitReview_onclick()'">Submit to review</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="au-inbox-wrap js-inbox-wrap" id="project-review-noti-div" th:fragment="project-review-noti-div" th:if="${statusId} == '1'">
+                                    <div class="au-message js-list-load">
+                                        <div class="au-message__noti">
+                                            <span>Thank you</span>
+                                            <p>We'll look over your project and get back to you soon.<br>When we're done, you can launch when ever you ready.
+                                            </p>
+                                        </div>
+                                        <div class="au-message__footer">
+                                            <div class="card-body text-white bg-success">
+                                                <p class="card-text text-light">Project is on the review.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="au-inbox-wrap js-inbox-wrap" id="project-review-success-div" th:fragment="project-review-success-div" th:if="${statusId} == '2'">
+                                    <div class="au-message js-list-load">
+                                        <div class="card-body text-white bg-success">
+                                            <p class="card-text text-light" style="text-align: center">Your project is ready to launch
+                                            </p>
+                                        </div>
+                                        <div class="au-message__footer">
+                                            <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_launchProject_onclick()'">Continue to launch</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="au-inbox-wrap js-inbox-wrap"  id="project-review-fail-div" th:fragment="project-review-fail-div" th:if="${statusId} == '6'">
+                                    <div class="au-message js-list-load">
+                                        <div class="au-message__noti">
+                                            <span>Hi </span><span th:text="${username}"></span><span>,</span>
+                                            <p>Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.
+                                            </p>
+                                            <p>We recommend you review out Rules and <a href="#" th:onclick="showComment()" > comment </a> of our reviewer about the project</p>
+                                            <p>You can submit again after make sure your project is following our Rules and Guidelines</p>
+                                        </div>
+                                        <div class="au-message__footer">
+                                            <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_returnToEditProject_onclick()'">Edit your project</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="au-inbox-wrap js-inbox-wrap" id="project-launch-noti-div" th:fragment="project-launch-noti-div" th:if="${statusId} == '3'">
+                                    <div class="au-message js-list-load">
+                                        <div class="au-message__noti">
+                                            <span>Congratulation!</span>
+                                            <p>Your project launched successfully<br>Keep updating what you are working for your project.<br> And sharing it to people.
+                                            </p>
+                                        </div>
+                                        <div class="au-message__footer">
+                                            <div class="card-body text-white bg-success">
+                                                <p class="card-text text-light">Project is running.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT-->
+        <!-- END PAGE CONTAINER-->
+    </div>
+    <div id="submitReviewConfirmationModalHolder"></div>
+    <div id="commentModalHolder"></div>
+    <div id="submitLaunchConfirmationModalHolder"></div>
+</div>
+
+<!-- Jquery JS-->
+<script src="../../vendor/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap JS-->
+<script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="../../vendor/slick/slick.min.js">
+</script>
+<script src="../../vendor/wow/wow.min.js"></script>
+<script src="../../vendor/animsition/animsition.min.js"></script>
+<script src="../../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="../../vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="../../vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="../../vendor/circle-progress/circle-progress.min.js"></script>
+<script src="../../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="../../vendor/select2/select2.min.js">
+</script>
+<script src="/admin/js/jquery.toast.min.js"></script>
+<script src="/admin/js/toastr.min.js"></script>
+<!-- Main JS-->
+<script src="../../js/main.js"></script>
+<script src="../../js/project-review.js"></script>
+<script th:inline="javascript">
+    var projectId = [[${projectId}]];
+</script>
+</body>
+
+</html>
+<!-- end document-->

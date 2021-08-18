@@ -1,0 +1,241 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Title Page-->
+    <title>Project overview</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="../css/font-face.css" rel="stylesheet" media="all">
+    <link href="../vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="../vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="../vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="../vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="../vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <!-- <link href="../css/theme.css" rel="stylesheet" media="all"> -->
+    <link href="../css/custom-style.css" rel="stylesheet" media="all">
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <div>
+                        </div>
+                        <div class="header-button">
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+                                    <div class="content">
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                    </div>
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="account-dropdown__footer">
+                                            <a th:href="@{/logout}">
+                                                <i class="zmdi zmdi-power"></i>Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="custom-main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong th:text="${project_dto.projectName}"></strong> overview
+                                </div>
+                                <div class="card-body card-block custom-col">
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '1'">
+                                        Your project is on the review. We'll look over your project and get back to you soon.
+                                    </div>
+
+                                    <div class="alert alert-warning" th:if="${project_full_entity.statusId} == '10'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us. We're carefully reviewed it against our Rules, <br> and we're unable to approve it to launch.</small>
+                                        <small class="form-text text-muted">We recommend you review out Rules and comments of our reviewer about the project</small>
+                                    </div>
+
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '6'">
+                                        <small class="form-text text-muted">Thanks for sharing your project with us.<br> We're carefully reviewed it against our Rules and we're unable to approve it to launch.</small>
+                                    </div>
+
+                                    <div class="alert alert-danger" th:if="${project_full_entity.statusId} == '4'">
+                                        <small class="form-text text-muted">This project has been suspended</small>
+                                    </div>
+
+                                    <div class="alert alert-success" th:if="${project_full_entity.statusId} == '2'">
+                                        <small class="form-text text-muted">Your project has been approved. Launch it when you ready!</small>
+                                    </div>
+
+                                    <div class="alert alert-info" th:if="${project_full_entity.statusId} == '3'">
+                                        <small class="form-text text-muted">Project is live.</small>
+                                    </div>
+
+                                    <div class="table-responsive" >
+                                        <table class="table custom-table-top-campaign">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/basic (projectId = ${project_dto.projectId})} " >
+                                                            <label class="form-control-label"><b>Basics</b></label>
+                                                            <small class="form-text text-muted">Name your project, upload an image or video, and establish your campaign details.</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/reward (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Rewards</b></label>
+                                                            <small class="form-text text-muted">Set your rewards.</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/story (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Story</b></label>
+                                                            <small class="form-text text-muted">Add a detailed project description.</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                                <tr th:if="${project_full_entity.statusId} == '7'">
+                                                    <td>
+                                                        <small class="form-text text-muted">We'll to make sure it follows our rules and guidelines</small>
+                                                        <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_submitReview_onclick()'">Submit to review</button>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '2'">
+                                                    <td>
+                                                        <small class="form-text text-muted" >Your project is ready to launch</small>
+                                                        <button class="au-btn btn btn-success btn-lg" th:onclick="'btn_launchProject_onclick()'">Continue to launch</button>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '10'">
+                                                    <td>
+                                                        <button class="btn btn-outline-info btn-sm" th:onclick="'showComment()'">Reviewer comment</button>
+                                                        <button class="btn btn-success btn-sm" th:onclick="'btn_submitReview_onclick()'">Submit to review again</button>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '3'">
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Project report</b></label>
+                                                            <small class="form-text text-muted">See how your project going</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr th:if="${project_full_entity.statusId} == '4'">
+                                                    <td>
+                                                        <a th:href="@{/creator/project/{projectId}/report (projectId = ${project_dto.projectId})} " >
+                                                            <label class=" form-control-label"><b>Project report</b></label>
+                                                            <small class="form-text text-muted">See how your project going</small>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="submitReviewConfirmationModalHolder"></div>
+    <div id="commentModalHolder"></div>
+    <div id="submitLaunchConfirmationModalHolder"></div>
+</div>
+
+<!-- Jquery JS-->
+<script src="../vendor/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap JS-->
+<script src="../vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="../vendor/slick/slick.min.js">
+</script>
+<script src="../vendor/wow/wow.min.js"></script>
+<script src="../vendor/animsition/animsition.min.js"></script>
+<script src="../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="../vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="../vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="../vendor/circle-progress/circle-progress.min.js"></script>
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="../vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="../vendor/select2/select2.min.js">
+</script>
+
+<!-- Main JS-->
+<script src="../js/main.js"></script>
+<script src="../js/overview.js"></script>
+<!--<script src="../js/custom-proj.js"></script>-->
+<script th:inline="javascript">
+    var projectId = [[${project_full_entity.projectId}]];
+</script>
+</body>
+
+</html>
+<!-- end document-->

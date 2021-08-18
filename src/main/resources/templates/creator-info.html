@@ -1,0 +1,202 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Creator info</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link rel="stylesheet" href="../css/custom-bootstrap4.css"/>
+    <link rel="stylesheet" href="../css/normalize.css"/>
+    <link rel="stylesheet" href="../css/jquery.sidr.light.css"/>
+    <link rel="stylesheet" href="../css/responsiveslides.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" href="../css/ie7.css"/>
+    <![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="../css/ie8.css"/>
+    <![endif]-->
+    <link rel="stylesheet" href="../css/responsive.css"/>
+    <link href="../css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/toastr.css" rel="stylesheet"/>
+
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/html5.js"></script>
+
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../js/raphael-min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../js/responsiveslides.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.sidr.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.tweet.min.js"></script>
+    <script type="text/javascript" src="../js/pie.js"></script>
+    <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/toastr.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+
+
+
+</head>
+<body>
+
+<div id="wrapper">
+    <header id="header">
+        <div class="wrap-top-menu">
+            <div class="container_12 clearfix">
+                <div class="grid_12">
+                    <nav class="top-menu">
+                        <ul id="main-menu" class="nav nav-horizontal clearfix">
+                            <li class="active"><a href="#" th:href="@{/}">Home</a></li>
+                            <li class="sep"></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                        <a id="btn-toogle-menu" class="btn-toogle-menu" href="#alternate-menu">
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                        </a>
+                        <div id="right-menu">
+                            <ul class="alternate-menu">
+                                <li><a href="" th:href="@{/}">Home</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <i id="sys_btn_toggle_search" class="icon iBtnRed make-right"></i>
+                </div>
+            </div>
+        </div><!-- end: .wrap-top-menu -->
+        <div class="container_12 clearfix">
+            <div class="grid_12 header-content">
+                <div id="sys_header_right" class="header-right">
+                    <div class="account-panel">
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/register}" class="btn btn-red">Register</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <div class="dropdown" th:if="${#request.userPrincipal != null}">
+                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${#request.userPrincipal.name}"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/user/account}">Account</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Your Project</a>
+                                <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/user/backed-project}">Backed project</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin dashboard</a>
+                                <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-search">
+                        <form action="#" th:action="@{/search}" th:object="${project}" method="post">
+                            <label for="sys_txt_keyword">
+                                <input id="sys_txt_keyword" name="search_box" class="txt-keyword" type="text" placeholder="Search projects"/>
+                            </label>
+                            <button class="btn-search" type="submit"><i class="icon iMagnifier"></i></button>
+                            <button class="btn-reset-keyword" type="reset"><i class="icon iXHover"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <h1 id="logo">
+                        <a th:href="@{/}"><img src="../images/logo.png" alt="$SITE_NAME"/></a>
+                    </h1>
+                    <div class="main-nav clearfix">
+                        <div class="nav-item">
+                            <a th:href="@{/project/all}" class="nav-title">Discover</a>
+                            <p class="rs nav-description">Great Projects</p>
+                        </div>
+                        <span class="sep"></span>
+                        <div class="nav-item">
+                            <a href="#" th:href="@{/creator/create-project}" class="nav-title">Start</a>
+                            <p class="rs nav-description">Your Project</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header><!--end: #header -->
+
+    <div class="layout-2cols">
+        <div class="content grid_12">
+            <div class="project-detail">
+                <div class="project-tab-detail tabbable accordion">
+                    <ul class="nav nav-tabs clearfix">
+                        <li class="active" ><a href="#" class="be-fc-orange">Account</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div>
+                            <h3 class="rs alternate-tab accordion-label">Account</h3>
+                            <div class="tab-pane accordion-content active">
+                                <div class="tab-pane-inside">
+                                    <div class="project-author pb20">
+                                        <div class="media">
+                                            <a href="#" class="thumb-left">
+                                                <img src="images/ex/th-90x90-1.jpg" alt="$USER_NAME">
+                                            </a>
+                                            <div class="media-body">
+                                                <h4 class="rs pb10"><a href="#" class="be-fc-orange fw-b">John Doe</a></h4>
+                                                <p class="rs">Chicago, IL</p>
+                                                <p class="rs fc-gray pb10">5 projects</p>
+                                                <p class="rs description">Mauris vel lacus vitae felis vestibulum volutpat. Etiam est nunc, venenatis in, tristique eu, imperdiet ac, nisl. Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <footer id="footer">
+        <div class="container_12 main-footer">
+            <div class="grid_3 about-us">
+                <h3 class="rs title">About</h3>
+                <p class="rs description">Donec rutrum elit ac arcu bibendum rhoncus in vitae turpis. Quisque fermentum gravida eros non faucibus. Curabitur fermentum, arcu sed cursus commodo.</p>
+                <p class="rs email"><a class="fc-default  be-fc-orange" href="../mailto:info@megadrupal.com">info@megadrupal.com</a></p>
+                <p class="rs">+1 (555) 555 - 55 - 55</p>
+            </div><!--end: .contact-info -->
+
+            <div class="grid_3">
+                <h3 class="rs title">Discover &amp; Create</h3>
+                <div class="footer-menu">
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="../#">What is Kickstars</a></li>
+                        <li><a class="be-fc-orange" href="../#">Start a project</a></li>
+                        <li><a class="be-fc-orange" href="../#">Project Guidlines</a></li>
+                        <li><a class="be-fc-orange" href="../#">Press</a></li>
+                        <li><a class="be-fc-orange" href="../#">Stats</a></li>
+                    </ul>
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="../#">Staff Picks</a></li>
+                        <li><a class="be-fc-orange" href="../#">Popular</a></li>
+                        <li><a class="be-fc-orange" href="../#">Recent</a></li>
+                        <li><a class="be-fc-orange" href="../#">Small Projects</a></li>
+                        <li><a class="be-fc-orange" href="../#">Most Funded</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="copyright">
+            <div class="container_12">
+                <div class="grid_12">
+                    <a class="logo-footer" href="../index.html"><img src="../images/logo-2.png" alt="$SITE_NAME"/></a>
+
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </footer><!--end: #footer -->
+
+</div>
+</body>
+</html>

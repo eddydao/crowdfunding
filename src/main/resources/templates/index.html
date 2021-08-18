@@ -1,10 +1,254 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Welcome to Kickstars</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/jquery.sidr.light.css"/>
+    <link rel="stylesheet" href="css/animate.min.css"/>
+    <link rel="stylesheet" href="css/md-slider.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/ie7.css"/>
+    <link rel="stylesheet" href="css/ie8.css"/>
+    <link rel="stylesheet" href="css/responsive.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+
+
 </head>
 <body>
+<div id="wrapper">
+    <header id="header">
+        <div class="wrap-top-menu">
+            <div class="container_12 clearfix">
+                <div class="grid_12">
+                    <nav class="top-menu">
+                        <ul id="main-menu" class="nav nav-horizontal clearfix">
+                            <li class="active"><a href="#" th:href="@{/}">Home</a></li>
+                            <li class="sep"></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                        <a id="btn-toogle-menu" class="btn-toogle-menu" href="#alternate-menu">
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                            <span class="line-bar"></span>
+                        </a>
+                        <div id="right-menu">
+                            <ul class="alternate-menu">
+                                <li><a href="" th:href="@{/}">Home</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <i id="sys_btn_toggle_search" class="icon iBtnRed make-right"></i>
+                </div>
+            </div>
+        </div><!-- end: .wrap-top-menu -->
+        <div class="container_12 clearfix">
+            <div class="grid_12 header-content">
+                <div id="sys_header_right" class="header-right">
+                    <div class="account-panel">
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/register}" class="btn btn-red">Register</a>
+                        <a th:if="${#request.userPrincipal == null}" th:href="@{/signin}" class="btn btn-black">Login</a>
+                        <div class="dropdown" th:if="${#request.userPrincipal != null}">
+                            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${#request.userPrincipal.name}"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/user/account}">Account</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR')" th:href="@{/creator}">Your Project</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('CREATOR') || hasRole('INVESTOR')" th:href="@{/user/backed-project}">Backed project</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin dashboard</a>
+                                <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="form-search">
+                        <form action="#" th:action="@{/search}" th:object="${project}" method="post">
+                            <label for="sys_txt_keyword">
+                                <input id="sys_txt_keyword" name="search_box" class="txt-keyword" type="text" placeholder="Search projects"/>
+                            </label>
+                            <button class="btn-search" type="submit"><i class="icon iMagnifier"></i></button>
+                            <button class="btn-reset-keyword" type="reset"><i class="icon iXHover"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <h1 id="logo">
+                        <a th:href="@{/}"><img src="images/logo.png" alt="$SITE_NAME"/></a>
+                    </h1>
+                    <div class="main-nav clearfix">
+                        <div class="nav-item">
+                            <a th:href="@{/project/all}" class="nav-title">Discover</a>
+                            <p class="rs nav-description">Great Projects</p>
+                        </div>
+                        <span class="sep"></span>
+                        <div class="nav-item">
+                            <a href="#" th:href="@{/create-project}" class="nav-title">Start</a>
+                            <p class="rs nav-description">Your Project</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header><!--end: #header -->
+    <div class="home-feature-category">
+        <div class="container_12 clearfix">
+            <div class="grid_4 left-lst-category">
+                <div class="wrap-lst-category">
+                    <h3 class="title-welcome rs">Welcome to Kickstars!</h3>
+                    <!-- <p class="description rs">Pellentesque laoreet sapien id lacus luctus non fringilla elit lobortis. Fusce augue diam, tempor posuere pharetra sed, feugiat non sapien.</p> -->
+                    <nav class="lst-category">
+                        <ul class="rs nav nav-category" th:each="category : ${categories}">
+                            <li>
+                                <a th:href="@{/category/} + ${category.id}">
+                                    <span th:text="${category.name}"></span>
+                                    <i class="icon iPlugGray"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav><!--end: .lst-category -->
+                </div>
+            </div><!--end: .left-lst-category -->
+            <div class="grid_8 marked-category">
+                <div class="wrap-title clearfix">
+                    <h2 class="title-mark rs">Staff Picks: <span class="fc-orange" th:text="${recommended_project.categoryName}"></span></h2>
+                   <!-- <a href="category.html" class="count-project be-fc-orange">See all <span class="fw-b">24</span> Comics projects</a> -->
+                </div>
+                <div class="box-marked-project project-short">
+                    <div class="top-project-info">
+                        <div class="content-info-short clearfix">
+                            <a href="#" class="thumb-img">
+                                <img th:src="${recommended_project.thumbnailPath}" alt="Project-image">
+                            </a>
+                            <div class="wrap-short-detail">
+                                <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${recommended_project.projectId}" ><span th:text="${recommended_project.projectName}"></span></a></h3>
+                                <p class="rs tiny-desc">by <span class="fw-b fc-gray be-fc-orange" th:text="${recommended_project.userFullName}"></span> in <span class="fw-b fc-gray" th:text="${recommended_project.countryName}"></span></p>
+                                <p class="rs title-description " th:text="${recommended_project.projectShortDes}"></p>
+                            </div>
+                        </div>
+                    </div><!--end: .top-project-info -->
+                    <div class="bottom-project-info clearfix">
+<!--                        <div class="project-progress sys_circle_progress" data-percent="76">-->
+<!--                            <div class="sys_holder_sector"></div>-->
+<!--                        </div>-->
+                        <div class="group-fee clearfix" style="margin-bottom: 50px">
+                            <div class="fee-item">
+                                <p class="rs lbl">Backers</p>
+                                <span class="val" th:text="${recommended_project.investorCount}"></span>
+                            </div>
+                            <div class="sep"></div>
+                            <div class="fee-item">
+                                <p class="rs lbl">Pledged</p>
+                                <span class="val">$<span th:text="${#numbers.formatDecimal(recommended_project.pledged, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                            </div>
+                            <div class="sep"></div>
+                            <div class="fee-item">
+                                <p class="rs lbl">Days Left</p>
+                                <span class="val" th:text="${recommended_project.dayLeft}"></span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div><!--end: .marked-category -->
+            <div class="clear"></div>
+        </div>
+    </div><!--end: .home-feature-category -->
+    <div class="home-popular-project">
+        <div class="container_12">
+            <div class="grid_12 wrap-title">
+                <h2 class="common-title">Popular</h2>
+                <a class="be-fc-orange" th:href="@{/project/all}">View all</a>
+            </div>
+            <div class="clear"></div>
+            <div class="lst-popular-project clearfix">
+                <div class="grid_3" th:each="project : ${popular_projects}" style="height: 450px">
+                    <div class="project-short sml-thumb">
+                        <div class="top-project-info">
+                            <div class="content-info-short clearfix">
+                                <a href="#" class="thumb-img">
+                                    <img th:src="${project.thumbnailPath}" alt="Project-image" style="height: 150px;">
+                                </a>
+                                <div class="wrap-short-detail">
+                                    <h3 class="rs acticle-title"><a class="be-fc-orange" th:href="@{/project/} + ${project.projectId}"><span th:text="${project.projectName}"></span></a></h3>
+                                    <p class="rs tiny-desc">by <span class="fw-b fc-gray be-fc-orange" th:text="${project.userFullName}"></span></p>
+                                    <p class="rs title-description overflow" th:text="${project.projectShortDes}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-project-info clearfix">
+                            <div class="group-fee clearfix">
+                                <div class="fee-item">
+                                    <p class="rs lbl">Pledged</p>
+                                    <span class="val">$<span th:text="${#numbers.formatDecimal(project.pledged, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                                </div>
+                                <div class="sep"></div>
+                                <div class="fee-item">
+                                    <p class="rs lbl">Days Left</p>
+                                    <span class="val" th:text="${project.dayLeft}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--end: .home-popular-project -->
+
+    <!--end: .additional-info-line -->
+    <footer id="footer">
+        <div class="container_12 main-footer">
+            <div class="grid_3 about-us">
+                <h3 class="rs title">About</h3>
+                <p class="rs description">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="rs email"><a class="fc-default  be-fc-orange" href="">customer.kickstar@gmail.com</a></p>
+                <p class="rs">+84 (024) 555 - 55 - 55</p>
+            </div><!--end: .contact-info -->
+            <div class="clear clear-2col"></div>
+            <div class="grid_3">
+                <h3 class="rs title">Discover &amp; Create</h3>
+                <div class="footer-menu">
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="#">What is Kickstars</a></li>
+                        <li><a class="be-fc-orange" href="#">Start a project</a></li>
+                        <li><a class="be-fc-orange" href="#">Project Guidlines</a></li>
+                        <li><a class="be-fc-orange" href="#">Press</a></li>
+                        <li><a class="be-fc-orange" href="#">Stats</a></li>
+                    </ul>
+                    <ul class="rs">
+                        <li><a class="be-fc-orange" href="#">Staff Picks</a></li>
+                        <li><a class="be-fc-orange" href="#">Popular</a></li>
+                        <li><a class="be-fc-orange" href="#">Recent</a></li>
+                        <li><a class="be-fc-orange" href="#">Small Projects</a></li>
+                        <li><a class="be-fc-orange" href="#">Most Funded</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </footer><!--end: #footer -->
+
+</div>
+
+<script type="text/javascript" src="js/html5.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/raphael-min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.touchwipe.min.js"></script>
+<script type="text/javascript" src="js/md_slider.min.js"></script>
+<script type="text/javascript" src="js/jquery.sidr.min.js"></script>
+<script type="text/javascript" src="js/jquery.tweet.min.js"></script>
+<script type="text/javascript" src="js/pie.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

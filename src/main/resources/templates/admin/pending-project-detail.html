@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Title Page-->
+    <title>Pending approve project detail</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="/admin/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="/admin/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="/admin/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/admin/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="/admin/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+    <!-- Main CSS-->
+    <link href="/admin/css/theme.css" rel="stylesheet" media="all">
+    <link href="/admin/css/toastr.css" rel="stylesheet"/>
+
+</head>
+
+<body class="animsition" >
+<div class="page-wrapper">
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a th:href="@{/}">
+                <img src="/images/logo.png" alt="Kickstar" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub" sec:authorize="!hasRole('ADMIN')">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Project management</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li sec:authorize="hasRole('CREATOR')">
+                                <a class="js-arrow" th:href="@{/creator}">Your Project</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()">
+                                <a class="js-arrow" th:href="@{/user/backed-project}">Backed Project</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li  sec:authorize="hasRole('ADMIN')">
+                        <a class="js-arrow" th:href="@{/admin}">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li class="active" sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/project/pending-list}">
+                            <i class="fas fa-check"></i>Pending approval project</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/user/list}">
+                            <i class="fas fa-user"></i>Admin account management</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{/admin/category/list}">
+                            <i class="fas fa-tag"></i>Category management</a>
+                    </li>
+                    <li >
+                        <a th:href="@{/user/account}">
+                            <i class="fas fa-user"></i>Account management</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap">
+                        <div>
+                        </div>
+                        <div class="header-button">
+                            <div class="account-wrap">
+                                <div class="account-item clearfix js-item-menu">
+                                    <div class="content">
+                                        <a class="js-acc-btn" href="#" th:text="${#request.userPrincipal.name}"></a>
+                                    </div>
+                                    <div class="account-dropdown js-dropdown">
+                                        <div class="account-dropdown__footer">
+                                            <a th:href="@{/logout}">
+                                                <i class="zmdi zmdi-power"></i>Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- HEADER DESKTOP-->
+
+        <!-- MAIN CONTENT-->
+        <div class="main-content" style="background-color: white;">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="default-tab">
+                                        <nav>
+                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="nav-basic-info-tab" data-toggle="tab" href="#nav-basic-info" role="tab" aria-controls="nav-basic-info"
+                                                   aria-selected="false">Basic information</a>
+                                                <a class="nav-item nav-link" id="nav-reward-tab" data-toggle="tab" href="#nav-reward" role="tab" aria-controls="nav-reward"
+                                                   aria-selected="false">Rewards</a>
+                                                <a class="nav-item nav-link" id="nav-story-tab" data-toggle="tab" href="#nav-story" role="tab" aria-controls="nav-story"
+                                                   aria-selected="false">Story</a>
+                                                <a class="nav-item nav-link" id="nav-user-tab" data-toggle="tab" href="#nav-user" role="tab" aria-controls="nav-user"
+                                                   aria-selected="false">User information</a>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-basic-info" role="tabpanel" aria-labelledby="nav-basic-info-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project thumbnail</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <img class="card-img-top" th:src="${project.thumbnailPath}" alt="project image cap" style="width: 540px; height: 300px">
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project title</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${project.projectName}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Project subtitle</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${project.projectShortDes}"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Funding goal</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#numbers.formatDecimal(project.goal, 0, 'COMMA', 2, 'POINT')}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Target launch date</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#temporals.format(project.startDate, 'dd/MM/yyyy')}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Duration</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${#temporals.format(project.endDate, 'dd/MM/yyyy')}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-reward" role="tabpanel" aria-labelledby="nav-reward-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-3">
+                                                                        <span>Pledge amount</span>
+                                                                        </section>
+                                                                    </div>
+                                                                    <div class="col-lg-5">
+                                                                        <span>Details</span>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <span>Includes</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card" th:each="option : ${options}">
+                                                                    <div class="card-body">
+                                                                        <div class="mx-auto d-block">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-3">
+                                                                                    <span th:text="${option.fundMin}"></span>
+                                                                                    <!-- </section> -->
+                                                                                </div>
+                                                                                <div class="col-lg-5">
+                                                                                    <span th:text="${option.optionName}"></span>
+                                                                                    <div th:text="${option.optionDescription}">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-4">
+                                                                                    <div>
+                                                                                        <ul th:each="item : ${option.itemDtoEntities}">
+                                                                                            <li th:text="${item.quantity} + 'x ' + ${item.itemName}"></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-story" role="tabpanel" aria-labelledby="nav-story-tab">
+                                                <p th:utext="${story != null ? story.storyDes : null}"></p>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">User full name</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.firstName?: ''} + ' ' + ${user.lastName?: ''}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Email</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input rows="3" class="form-control" readonly style="background-color: white;" th:value="${user.email?: ''}"></input>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Address</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.address?: ''}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Phone number</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <input type="text" readonly class="form-control" style="background-color: white;" th:value="${user.phoneNum != null ? user.phoneNum : ''}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row form-group">
+                                                                    <div class="col col-md-3">
+                                                                        <label for="text-input" class=" form-control-label">Biography</label>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-9">
+                                                                        <textarea rows="3" class="form-control" readonly style="background-color: white; height: 150px" th:text="${user.biography?: ''}"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <div class="form-group">
+                                        <div id="comment-div">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">Comment</label>
+                                            </div>
+                                            <div class="col-12 col-md-12">
+                                                <textarea name="textarea-input" id="comment-input" rows="18" placeholder="Comment..." class="form-control" th:text="${basicTab}"></textarea>
+                                            </div>
+                                            <br>
+                                            <div class="col-12 col-md-12">
+                                                <button type="button" class="btn btn-primary btn-sm" id="btn-saveComment" th:onclick="submitReviewForSection()" >
+                                                    <i class="fa fa-save"></i> Add comment
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" id="card-footer">
+                                    <button type="button" id="btn-closeReview" class="btn btn-primary btn-sm" th:onclick="completeReview()">
+                                        <i class="fa fa-dot-circle-o"></i> Complete review
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card" id="approve-card-div" style="display: none">
+                                <div class="card-body card-block">
+                                    <div class="form-group">
+                                        <div>
+                                            <div class="col col-md-12">
+                                                <label>Is the project qualified?&nbsp;</label><span style="color: red">*</span>
+                                            </div>
+                                            <div class="col-12 col-md-12">
+                                                <select name="select" id="select-approve" class="form-control">
+                                                    <option value="-1">- Please select -</option>
+                                                    <option value="1">APPROVE</option>
+                                                    <option value="3">SUSPEND</option>
+                                                    <option value="2">REJECT</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="button" class="btn btn-primary btn-sm" th:onclick="btn_submitReviewResult_onclick()">
+                                        <i class="fa fa-dot-circle-o"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Jquery JS-->
+<script src="/admin/vendor/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap JS-->
+<script src="/admin/vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="/admin/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="/admin/vendor/slick/slick.min.js">
+</script>
+<script src="/admin/vendor/wow/wow.min.js"></script>
+<script src="/admin/vendor/animsition/animsition.min.js"></script>
+<script src="/admin/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="/admin/vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="/admin/vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="/admin/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/admin/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/admin/vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="/admin/vendor/select2/select2.min.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
+<script src="/admin/js/jquery.toast.min.js"></script>
+<script src="/admin/js/toastr.min.js"></script>
+<!-- Main JS-->
+<script src="/admin/js/main.js"></script>
+<script src="/admin/js/pending-project-detail.js"></script>
+<script th:inline="javascript">
+    var projectId = [[${project.projectId}]];
+    var basicTabComment = [[${basicTab}]];
+    var rewardTabComment = [[${rewardTab}]];
+    var storyTabComment = [[${storyTab}]];
+    var isClosed = [[${isClosed}]];
+</script>
+</body>
+
+</html>
+<!-- end document-->
